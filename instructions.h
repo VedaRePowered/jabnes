@@ -6,6 +6,13 @@
 #include "nes_instruction.h"
 #include "state.h"
 
-void create_instructions();
+class cpu{
+public:
+	void execute_instruction(void);
+	void init(void);
+private:
+	nes_instruction instructions[256];
+	state current_state;
+};
 
 #endif
