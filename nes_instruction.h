@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "state.h"
+
 const unsigned short MODE_NOTHING = 0;
 const unsigned short MODE_IMMEDIATE = 1;
 const unsigned short MODE_ZEROPAGE = 2;
@@ -20,7 +22,7 @@ const unsigned short MODE_RELATIVE = 11;
 class nes_instruction {
 public:
 	nes_instruction();
-	nes_instruction(unsigned short, unsigned short, unsigned short*, bool, std::string, void (*execute_function)(unsigned short, unsigned short));
+	nes_instruction(unsigned short, unsigned short, unsigned short*, bool, std::string, void (*execute_function)(state&, unsigned short, unsigned short));
 
 	unsigned short cycles; // number of CPU cycles it takes to execute
 	unsigned short address_type; // type of address
@@ -28,7 +30,7 @@ public:
 	bool page_boundary_slowdown = false; // should the instruction take one more cycle if it crosses a page boundary
 	char opcode[4]; // opcode name
 
-	void (*execute_function)(unsigned short, unsigned short); // function to execute with two litaral numbers
+	void (*execute_function)(state&, unsigned short, unsigned short); // function to execute with two litaral numbers
 };
 
 #endif

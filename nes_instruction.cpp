@@ -2,7 +2,7 @@
 
 #include "nes_instruction.h"
 
-void dummy(unsigned short a, unsigned short b) {
+void dummy(state&, unsigned short a, unsigned short b) {
 	// Do nothing
 }
 
@@ -18,7 +18,7 @@ nes_instruction::nes_instruction() {
 	this->execute_function = &dummy;
 }
 
-nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, unsigned short* pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(unsigned short, unsigned short)) {
+nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, unsigned short* pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short, unsigned short)) {
 	this->cycles = cycles;
 	this->address_type = address_type;
 	this->pram_register = pram_register;

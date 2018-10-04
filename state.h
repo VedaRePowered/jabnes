@@ -3,8 +3,6 @@
 
 #include <cstddef>
 
-#include "nes_instruction.h"
-
 class state{
 public:
 	state();
