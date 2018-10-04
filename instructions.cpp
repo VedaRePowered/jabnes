@@ -6,7 +6,7 @@
 
 /* template
 
-void (state current_state, unsigned short * a, unsigned short * b) { //
+void (state& current_state, unsigned short * a, unsigned short * b) { //
 
 }
 
@@ -34,14 +34,105 @@ void reg_to_sp(state& current_state, unsigned short * a, unsigned short * b) { /
 
 void add_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
 	current_state.set_flag('c', (bool)((*a + *b) & 0b100000000));
+	if (*a & 0b01000000 && *b & 0b01000000) {
+		current_state.set_flag('v', true);
+	} else {
+		current_state.set_flag('v', false);
+	}
 	*b = (*a + *b) & 0x00FF;
-	current_state.set_flag('z', *b == 0);
-	current_state.set_flag('v', false);
+	current_state.set_flag('z', current_state.get_reg('a') == 0);
+
 	current_state.set_flag('n', (bool)((*a + *b) & 0b10000000));
 }
 
-void cpu::execute_instruction(void) {
+void bitwise_and(state& current_state, unsigned short * a, unsigned short * b) { // and a and b
+	*b = *a & *b;
+	current_state.set_flag('z', current_state.get_reg('a') == 0);
+	current_state.set_flag('n', (bool)((*a + *b) & 0b10000000));
+}
 
+void shift_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+	current_state.set_flag('c', (bool)((*a + *b) & 0b10000000));
+	unsigned short tmp;
+	if (*a) {
+		*a = *a << 1;
+		tmp = *a;
+	} else if (*b) {
+		*b = *b << 1;
+		tmp = *b;
+	}
+	current_state.set_flag('z', current_state.get_reg('a') == 0);
+	current_state.set_flag('n', (bool)(tmp & 0b10000000));
+}
+
+void shift_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+	current_state.set_flag('c', (bool)((*a + *b) & 0b00000001));
+	unsigned short tmp;
+	if (*a) {
+		*a = *a >> 1;
+		tmp = *a;
+	} else if (*b) {
+		*b = *b >> 1;
+		tmp = *b;
+	}
+	current_state.set_flag('z', current_state.get_reg('a') == 0);
+	current_state.set_flag('n', (bool)(tmp & 0b10000000));
+}
+
+void test_bits(state& current_state, unsigned short * a, unsigned short * b) { // test bits in memory based on the accumulator
+	unsigned short tmp = *a & *b;
+	current_state.set_flag('z', tmp == 0);
+	current_state.set_flag('v', (bool)(*a & 0b01000000));
+	current_state.set_flag('n', (bool)(*a & 0b10000000));
+}
+
+void branch(state& current_state, unsigned short * a, unsigned short * b) { // jump if the bit in b is set in the p register
+	if (*(current_state.get_reg('p')) & *b) {
+		current_state.set_reg('c', *a); // jump
+		*b = *b | 0b100000000; // set this bit to notify the execute_instruction function that we took a branch
+	}
+}
+
+void branch_not(state& current_state, unsigned short * a, unsigned short * b) { // jump if the bit in b is not set in the p register
+	if (!(*(current_state.get_reg('p')) & *b)) {
+		current_state.set_reg('c', *a); // jump
+		*b = *b | 0b100000000; // set this bit to notify the execute_instruction function that we took a branch
+	}
+}
+
+void cpu::execute_instruction(state current_state) {
+	unsigned short pc = *current_state.get_reg('c');
+	unsigned short inst_hex = *current_state.get_memory(pc);
+	nes_instruction instruction = instructions[inst_hex];
+	unsigned short * a;
+	unsigned short tmp;
+	switch (instruction.address_type) {
+		case MODE_NOTHING:	a = NULL;
+									pc += (unsigned short)1;
+		case MODE_IMMEDIATE:	a = current_state.get_memory(pc+1);
+									pc += (unsigned short)2;
+		case MODE_ZEROPAGE:	a = current_state.get_memory(*current_state.get_memory(pc+1));
+									pc += (unsigned short)2;
+		case MODE_ZEROPAGEX:	a = current_state.get_memory((*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF);
+									pc += (unsigned short)2;
+		case MODE_ZEROPAGEY:	a = current_state.get_memory((*current_state.get_memory(pc+1) + *current_state.get_reg('y')) & 0xFF);
+									pc += (unsigned short)2;
+		case MODE_ABSOLUTE:	a = current_state.get_memory(*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8));
+									pc += (unsigned short)3;
+		case MODE_ABSOLUTEX:	a = current_state.get_memory((*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('x'));
+									pc += (unsigned short)3;
+		case MODE_ABSOLUTEY:	a = current_state.get_memory((*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('y'));
+									pc += (unsigned short)3;
+		case MODE_INDIRECT:	tmp = *current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8);
+									a = current_state.get_memory(*current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8));
+									pc += (unsigned short)3;
+		case MODE_INDIRECTX:	tmp = (*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF;
+									a = current_state.get_memory(*current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8));
+									pc += (unsigned short)3;
+		case MODE_INDIRECTY:	tmp = *current_state.get_memory(pc+1);
+									a = current_state.get_memory(*current_state.get_memory(tmp + *current_state.get_reg('y'))) + (*current_state.get_memory(tmp + 1 + *current_state.get_reg('y')))<<8));
+									pc += (unsigned short)3;
+	}
 }
 
 void cpu::init(void) {
@@ -117,7 +208,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	instructions[0x25] = nes_instruction(
 		2, // time
@@ -125,7 +216,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	instructions[0x35] = nes_instruction(
 		3, // time
@@ -133,7 +224,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	instructions[0x2D] = nes_instruction(
 		4, // time
@@ -141,7 +232,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	instructions[0x3D] = nes_instruction(
 		4, // time
@@ -149,7 +240,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	instructions[0x39] = nes_instruction(
 		4, // time
@@ -157,7 +248,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	instructions[0x21] = nes_instruction(
 		6, // time
@@ -165,7 +256,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	instructions[0x31] = nes_instruction(
 		5, // time
@@ -173,7 +264,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"AND", // opcode
-		NULL // function
+		bitwise_and // function
 	);
 	//ASL instructions
 	instructions[0x0A] = nes_instruction(
@@ -182,7 +273,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ASL", // opcode
-		NULL // function
+		shift_left // function
 	);
 	instructions[0x06] = nes_instruction(
 		5, // time
@@ -190,7 +281,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ASL", // opcode
-		NULL // function
+		shift_left // function
 	);
 	instructions[0x16] = nes_instruction(
 		6, // time
@@ -198,7 +289,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ASL", // opcode
-		NULL // function
+		shift_left // function
 	);
 	instructions[0x0E] = nes_instruction(
 		6, // time
@@ -206,7 +297,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ASL", // opcode
-		NULL // function
+		shift_left // function
 	);
 	instructions[0x1E] = nes_instruction(
 		7, // time
@@ -214,7 +305,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ASL", // opcode
-		NULL // function
+		shift_left // function
 	);
 	//BIT instructions
 	instructions[0x24] = nes_instruction(
@@ -240,7 +331,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BPL", // opcode
-		NULL, // function
+		branch_not, // function
 		true // is a branch
 	);
 	instructions[0x30] = nes_instruction(
@@ -249,7 +340,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BMI", // opcode
-		NULL, // function
+		branch, // function
 		true // is a branch
 	);
 	instructions[0x50] = nes_instruction(
@@ -258,7 +349,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BVC", // opcode
-		NULL, // function
+		branch_not, // function
 		true // is a branch
 	);
 	instructions[0x70] = nes_instruction(
@@ -267,7 +358,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BVS", // opcode
-		NULL, // function
+		branch, // function
 		true // is a branch
 	);
 	instructions[0x90] = nes_instruction(
@@ -276,7 +367,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BCC", // opcode
-		NULL, // function
+		branch_not, // function
 		true // is a branch
 	);
 	instructions[0xB0] = nes_instruction(
@@ -285,7 +376,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BCS", // opcode
-		NULL, // function
+		branch, // function
 		true // is a branch
 	);
 	instructions[0xD0] = nes_instruction(
@@ -294,7 +385,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BNE", // opcode
-		NULL, // function
+		branch_not, // function
 		true // is a branch
 	);
 	instructions[0xF0] = nes_instruction(
@@ -303,7 +394,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"BEQ", // opcode
-		NULL, // function
+		branch, // function
 		true // is a branch
 	);
 	//BRK instruction
@@ -798,7 +889,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"LSR", // opcode
-		NULL // function
+		shift_right // function
 	);
 	instructions[0x46] = nes_instruction(
 		5, // time
@@ -806,7 +897,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"LSR", // opcode
-		NULL // function
+		shift_right // function
 	);
 	instructions[0x56] = nes_instruction(
 		6, // time
@@ -814,7 +905,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"LSR", // opcode
-		NULL // function
+		shift_right // function
 	);
 	instructions[0x4E] = nes_instruction(
 		6, // time
@@ -822,7 +913,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"LSR", // opcode
-		NULL // function
+		shift_right // function
 	);
 	instructions[0x5E] = nes_instruction(
 		7, // time
@@ -830,7 +921,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"LSR", // opcode
-		NULL // function
+		shift_right // function
 	);
 	//ORA instructions
 	instructions[0x09] = nes_instruction(

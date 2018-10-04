@@ -8,7 +8,7 @@
 
 class cpu{
 public:
-	void execute_instruction(void);
+	void execute_instruction(state current_state);
 	void init(void);
 private:
 	nes_instruction instructions[256];

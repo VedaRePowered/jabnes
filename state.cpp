@@ -43,11 +43,13 @@ unsigned short * state::get_reg(char reg) {
 		case 's': return &reg_s;
 		case 'p': return &reg_p;
 		case 'c': return &reg_pc;
+		case 'd': return &reg_dummy;
 	}
 	return &reg_dummy;
 }
 void state::set_reg(char reg, unsigned short val) {
-	val = val & 0x00FF;
+	if (!(reg=='c'))
+		val = val & 0x00FF;
 	*(get_reg(reg)) = val;
 }
 
