@@ -1,6 +1,6 @@
 #include "state.h"
 
-unsigned short int reg_dummy;
+unsigned short reg_dummy;
 int last_joy_1_read = -1;
 int last_joy_2_read = -1;
 
@@ -35,7 +35,7 @@ state::state() {
 	this->reg_pc = 0xC000; // start position for nestest
 }
 
-unsigned short int * state::get_reg(char reg) {
+unsigned short * state::get_reg(char reg) {
 	switch(reg) {
 		case 'a': return &reg_a;
 		case 'x': return &reg_x;
@@ -46,22 +46,22 @@ unsigned short int * state::get_reg(char reg) {
 	}
 	return &reg_dummy;
 }
-void state::set_reg(char reg, unsigned short int val) {
+void state::set_reg(char reg, unsigned short val) {
 	val = val & 0x00FF;
 	*(get_reg(reg)) = val;
 }
 
-unsigned short int * state::get_memory(unsigned short int loc) {
+unsigned short * state::get_memory(unsigned short loc) {
 	if(loc == 0x4017) {
-		return (unsigned short int)0;
+		return (unsigned short)0;
 	} else if (loc == 0x4018) {
-		return (unsigned short int)0;
+		return (unsigned short)0;
 	} else {
 		return cpu_memory_map[loc];
 	}
 }
 
-void state::set_memory(unsigned short int loc, unsigned short int val) {
+void state::set_memory(unsigned short loc, unsigned short val) {
 	if(loc == 0x4017) {
 	} else if (loc == 0x4018) {
 	} else {
