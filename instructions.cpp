@@ -4,8 +4,40 @@
 #include "instructions.h"
 #include "state.h"
 
-void load(state current_state, unsigned short a, unsigned short b) {
+/* template
 
+void (state current_state, unsigned short * a, unsigned short * b) { //
+
+}
+
+*/
+
+void load(state& current_state, unsigned short * a, unsigned short * b) { // load memory to register
+	*b = *a & 0x00FF;
+}
+
+void reg_to_acc(state& current_state, unsigned short * a, unsigned short * b) { // set accumulator to b
+	*current_state.get_reg('a') = *b & 0x00FF;
+}
+
+void reg_to_inc_x(state& current_state, unsigned short * a, unsigned short * b) { // set x incrementor to b
+	*current_state.get_reg('x') = *b & 0x00FF;
+}
+
+void reg_to_inc_y(state& current_state, unsigned short * a, unsigned short * b) { // set y incrementor to b
+	*current_state.get_reg('y') = *b & 0x00FF;
+}
+
+void reg_to_sp(state& current_state, unsigned short * a, unsigned short * b) { // set stack pointer to b
+	*current_state.get_reg('s') = *b & 0x00FF;
+}
+
+void add_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
+	current_state.set_flag('c', (bool)((*a + *b) & 0b100000000));
+	*b = (*a + *b) & 0x00FF;
+	current_state.set_flag('z', *b == 0);
+	current_state.set_flag('v', false);
+	current_state.set_flag('n', (bool)((*a + *b) & 0b10000000));
 }
 
 void cpu::execute_instruction(void) {
@@ -20,7 +52,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	instructions[0x65] = nes_instruction(
 		3, // time
@@ -28,7 +60,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	instructions[0x75] = nes_instruction(
 		4, // time
@@ -36,7 +68,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	instructions[0x6D] = nes_instruction(
 		4, // time
@@ -44,7 +76,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	instructions[0x7D] = nes_instruction(
 		4, // time
@@ -52,7 +84,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	instructions[0x79] = nes_instruction(
 		4, // time
@@ -60,7 +92,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	instructions[0x61] = nes_instruction(
 		6, // time
@@ -68,7 +100,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	instructions[0x71] = nes_instruction(
 		5, // time
@@ -76,7 +108,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"ADC", // opcode
-		NULL // function
+		add_carry // function
 	);
 	//AND instructions
 	instructions[0x29] = nes_instruction(
@@ -84,7 +116,7 @@ void cpu::init(void) {
 		MODE_IMMEDIATE, // mode
 		'a', // pram 2
 		false, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	instructions[0x25] = nes_instruction(
@@ -92,7 +124,7 @@ void cpu::init(void) {
 		MODE_ZEROPAGE, // mode
 		'a', // pram 2
 		false, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	instructions[0x35] = nes_instruction(
@@ -100,7 +132,7 @@ void cpu::init(void) {
 		MODE_ZEROPAGEX, // mode
 		'a', // pram 2
 		false, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	instructions[0x2D] = nes_instruction(
@@ -108,7 +140,7 @@ void cpu::init(void) {
 		MODE_ABSOLUTE, // mode
 		'a', // pram 2
 		false, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	instructions[0x3D] = nes_instruction(
@@ -116,7 +148,7 @@ void cpu::init(void) {
 		MODE_ABSOLUTEX, // mode
 		'a', // pram 2
 		true, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	instructions[0x39] = nes_instruction(
@@ -124,7 +156,7 @@ void cpu::init(void) {
 		MODE_ABSOLUTEY, // mode
 		'a', // pram 2
 		true, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	instructions[0x21] = nes_instruction(
@@ -132,7 +164,7 @@ void cpu::init(void) {
 		MODE_INDIRECTX, // mode
 		'a', // pram 2
 		false, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	instructions[0x31] = nes_instruction(
@@ -140,7 +172,7 @@ void cpu::init(void) {
 		MODE_INDIRECTY, // mode
 		'a', // pram 2
 		true, // page boundary slowdown
-		"ADD", // opcode
+		"AND", // opcode
 		NULL // function
 	);
 	//ASL instructions
@@ -619,7 +651,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xA5] = nes_instruction(
 		3, // time
@@ -627,7 +659,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xB5] = nes_instruction(
 		4, // time
@@ -635,7 +667,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xAD] = nes_instruction(
 		4, // time
@@ -643,7 +675,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xBD] = nes_instruction(
 		4, // time
@@ -651,7 +683,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xB9] = nes_instruction(
 		4, // time
@@ -659,7 +691,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xA1] = nes_instruction(
 		6, // time
@@ -667,7 +699,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xB1] = nes_instruction(
 		5, // time
@@ -675,7 +707,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"LDA", // opcode
-		NULL // function
+		load // function
 	);
 	//LDX instructions
 	instructions[0xA2] = nes_instruction(
@@ -684,7 +716,7 @@ void cpu::init(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"LDX", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xA6] = nes_instruction(
 		3, // time
@@ -692,7 +724,7 @@ void cpu::init(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"LDX", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xB6] = nes_instruction(
 		4, // time
@@ -700,7 +732,7 @@ void cpu::init(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"LDX", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xAE] = nes_instruction(
 		4, // time
@@ -708,7 +740,7 @@ void cpu::init(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"LDX", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xBE] = nes_instruction(
 		4, // time
@@ -716,7 +748,7 @@ void cpu::init(void) {
 		'x', // pram 2
 		true, // page boundary slowdown
 		"LDX", // opcode
-		NULL // function
+		load // function
 	);
 	//LDY instructions
 	instructions[0xA0] = nes_instruction(
@@ -725,7 +757,7 @@ void cpu::init(void) {
 		'y', // pram 2
 		false, // page boundary slowdown
 		"LDY", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xA4] = nes_instruction(
 		3, // time
@@ -733,7 +765,7 @@ void cpu::init(void) {
 		'y', // pram 2
 		false, // page boundary slowdown
 		"LDY", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xB4] = nes_instruction(
 		4, // time
@@ -741,7 +773,7 @@ void cpu::init(void) {
 		'y', // pram 2
 		false, // page boundary slowdown
 		"LDY", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xAC] = nes_instruction(
 		4, // time
@@ -749,7 +781,7 @@ void cpu::init(void) {
 		'y', // pram 2
 		false, // page boundary slowdown
 		"LDY", // opcode
-		NULL // function
+		load // function
 	);
 	instructions[0xBC] = nes_instruction(
 		4, // time
@@ -757,7 +789,7 @@ void cpu::init(void) {
 		'y', // pram 2
 		true, // page boundary slowdown
 		"LDY", // opcode
-		NULL // function
+		load // function
 	);
 	//LSR instructions
 	instructions[0x4A] = nes_instruction(
@@ -872,7 +904,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"TAX", // opcode
-		NULL // function
+		reg_to_inc_x // function
 	);
 	instructions[0x8A] = nes_instruction(
 		2, // time
@@ -880,7 +912,7 @@ void cpu::init(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"TXA", // opcode
-		NULL // function
+		reg_to_acc // function
 	);
 	instructions[0xCA] = nes_instruction(
 		2, // time
@@ -904,7 +936,7 @@ void cpu::init(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"TAY", // opcode
-		NULL // function
+		reg_to_inc_y // function
 	);
 	instructions[0x98] = nes_instruction(
 		2, // time
@@ -912,7 +944,7 @@ void cpu::init(void) {
 		'y', // pram 2
 		false, // page boundary slowdown
 		"TYA", // opcode
-		NULL // function
+		reg_to_acc // function
 	);
 	instructions[0x88] = nes_instruction(
 		2, // time
@@ -1159,7 +1191,7 @@ void cpu::init(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"TXS", // opcode
-		NULL // function
+		reg_to_sp // function
 	);
 	instructions[0xBA] = nes_instruction(
 		2, // time
@@ -1167,7 +1199,7 @@ void cpu::init(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"TSX", // opcode
-		NULL // function
+		reg_to_inc_x // function
 	);
 	instructions[0x48] = nes_instruction(
 		3, // time

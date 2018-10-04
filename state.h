@@ -8,6 +8,7 @@ public:
 	state();
 	unsigned short * get_reg(char reg);
 	void set_reg(char reg, unsigned short val);
+	void set_flag(char flag, bool val);
 	unsigned short * get_memory(unsigned short loc);
 	void set_memory(unsigned short loc, unsigned short val);
 private:

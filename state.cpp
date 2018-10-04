@@ -51,6 +51,24 @@ void state::set_reg(char reg, unsigned short val) {
 	*(get_reg(reg)) = val;
 }
 
+void state::set_flag(char flag, bool val) {
+	unsigned short flag_bit = 0;
+	switch (flag) {
+		case 'c': flag_bit = 0b00000001;
+		case 'z': flag_bit = 0b00000010;
+		case 'i': flag_bit = 0b00000100;
+		case 'd': flag_bit = 0b00001000;
+		case 'v': flag_bit = 0b01000000;
+		case 'n': flag_bit = 0b10000000;
+	}
+	unsigned short status_reg_tmp = *(get_reg('p'));
+	status_reg_tmp = status_reg_tmp & (!flag_bit);
+	if (val) {
+		status_reg_tmp = status_reg_tmp | flag_bit;
+	}
+	set_reg('p', status_reg_tmp);
+}
+
 unsigned short * state::get_memory(unsigned short loc) {
 	if(loc == 0x4017) {
 		return (unsigned short)0;
@@ -62,6 +80,7 @@ unsigned short * state::get_memory(unsigned short loc) {
 }
 
 void state::set_memory(unsigned short loc, unsigned short val) {
+	val = val & 0x00FF;
 	if(loc == 0x4017) {
 	} else if (loc == 0x4018) {
 	} else {
