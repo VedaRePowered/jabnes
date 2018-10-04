@@ -10,7 +10,7 @@ void dummy(state&, unsigned short * a, unsigned short * b) {
 nes_instruction::nes_instruction() {
 	this->cycles = 2;
 	this->address_type = 0;
-	this->pram_register = NULL;
+	this->pram_register = 'd';
 	this->page_boundary_slowdown = false;
 	this->opcode[0] = 'N';
 	this->opcode[1] = 'O';
@@ -20,7 +20,7 @@ nes_instruction::nes_instruction() {
 	this->is_branch = false;
 }
 
-nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, unsigned short* pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *)) {
+nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, char pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *)) {
 	this->cycles = cycles;
 	this->address_type = address_type;
 	this->pram_register = pram_register;
@@ -32,7 +32,7 @@ nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_t
 	this->execute_function = execute_function;
 	this->is_branch = false;
 }
-nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, unsigned short* pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *), bool is_branch) {
+nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, char pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *), bool is_branch) {
 	this->cycles = cycles;
 	this->address_type = address_type;
 	this->pram_register = pram_register;
