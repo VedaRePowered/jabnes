@@ -204,7 +204,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BPL", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	instructions[0x30] = nes_instruction(
 		2, // time
@@ -212,7 +213,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BMI", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	instructions[0x50] = nes_instruction(
 		2, // time
@@ -220,7 +222,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BVC", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	instructions[0x70] = nes_instruction(
 		2, // time
@@ -228,7 +231,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BVS", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	instructions[0x90] = nes_instruction(
 		2, // time
@@ -236,7 +240,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BCC", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	instructions[0xB0] = nes_instruction(
 		2, // time
@@ -244,7 +249,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BCS", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	instructions[0xD0] = nes_instruction(
 		2, // time
@@ -252,7 +258,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BNE", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	instructions[0xF0] = nes_instruction(
 		2, // time
@@ -260,7 +267,8 @@ void cpu::init(void) {
 		NULL, // pram 2
 		true, // page boundary slowdown
 		"BEQ", // opcode
-		NULL // function
+		NULL, // function
+		true // is a branch
 	);
 	//BRK instruction
 	instructions[0x00] = nes_instruction(

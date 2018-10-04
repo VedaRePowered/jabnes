@@ -22,15 +22,17 @@ const unsigned short MODE_RELATIVE = 11;
 class nes_instruction {
 public:
 	nes_instruction();
-	nes_instruction(unsigned short, unsigned short, unsigned short*, bool, std::string, void (*execute_function)(state&, unsigned short, unsigned short));
+	nes_instruction(unsigned short, unsigned short, unsigned short*, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *));
+	nes_instruction(unsigned short, unsigned short, unsigned short*, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *), bool);
 
 	unsigned short cycles; // number of CPU cycles it takes to execute
 	unsigned short address_type; // type of address
 	unsigned short * pram_register; // pointer to the register for the second parameter
 	bool page_boundary_slowdown = false; // should the instruction take one more cycle if it crosses a page boundary
 	char opcode[4]; // opcode name
+	bool is_branch;
 
-	void (*execute_function)(state&, unsigned short, unsigned short); // function to execute with two litaral numbers
+	void (*execute_function)(state&, unsigned short *, unsigned short *); // function to execute with two litaral numbers
 };
 
 #endif
