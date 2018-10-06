@@ -32,7 +32,7 @@ state::state() {
 	this->reg_a = 0;
 	this->reg_x = 0;
 	this->reg_y = 0;
-	this->reg_s = 0;
+	this->reg_s = 0xff;
 	this->reg_p = 0;
 	this->reg_pc = 0xC000; // start position for nestest
 }

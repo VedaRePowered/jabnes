@@ -15,6 +15,16 @@ void (state& current_state, unsigned short * a, unsigned short * b) { //
 
 */
 
+void push_val(state& current_state, unsigned short val) {
+	current_state.set_memory(0x100+*current_state.get_reg('s'), val & 0x00FF);
+	current_state.set_reg('s', *current_state.get_reg('s') - 1);
+}
+
+unsigned short pull_val(state& current_state) {
+	current_state.set_reg('s', *current_state.get_reg('s') + 1);
+	return *current_state.get_memory(0x100+*current_state.get_reg('s')) & 0x00FF;
+}
+
 void hex_print(unsigned short num, unsigned min_length) {
 	std::stringstream stream;
 	stream << std::hex << num;
@@ -214,6 +224,15 @@ void dec_reg(state& current_state, unsigned short * a, unsigned short * b) { // 
 	set_n_flag(*b, current_state);
 }
 
+void jump_subrutine(state& current_state, unsigned short * a, unsigned short * b) {// jump to a subroutine, pushing pc onto stack
+	push_val(current_state, *current_state.get_reg('c'));
+	current_state.set_reg('c', *a);
+}
+
+void return_subrutine(state& current_state, unsigned short * a, unsigned short * b) {// jump to a subroutine, pushing pc onto stack
+	current_state.set_reg('c', pull_val(current_state));
+}
+
 void cpu::execute_instruction(state& current_state, bool debug_mode) {
 	unsigned short pc = *current_state.get_reg('c');
 	unsigned short inst_hex = *current_state.get_memory(pc);
@@ -263,6 +282,9 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 									a_address = *current_state.get_memory(tmp + *current_state.get_reg('y')) + (*current_state.get_memory((unsigned short)(tmp + 1) + *current_state.get_reg('y'))<<8);
 									inst_size = (unsigned short)3;
 									break;
+		case MODE_RELATIVE:	a_address = *current_state.get_reg('c')+*current_state.get_memory(pc+1);
+									inst_size = (unsigned short)2;
+									break;
 	}
 	if (debug_mode) {
 		for (int i = 0; i < 3; i++) {
@@ -299,7 +321,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				hex_print(*current_state.get_reg('x')+a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
-				std::cout << "             ";
+				std::cout << "           ";
 				break;
 			case MODE_ZEROPAGEY:
 				std::cout << "$";
@@ -308,7 +330,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				hex_print(*current_state.get_reg('y')+a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
-				std::cout << "             ";
+				std::cout << "           ";
 				break;
 			case MODE_ABSOLUTE:
 				std::cout << "$";
@@ -324,7 +346,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				hex_print(*current_state.get_reg('x')+a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
-				std::cout << "           ";
+				std::cout << "         ";
 				break;
 			case MODE_ABSOLUTEY:
 				std::cout << "$";
@@ -333,8 +355,30 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				hex_print(*current_state.get_reg('y')+a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
-				std::cout << "           ";
+				std::cout << "         ";
 				break;
+			case MODE_INDIRECT:
+				std::cout << "($";
+				hex_print(*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8), 4);
+				std::cout << ")                     ";
+			case MODE_INDIRECTX:
+				std::cout << "($";
+				hex_print(*current_state.get_memory(pc+1), 2);
+				std::cout << ") @ ";
+				hex_print(*current_state.get_memory(pc+1)+*current_state.get_reg('x'), 2);
+				std::cout << " = ";
+				hex_print(a_address, 4);
+				std::cout << " = ";
+				hex_print(a, 2);
+				std::cout << "    ";
+				break;
+			case MODE_INDIRECTY:
+				std::cout << "(INDIRECT),Y                ";
+				break;
+			case MODE_RELATIVE:
+				std::cout << "$";
+				hex_print(a_address, 4);
+				std::cout << "                       ";
 		}
 
 		std::cout << "A:";
@@ -352,7 +396,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 	}
 	pc += inst_size;
 	current_state.set_reg('c', pc);
-	if (instruction.pram_register == 'd') {
+	if (instruction.pram_register != 'd') {
 		b = current_state.get_reg(instruction.pram_register);
 	} else {
 		b = NULL;
@@ -381,7 +425,6 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 			instruction.execute_function(current_state, &a_address, b);
 		} else {
 			instruction.execute_function(current_state, current_state.get_memory(a_address), b);
-
 		}
 	}
 }
@@ -984,7 +1027,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"JSR", // opcode
-		NULL // function
+		jump_subrutine // function
 	);
 	//LDA instructions
 	instructions[0xA9] = nes_instruction(
@@ -1402,7 +1445,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"RTS", // opcode
-		NULL // function
+		return_subrutine // function
 	);
 	//SBC instructions
 	instructions[0xE9] = nes_instruction(

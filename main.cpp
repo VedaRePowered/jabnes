@@ -24,7 +24,7 @@ int main() {
 	current_state.load_rom("nestest.nes");
 	std::cout << "Loaded ROM: nestest.nes..." << std::endl;
 	std::cout << "Executing instructions:" << std::endl;
-	for (int i=1; i<100; i++) {
+	for (int i=1; i<8089; i++) {
 		nes_cpu.execute_instruction(current_state, true);
 	}
 
