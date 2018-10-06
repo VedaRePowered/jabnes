@@ -1,4 +1,7 @@
 #include <cstddef>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 #include "nes_instruction.h"
 #include "instructions.h"
@@ -12,6 +15,16 @@ void (state& current_state, unsigned short * a, unsigned short * b) { //
 
 */
 
+void hex_print(unsigned short num, unsigned min_length) {
+	std::stringstream stream;
+	stream << std::hex << num;
+	std::string str = stream.str();
+	while(str.length() < min_length) {
+		str = "0" + str;
+	}
+	std::cout << str;
+}
+
 void set_z_flag(unsigned short val, state current_state) {
 	current_state.set_flag('z', val == 0);
 }
@@ -21,8 +34,8 @@ void set_n_flag(unsigned short val, state current_state) {
 
 void load(state& current_state, unsigned short * a, unsigned short * b) { // load memory to register
 	*b = *a & 0x00FF;
-	set_z_flag(*current_state.get_reg('a'), current_state);
-	set_n_flag(*current_state.get_reg('a'), current_state);
+	set_z_flag(*b, current_state);
+	set_n_flag(*b, current_state);
 }
 
 void store(state& current_state, unsigned short * a, unsigned short * b) { // store register to memory
@@ -201,64 +214,179 @@ void dec_reg(state& current_state, unsigned short * a, unsigned short * b) { // 
 	set_n_flag(*b, current_state);
 }
 
-void cpu::execute_instruction(state current_state) {
+void cpu::execute_instruction(state& current_state, bool debug_mode) {
 	unsigned short pc = *current_state.get_reg('c');
 	unsigned short inst_hex = *current_state.get_memory(pc);
 	nes_instruction instruction = instructions[inst_hex];
-	unsigned short * a;
+	unsigned short a_address;
 	unsigned short * b;
 	unsigned short tmp;
-	switch (instruction.address_type) {
-		case MODE_NOTHING:	a = NULL;
-									pc += (unsigned short)1;
-		case MODE_IMMEDIATE:	a = current_state.get_memory(pc+1);
-									pc += (unsigned short)2;
-		case MODE_ZEROPAGE:	a = current_state.get_memory(*current_state.get_memory(pc+1));
-									pc += (unsigned short)2;
-		case MODE_ZEROPAGEX:	a = current_state.get_memory((*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF);
-									pc += (unsigned short)2;
-		case MODE_ZEROPAGEY:	a = current_state.get_memory((*current_state.get_memory(pc+1) + *current_state.get_reg('y')) & 0xFF);
-									pc += (unsigned short)2;
-		case MODE_ABSOLUTE:	a = current_state.get_memory(*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8));
-									pc += (unsigned short)3;
-		case MODE_ABSOLUTEX:	a = current_state.get_memory((*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('x'));
-									pc += (unsigned short)3;
-		case MODE_ABSOLUTEY:	a = current_state.get_memory((*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('y'));
-									pc += (unsigned short)3;
-		case MODE_INDIRECT:	tmp = *current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8);
-									a = current_state.get_memory(*current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8));
-									pc += (unsigned short)3;
-		case MODE_INDIRECTX:	tmp = (*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF;
-									a = current_state.get_memory(*current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8));
-									pc += (unsigned short)3;
-		case MODE_INDIRECTY:	tmp = *current_state.get_memory(pc+1);
-									a = current_state.get_memory(*current_state.get_memory(tmp + *current_state.get_reg('y')) + (*current_state.get_memory((unsigned short)(tmp + 1) + *current_state.get_reg('y'))<<8));
-									pc += (unsigned short)3;
+	if (debug_mode) {
+		hex_print(pc, 4);
+		std::cout << "  ";
 	}
+	unsigned short inst_size;
+	switch (instruction.address_type) {
+		case MODE_NOTHING:	a_address = 0;
+									inst_size = (unsigned short)1;
+									break;
+		case MODE_IMMEDIATE:	a_address = pc+1;
+									inst_size = (unsigned short)2;
+									break;
+		case MODE_ZEROPAGE:	a_address = *current_state.get_memory(pc+1);
+									inst_size = (unsigned short)2;
+									break;
+		case MODE_ZEROPAGEX:	a_address = (*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF;
+									inst_size = (unsigned short)2;
+									break;
+		case MODE_ZEROPAGEY:	a_address = (*current_state.get_memory(pc+1) + *current_state.get_reg('y')) & 0xFF;
+									inst_size = (unsigned short)2;
+									break;
+		case MODE_ABSOLUTE:	a_address = *current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8);
+									inst_size = (unsigned short)3;
+									break;
+		case MODE_ABSOLUTEX:	a_address = (*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('x');
+									inst_size = (unsigned short)3;
+									break;
+		case MODE_ABSOLUTEY:	a_address = (*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('y');
+									inst_size = (unsigned short)3;
+									break;
+		case MODE_INDIRECT:	tmp = *current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8);
+									a_address = *current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8);
+									inst_size = (unsigned short)3;
+									break;
+		case MODE_INDIRECTX:	tmp = (*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF;
+									a_address = *current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8);
+									inst_size = (unsigned short)3;
+									break;
+		case MODE_INDIRECTY:	tmp = *current_state.get_memory(pc+1);
+									a_address = *current_state.get_memory(tmp + *current_state.get_reg('y')) + (*current_state.get_memory((unsigned short)(tmp + 1) + *current_state.get_reg('y'))<<8);
+									inst_size = (unsigned short)3;
+									break;
+	}
+	if (debug_mode) {
+		for (int i = 0; i < 3; i++) {
+			if (i < inst_size) {
+				hex_print(*current_state.get_memory(pc+i), 2);
+			} else {
+				std::cout << "  ";
+			}
+			std::cout << " ";
+		}
+		std::cout << instruction.opcode << " ";
+
+		unsigned int a = *current_state.get_memory(a_address);
+		switch (instruction.address_type) {
+			case MODE_NOTHING:
+				std::cout << "                            ";
+				break;
+			case MODE_IMMEDIATE:
+				std::cout << "#$";
+				hex_print(a, 2);
+				std::cout << "                        ";
+				break;
+			case MODE_ZEROPAGE:
+				std::cout << "$";
+				hex_print(a_address, 2);
+				std::cout << " = ";
+				hex_print(a, 2);
+				std::cout << "                    ";
+				break;
+			case MODE_ZEROPAGEX:
+				std::cout << "$";
+				hex_print(a_address, 2);
+				std::cout << ",X @ ";
+				hex_print(*current_state.get_reg('x')+a_address, 4);
+				std::cout << " = ";
+				hex_print(a, 2);
+				std::cout << "             ";
+				break;
+			case MODE_ZEROPAGEY:
+				std::cout << "$";
+				hex_print(a_address, 2);
+				std::cout << ",Y @ ";
+				hex_print(*current_state.get_reg('y')+a_address, 4);
+				std::cout << " = ";
+				hex_print(a, 2);
+				std::cout << "             ";
+				break;
+			case MODE_ABSOLUTE:
+				std::cout << "$";
+				hex_print(a_address, 4);
+				std::cout << " = ";
+				hex_print(a, 2);
+				std::cout << "                  ";
+				break;
+			case MODE_ABSOLUTEX:
+				std::cout << "$";
+				hex_print(a_address, 4);
+				std::cout << ",X @ ";
+				hex_print(*current_state.get_reg('x')+a_address, 4);
+				std::cout << " = ";
+				hex_print(a, 2);
+				std::cout << "           ";
+				break;
+			case MODE_ABSOLUTEY:
+				std::cout << "$";
+				hex_print(a_address, 4);
+				std::cout << ",Y @ ";
+				hex_print(*current_state.get_reg('y')+a_address, 4);
+				std::cout << " = ";
+				hex_print(a, 2);
+				std::cout << "           ";
+				break;
+		}
+
+		std::cout << "A:";
+		hex_print(*current_state.get_reg('a'), 2);
+		std::cout << " X:";
+		hex_print(*current_state.get_reg('x'), 2);
+		std::cout << " Y:";
+		hex_print(*current_state.get_reg('y'), 2);
+		std::cout << " P:";
+		hex_print(*current_state.get_reg('p'), 2);
+		std::cout << " SP:";
+		hex_print(*current_state.get_reg('s'), 2);
+
+		std::cout << std::endl;
+	}
+	pc += inst_size;
 	current_state.set_reg('c', pc);
 	if (instruction.pram_register == 'd') {
 		b = current_state.get_reg(instruction.pram_register);
 	} else {
 		b = NULL;
 	}
-	if (instruction.is_branch) {
-		tmp = 0;
-		char oc[4] = {instruction.opcode[0], instruction.opcode[1], instruction.opcode[2], 0};
-		if (oc == "BCC") tmp = 0b00000001;
-		if (oc == "BCS") tmp = 0b00000001;
-		if (oc == "BNE") tmp = 0b00000010;
-		if (oc == "BEQ") tmp = 0b00000010;
-		if (oc == "BVC") tmp = 0b01000000;
-		if (oc == "BVS") tmp = 0b01000000;
-		if (oc == "BPL") tmp = 0b10000000;
-		if (oc == "BMI") tmp = 0b10000000;
-		instruction.execute_function(current_state, a, &tmp);
-	} else {
-		instruction.execute_function(current_state, a, b);
+	if (instruction.execute_function) {
+		if (instruction.is_branch) {
+			tmp = 0;
+			char oc[4] = {instruction.opcode[0], instruction.opcode[1], instruction.opcode[2], 0};
+			switch(oc[1]) {
+				case 'C':
+					tmp = 0b00000001;
+					break;
+				case 'E':
+				case 'N':
+					tmp = 0b00000010;
+					break;
+				case 'V':
+					tmp = 0b01000000;
+					break;
+				default:
+					tmp = 0b10000000;
+			}
+
+			instruction.execute_function(current_state, &a_address, &tmp);
+		} else if (instruction.opcode[0] == 'J') {
+			instruction.execute_function(current_state, &a_address, b);
+		} else {
+			instruction.execute_function(current_state, current_state.get_memory(a_address), b);
+
+		}
 	}
 }
 
-void cpu::init(void) {
+cpu::cpu(void) {
 	//ADC instructions
 	instructions[0x69] = nes_instruction(
 		2, // time

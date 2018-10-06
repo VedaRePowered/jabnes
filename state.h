@@ -11,6 +11,7 @@ public:
 	void set_flag(char flag, bool val);
 	unsigned short * get_memory(unsigned short loc);
 	void set_memory(unsigned short loc, unsigned short val);
+	bool load_rom(char const * location);
 private:
 	unsigned short reg_a;
 	unsigned short reg_x;

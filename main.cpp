@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "instructions.h"
+#include "state.h"
 
 int main() {
 	std::cout << "+------------------+ JABNES p0.0.1:" << std::endl;
@@ -15,6 +16,17 @@ int main() {
 	std::cout << "|             n    | - Platforms: Linux" << std::endl;
 	std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
 	std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
+
+	cpu nes_cpu;
+	std::cout << "Made CPU class..." << std::endl;
+	state current_state;
+	std::cout << "Made state class..." << std::endl;
+	current_state.load_rom("nestest.nes");
+	std::cout << "Loaded ROM: nestest.nes..." << std::endl;
+	std::cout << "Executing instructions:" << std::endl;
+	for (int i=1; i<100; i++) {
+		nes_cpu.execute_instruction(current_state, true);
+	}
 
 	return 0;
 }

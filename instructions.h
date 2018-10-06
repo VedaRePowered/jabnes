@@ -8,11 +8,10 @@
 
 class cpu{
 public:
-	void execute_instruction(state current_state);
-	void init(void);
+	void execute_instruction(state& current_state, bool debug_mode);
+	cpu(void);
 private:
 	nes_instruction instructions[256];
-	state current_state;
 };
 
 #endif
