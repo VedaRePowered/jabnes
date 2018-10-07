@@ -416,6 +416,12 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 		std::cout << " SP:";
 		hex_print(*current_state.get_reg('s'), 2);
 
+		std::cout << "  STACK:";
+		for (int i = 0xFF; i > *current_state.get_reg('s'); i--) {
+			std::cout << " ";
+			hex_print(*current_state.get_memory(i + 0x0100) & 0x00FF, 2);
+		}
+
 		std::cout << std::endl;
 	}
 	pc += inst_size;
