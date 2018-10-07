@@ -108,8 +108,8 @@ c82c  90 03    BCC $c831                       A:ff X:00 Y:00 P:ff SP:fb  STACK:
 c82e  4c 35 c8 JMP $c835 = ea                  A:ff X:00 Y:00 P:ff SP:fb  STACK: 00 00 c6 02
 c835  ea       NOP                             A:ff X:00 Y:00 P:ff SP:fb  STACK: 00 00 c6 02
 c836  a9 04    LDA #$04                        A:ff X:00 Y:00 P:ff SP:fb  STACK: 00 00 c6 02
-c838  48       PHA                             A:04 X:00 Y:00 P:7d SP:fb  STACK: 00 00 c6 02
-c839  28       PLP                             A:04 X:00 Y:00 P:7d SP:fa  STACK: 00 00 c6 02 04
+c838  48       PHA                             A:04 X:00 Y:00 P:6d SP:fb  STACK: 00 00 c6 02
+c839  28       PLP                             A:04 X:00 Y:00 P:6d SP:fa  STACK: 00 00 c6 02 04
 c83a  f0 09    BEQ $c845                       A:04 X:00 Y:00 P:04 SP:fb  STACK: 00 00 c6 02
 c83c  30 07    BMI $c845                       A:04 X:00 Y:00 P:04 SP:fb  STACK: 00 00 c6 02
 c83e  70 05    BVS $c845                       A:04 X:00 Y:00 P:04 SP:fb  STACK: 00 00 c6 02

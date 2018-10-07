@@ -246,7 +246,7 @@ void pull_acc(state& current_state, unsigned short * a, unsigned short * b) { //
 }
 
 void pull_flags(state& current_state, unsigned short * a, unsigned short * b) { // pull b from the stack
-	*b = pull_val(current_state);
+	current_state.set_reg('p', pull_val(current_state));
 }
 
 void return_interupt(state& current_state, unsigned short * a, unsigned short * b) { // return from an interupt proccesing subroutine

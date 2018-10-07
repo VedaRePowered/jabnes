@@ -59,6 +59,8 @@ unsigned short * state::get_reg(char reg) {
 void state::set_reg(char reg, unsigned short val) {
 	if (!(reg=='c'))
 		val = val & 0x00FF;
+	if (reg=='p')
+		val = val & 0b11101111;
 	*(get_reg(reg)) = val;
 }
 
