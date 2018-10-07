@@ -15,16 +15,6 @@ void (state& current_state, unsigned short * a, unsigned short * b) { //
 
 */
 
-void push_val(state& current_state, unsigned short val) {
-	current_state.set_memory(0x100+*current_state.get_reg('s'), val & 0x00FF);
-	current_state.set_reg('s', *current_state.get_reg('s') - 1);
-}
-
-unsigned short pull_val(state& current_state) {
-	current_state.set_reg('s', *current_state.get_reg('s') + 1);
-	return *current_state.get_memory(0x100+*current_state.get_reg('s')) & 0x00FF;
-}
-
 void hex_print(unsigned short num, unsigned min_length) {
 	std::stringstream stream;
 	stream << std::hex << num;
@@ -33,6 +23,22 @@ void hex_print(unsigned short num, unsigned min_length) {
 		str = "0" + str;
 	}
 	std::cout << str;
+}
+
+void push_val(state& current_state, unsigned short val) {
+	current_state.set_memory(0x100+*current_state.get_reg('s'), val & 0x00FF);
+	// std::cout << "pushing: ";
+	// hex_print(val & 0x00FF, 2);
+	// std::cout << " to: ";
+	// hex_print(0x100+*current_state.get_reg('s'), 4);
+	// std::cout << std::endl;
+	current_state.set_reg('s', *current_state.get_reg('s') - 1);
+}
+
+unsigned short pull_val(state& current_state) {
+	current_state.set_reg('s', *current_state.get_reg('s') + 1);
+	unsigned short tmp = *current_state.get_memory(0x100+*current_state.get_reg('s'));
+	return tmp & 0x00FF;
 }
 
 void set_z_flag(unsigned short val, state& current_state) {
@@ -225,8 +231,8 @@ void dec_reg(state& current_state, unsigned short * a, unsigned short * b) { // 
 }
 
 void jump_subrutine(state& current_state, unsigned short * a, unsigned short * b) {// jump to a subroutine, pushing pc onto stack
-	push_val(current_state, *current_state.get_reg('c')<<8 & 0xFF00);
-	push_val(current_state, *current_state.get_reg('c') & 0x00FF);
+	push_val(current_state, (*current_state.get_reg('c')-1)>>8 & 0x00FF);
+	push_val(current_state, (*current_state.get_reg('c')-1) & 0x00FF);
 	current_state.set_reg('c', *a);
 }
 
@@ -234,7 +240,7 @@ void return_subrutine(state& current_state, unsigned short * a, unsigned short *
 	unsigned short tmp;
 	tmp = pull_val(current_state)&0x00FF;
 	tmp = tmp | ((pull_val(current_state)&0x00FF)<<8);
-	current_state.set_reg('c', tmp);
+	current_state.set_reg('c', tmp+1);
 }
 
 void cpu::execute_instruction(state& current_state, bool debug_mode) {
