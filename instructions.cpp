@@ -7,14 +7,6 @@
 #include "instructions.h"
 #include "state.h"
 
-/* template
-
-void (state& current_state, unsigned short * a, unsigned short * b) { //
-
-}
-
-*/
-
 void hex_print(unsigned short num, unsigned min_length) {
 	std::stringstream stream;
 	stream << std::hex << num;
@@ -230,17 +222,39 @@ void dec_reg(state& current_state, unsigned short * a, unsigned short * b) { // 
 	set_n_flag(*b, current_state);
 }
 
-void jump_subrutine(state& current_state, unsigned short * a, unsigned short * b) {// jump to a subroutine, pushing pc onto stack
+void jump_subrutine(state& current_state, unsigned short * a, unsigned short * b) { // jump to a subroutine, pushing pc onto stack
 	push_val(current_state, (*current_state.get_reg('c')-1)>>8 & 0x00FF);
 	push_val(current_state, (*current_state.get_reg('c')-1) & 0x00FF);
 	current_state.set_reg('c', *a);
 }
 
-void return_subrutine(state& current_state, unsigned short * a, unsigned short * b) {// jump to a subroutine, pushing pc onto stack
+void return_subrutine(state& current_state, unsigned short * a, unsigned short * b) { // jump from a subroutine, pull pc from the stack
 	unsigned short tmp;
 	tmp = pull_val(current_state)&0x00FF;
 	tmp = tmp | ((pull_val(current_state)&0x00FF)<<8);
 	current_state.set_reg('c', tmp+1);
+}
+
+void push_reg(state& current_state, unsigned short * a, unsigned short * b) { // push b onto the stack
+	push_val(current_state, *b);
+}
+
+void pull_acc(state& current_state, unsigned short * a, unsigned short * b) { // pull b from the stack, and set z aand n flags
+	*b = pull_val(current_state);
+	set_n_flag(*b, current_state);
+	set_z_flag(*b, current_state);
+}
+
+void pull_flags(state& current_state, unsigned short * a, unsigned short * b) { // pull b from the stack
+	*b = pull_val(current_state);
+}
+
+void return_interupt(state& current_state, unsigned short * a, unsigned short * b) { // return from an interupt proccesing subroutine
+	current_state.set_reg('p', pull_val(current_state));
+	unsigned short tmp;
+	tmp = pull_val(current_state)&0x00FF;
+	tmp = tmp | ((pull_val(current_state)&0x00FF)<<8);
+	current_state.set_reg('c', tmp);
 }
 
 void cpu::execute_instruction(state& current_state, bool debug_mode) {
@@ -1446,7 +1460,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"RTI", // opcode
-		NULL // function
+		return_interupt // function
 	);
 	//RTS instruction
 	instructions[0x60] = nes_instruction(
@@ -1602,7 +1616,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"PHA", // opcode
-		NULL // function
+		push_reg // function
 	);
 	instructions[0x68] = nes_instruction(
 		4, // time
@@ -1610,23 +1624,23 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"PLA", // opcode
-		NULL // function
+		pull_acc // function
 	);
 	instructions[0x08] = nes_instruction(
 		3, // time
 		MODE_NOTHING, // mode
-		'd', // pram 2
+		'p', // pram 2
 		false, // page boundary slowdown
 		"PHP", // opcode
-		NULL // function
+		push_reg // function
 	);
 	instructions[0x28] = nes_instruction(
 		4, // time
 		MODE_NOTHING, // mode
-		'd', // pram 2
+		'p', // pram 2
 		false, // page boundary slowdown
 		"PLP", // opcode
-		NULL // function
+		pull_flags // function
 	);
 	//STX instructions
 	instructions[0x86] = nes_instruction(
