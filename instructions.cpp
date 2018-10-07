@@ -35,10 +35,10 @@ void hex_print(unsigned short num, unsigned min_length) {
 	std::cout << str;
 }
 
-void set_z_flag(unsigned short val, state current_state) {
+void set_z_flag(unsigned short val, state& current_state) {
 	current_state.set_flag('z', val == 0);
 }
-void set_n_flag(unsigned short val, state current_state) {
+void set_n_flag(unsigned short val, state& current_state) {
 	current_state.set_flag('n', (bool)(val & 0b10000000));
 }
 
@@ -225,12 +225,16 @@ void dec_reg(state& current_state, unsigned short * a, unsigned short * b) { // 
 }
 
 void jump_subrutine(state& current_state, unsigned short * a, unsigned short * b) {// jump to a subroutine, pushing pc onto stack
-	push_val(current_state, *current_state.get_reg('c'));
+	push_val(current_state, *current_state.get_reg('c')<<8 & 0xFF00);
+	push_val(current_state, *current_state.get_reg('c') & 0x00FF);
 	current_state.set_reg('c', *a);
 }
 
 void return_subrutine(state& current_state, unsigned short * a, unsigned short * b) {// jump to a subroutine, pushing pc onto stack
-	current_state.set_reg('c', pull_val(current_state));
+	unsigned short tmp;
+	tmp = pull_val(current_state)&0x00FF;
+	tmp = tmp | ((pull_val(current_state)&0x00FF)<<8);
+	current_state.set_reg('c', tmp);
 }
 
 void cpu::execute_instruction(state& current_state, bool debug_mode) {
