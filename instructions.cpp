@@ -306,7 +306,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 									a_address = *current_state.get_memory(tmp + *current_state.get_reg('y')) + (*current_state.get_memory((unsigned short)(tmp + 1) + *current_state.get_reg('y'))<<8);
 									inst_size = (unsigned short)3;
 									break;
-		case MODE_RELATIVE:	a_address = *current_state.get_reg('c')+*current_state.get_memory(pc+1);
+		case MODE_RELATIVE:	a_address = *current_state.get_reg('c')+*current_state.get_memory(pc+1)+2; // offset for this instruction (since 0 goes to the next instruction)
 									inst_size = (unsigned short)2;
 									break;
 	}
