@@ -1446,7 +1446,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ROL", // opcode
-		NULL // function
+		roll_left // function
 	);
 	instructions[0x26] = nes_instruction(
 		5, // time
@@ -1454,7 +1454,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROL", // opcode
-		NULL // function
+		roll_left // function
 	);
 	instructions[0x36] = nes_instruction(
 		6, // time
@@ -1462,7 +1462,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROL", // opcode
-		NULL // function
+		roll_left // function
 	);
 	instructions[0x2E] = nes_instruction(
 		6, // time
@@ -1470,7 +1470,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROL", // opcode
-		NULL // function
+		roll_left // function
 	);
 	instructions[0x3E] = nes_instruction(
 		7, // time
@@ -1478,7 +1478,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROL", // opcode
-		NULL // function
+		roll_left // function
 	);
 	//ROR instructions
 	instructions[0x6A] = nes_instruction(
@@ -1487,7 +1487,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"ROR", // opcode
-		NULL // function
+		roll_right // function
 	);
 	instructions[0x66] = nes_instruction(
 		5, // time
@@ -1495,7 +1495,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROR", // opcode
-		NULL // function
+		roll_right // function
 	);
 	instructions[0x76] = nes_instruction(
 		6, // time
@@ -1503,7 +1503,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROR", // opcode
-		NULL // function
+		roll_right // function
 	);
 	instructions[0x6E] = nes_instruction(
 		6, // time
@@ -1511,7 +1511,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROR", // opcode
-		NULL // function
+		roll_right // function
 	);
 	instructions[0x7E] = nes_instruction(
 		7, // time
@@ -1519,7 +1519,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"ROR", // opcode
-		NULL // function
+		roll_right // function
 	);
 	//RTI instruction
 	instructions[0x40] = nes_instruction(
