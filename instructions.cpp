@@ -80,12 +80,30 @@ void reg_to_sp(state& current_state, unsigned short * a, unsigned short * b) { /
 
 void add_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
 	current_state.set_flag('c', (bool)((*a + *b) & 0b100000000));
-	if (*a & 0b01000000 && *b & 0b01000000) {
+	if ((*a & 0b01000000 && *b & 0b01000000) || (*a & 0b00100000 && *b & 0b00100000)) {
 		current_state.set_flag('v', true);
 	} else {
 		current_state.set_flag('v', false);
 	}
 	*b = (*a + *b) & 0x00FF;
+
+	set_z_flag(*b, current_state);
+	set_n_flag(*b, current_state);
+
+}
+
+void subtract_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
+	if (!current_state.get_flag('c')) {
+		*b = *b + 0b100000000;
+	}
+	if ((*a & 0b01000000 && *b & 0b01000000) || (*a & 0b10000000 && *b & 0b10000000)) {
+		current_state.set_flag('v', true);
+	} else {
+		current_state.set_flag('v', false);
+	}
+	*b = *a - *b;
+	current_state.set_flag('c', (bool)(*b & 0b100000000));
+	*b = *b & 0x00FF;
 
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
@@ -1492,7 +1510,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	instructions[0xE5] = nes_instruction(
 		3, // time
@@ -1500,7 +1518,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	instructions[0xF5] = nes_instruction(
 		4, // time
@@ -1508,7 +1526,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	instructions[0xED] = nes_instruction(
 		4, // time
@@ -1516,7 +1534,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	instructions[0xFD] = nes_instruction(
 		4, // time
@@ -1524,7 +1542,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	instructions[0xF9] = nes_instruction(
 		4, // time
@@ -1532,7 +1550,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	instructions[0xE1] = nes_instruction(
 		6, // time
@@ -1540,7 +1558,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		false, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	instructions[0xF1] = nes_instruction(
 		5, // time
@@ -1548,7 +1566,7 @@ cpu::cpu(void) {
 		'a', // pram 2
 		true, // page boundary slowdown
 		"SBC", // opcode
-		NULL // function
+		subtract_carry // function
 	);
 	//STA instructions
 	instructions[0x85] = nes_instruction(
