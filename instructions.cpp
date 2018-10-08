@@ -79,17 +79,22 @@ void reg_to_sp(state& current_state, unsigned short * a, unsigned short * b) { /
 }
 
 void add_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
-	if ((*a & 0b01000000 && *b & 0b01000000) || (*a & 0b00100000 && *b & 0b00100000)) {
-		current_state.set_flag('v', true);
+	unsigned short carry = 0;
+	if (current_state.get_flag('c')) {
+		carry = 1;
+	}
+	unsigned short result = *a + *b+ carry;
+	if (!(*a & 0b10000000) ^ (*b & 0b10000000)) {
+		if ((*a & 0b10000000) ^ (result & 0b10000000)) {
+			current_state.set_flag('v', true);
+		} else {
+			current_state.set_flag('v', false);
+		}
 	} else {
 		current_state.set_flag('v', false);
 	}
-	*b = *a + *b;
-	if (current_state.get_flag('c')) {
-		(*b)++;
-	}
-	current_state.set_flag('c', (bool)(*b & 0b100000000));
-	*b = *b & 0x00FF;
+	current_state.set_flag('c', (bool)(result & 0b100000000));
+	*b = result & 0x00FF;
 
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
@@ -97,21 +102,25 @@ void add_carry(state& current_state, unsigned short * a, unsigned short * b) { /
 }
 
 void subtract_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
-	if (!current_state.get_flag('c')) {
-		*b = *b + 0b100000000;
+	unsigned short carry = 1;
+	if (current_state.get_flag('c')) {
+		carry = 0;
 	}
-	if ((*a & 0b01000000 && *b & 0b01000000) || (*a & 0b10000000 && *b & 0b10000000)) {
-		current_state.set_flag('v', true);
+	unsigned short result = *a - *b + carry;
+	if ((*a & 0b10000000) ^ (*b & 0b10000000)) {
+		if ((*a & 0b10000000) ^ (result & 0b10000000)) {
+			current_state.set_flag('v', true);
+		} else {
+			current_state.set_flag('v', false);
+		}
 	} else {
 		current_state.set_flag('v', false);
 	}
-	*b = *a - *b;
-	current_state.set_flag('c', (bool)(*b & 0b100000000));
-	*b = *b & 0x00FF;
+	current_state.set_flag('c', !(bool)(result & 0b100000000));
+	*b = result & 0x00FF;
 
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
-
 }
 
 void bitwise_and(state& current_state, unsigned short * a, unsigned short * b) { // and a and b
