@@ -415,9 +415,13 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 			case MODE_ABSOLUTE:
 				std::cout << "$";
 				hex_print(a_address, 4);
-				std::cout << " = ";
-				hex_print(a, 2);
-				std::cout << "                  ";
+				if (instruction.opcode[0] == 'J') {
+					std::cout << "                       ";
+				} else {
+					std::cout << " = ";
+					hex_print(a, 2);
+					std::cout << "                  ";
+				}
 				break;
 			case MODE_ABSOLUTEX:
 				std::cout << "$";
