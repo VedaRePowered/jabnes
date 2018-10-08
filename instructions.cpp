@@ -156,6 +156,38 @@ void shift_right(state& current_state, unsigned short * a, unsigned short * b) {
 	set_n_flag(tmp, current_state);
 }
 
+void roll_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+	current_state.set_flag('c', (bool)((*a + *b) & 0b10000000));
+	unsigned short * tmp;
+	if (*a) {
+		tmp = a;
+	} else if (*b) {
+		tmp = b;
+	}
+	*tmp = *tmp << 1;
+	if (current_state.get_flag('c')) {
+		*tmp = *tmp | 0b00000001;
+	}
+	set_z_flag(*current_state.get_reg('a'), current_state);
+	set_n_flag(*tmp, current_state);
+}
+
+void roll_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+	current_state.set_flag('c', (bool)((*a + *b) & 0b00000001));
+	unsigned short * tmp;
+	if (*a) {
+		tmp = a;
+	} else if (*b) {
+		tmp = b;
+	}
+	*tmp = *tmp >> 1;
+	if (current_state.get_flag('c')) {
+		*tmp = *tmp | 0b10000000;
+	}
+	set_z_flag(*current_state.get_reg('a'), current_state);
+	set_n_flag(*tmp, current_state);
+}
+
 void test_bits(state& current_state, unsigned short * a, unsigned short * b) { // test bits in memory based on the accumulator
 	unsigned short tmp = *a & *b;
 	current_state.set_flag('z', tmp == 0);
