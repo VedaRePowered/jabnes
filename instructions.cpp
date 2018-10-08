@@ -2,19 +2,23 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <locale>
 
 #include "nes_instruction.h"
 #include "instructions.h"
 #include "state.h"
 
 void hex_print(unsigned short num, unsigned min_length) {
+	std::locale loc;
 	std::stringstream stream;
 	stream << std::hex << num;
 	std::string str = stream.str();
 	while(str.length() < min_length) {
 		str = "0" + str;
 	}
-	std::cout << str;
+	for (unsigned i=0; i<str.length(); i++) {
+		std::cout << std::toupper(str[i],loc);
+	}
 }
 
 void push_val(state& current_state, unsigned short val) {
@@ -321,7 +325,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 			}
 			std::cout << " ";
 		}
-		std::cout << instruction.opcode << " ";
+		std::cout << " " << instruction.opcode << " ";
 
 		unsigned int a = *current_state.get_memory(a_address);
 		switch (instruction.address_type) {
