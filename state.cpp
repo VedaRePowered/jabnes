@@ -57,10 +57,13 @@ unsigned short * state::get_reg(char reg) {
 	return &reg_dummy;
 }
 void state::set_reg(char reg, unsigned short val) {
-	if (!(reg=='c'))
+	if (!(reg=='c')) {
 		val = val & 0x00FF;
-	if (reg=='p')
+	}
+	if (reg=='p') {
 		val = val & 0b11101111;
+		val = val | 0b00100000;
+	}
 	*(get_reg(reg)) = val;
 }
 
@@ -110,21 +113,24 @@ void state::set_memory(unsigned short loc, unsigned short val) {
 bool state::load_rom(char const * location) {
 	std::ifstream rom;
 	rom.open(location, std::ios::binary);
-	if (!rom)
+	if (!rom){
 		return false;
+	}
 
 	rom.seekg(0, std::ios::end);
 	int rom_length = rom.tellg();
 	rom.seekg(0, std::ios::beg);
 
-	if (rom_length < 0x6010)
+	if (rom_length < 0x6010) {
 		return false;
+	}
 
 	char header[0x10];
 	rom.read(header, 0x10);
 
-	if (header[0] != 'N' or header[1] != 'E' or header[2] != 'S' or header[3] != 0x1A)
+	if (header[0] != 'N' or header[1] != 'E' or header[2] != 'S' or header[3] != 0x1A) {
 		return false;
+	}
 
 	unsigned short prg_banks = header[4];
 	unsigned short chr_banks = header[5];
@@ -134,11 +140,13 @@ bool state::load_rom(char const * location) {
 
 	int rom_min_size = 0x10 + 0x4000 * prg_banks + 0x2000 * chr_banks + rom_trainer_length;
 
-	if (rom_length < rom_min_size)
+	if (rom_length < rom_min_size) {
 		return false;
+	}
 
-	if (prg_banks > 2)
+	if (prg_banks > 2) {
 		return false;
+	}
 
 	rom.seekg(rom_trainer_length, std::ios::cur);
 
@@ -146,11 +154,13 @@ bool state::load_rom(char const * location) {
 		char prg_data[0x4000];
 		rom.read(prg_data, 0x4000);
 		if (i == 0) {
-			for (int b=0; b<0x4000; b++)
+			for (int b=0; b<0x4000; b++) {
 				cart_mem[0x3FE0 + b + 0x4000] = prg_data[b] & 0x00FF;
+			}
 		} else if (i == 1) {
-			for (int b=0; b<0x4000; b++)
+			for (int b=0; b<0x4000; b++) {
 				cart_mem[0x3FE0 + b] = prg_data[b] & 0x00FF;
+			}
 		}
 	}
 

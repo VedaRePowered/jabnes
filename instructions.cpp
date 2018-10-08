@@ -158,11 +158,13 @@ void branch_not(state& current_state, unsigned short * a, unsigned short * b) { 
 void compare(state& current_state, unsigned short * a, unsigned short * b) { // compare a to b
 	current_state.set_flag('c', false);
 	current_state.set_flag('z', false);
-	if ((*b & 0x00FF) >= (*a & 0x00FF))
+	if ((*b & 0x00FF) >= (*a & 0x00FF)) {
 		current_state.set_flag('c', true);
+	}
 
-	if ((*a & 0x00FF) == (*b & 0x00FF))
+	if ((*a & 0x00FF) == (*b & 0x00FF)) {
 		current_state.set_flag('z', true);
+	}
 	current_state.set_flag('n', (bool)((*b-*a) & 0b10000000));
 }
 
@@ -300,11 +302,11 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 									break;
 		case MODE_INDIRECTX:	tmp = (*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF;
 									a_address = *current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8);
-									inst_size = (unsigned short)3;
+									inst_size = (unsigned short)2;
 									break;
 		case MODE_INDIRECTY:	tmp = *current_state.get_memory(pc+1);
 									a_address = *current_state.get_memory(tmp + *current_state.get_reg('y')) + (*current_state.get_memory((unsigned short)(tmp + 1) + *current_state.get_reg('y'))<<8);
-									inst_size = (unsigned short)3;
+									inst_size = (unsigned short)2;
 									break;
 		case MODE_RELATIVE:	a_address = *current_state.get_reg('c')+*current_state.get_memory(pc+1)+2; // offset for this instruction (since 0 goes to the next instruction)
 									inst_size = (unsigned short)2;
@@ -384,11 +386,13 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 			case MODE_INDIRECT:
 				std::cout << "($";
 				hex_print(*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8), 4);
-				std::cout << ")                     ";
+				std::cout << ") = ";
+				hex_print(a_address, 4);
+				std::cout << "              ";
 			case MODE_INDIRECTX:
 				std::cout << "($";
 				hex_print(*current_state.get_memory(pc+1), 2);
-				std::cout << ") @ ";
+				std::cout << ",X) @ ";
 				hex_print(*current_state.get_memory(pc+1)+*current_state.get_reg('x'), 2);
 				std::cout << " = ";
 				hex_print(a_address, 4);
@@ -1611,7 +1615,7 @@ cpu::cpu(void) {
 	instructions[0xBA] = nes_instruction(
 		2, // time
 		MODE_NOTHING, // mode
-		'd', // pram 2
+		's', // pram 2
 		false, // page boundary slowdown
 		"TSX", // opcode
 		reg_to_inc_x // function
