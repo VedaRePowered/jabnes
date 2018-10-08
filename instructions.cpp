@@ -79,13 +79,17 @@ void reg_to_sp(state& current_state, unsigned short * a, unsigned short * b) { /
 }
 
 void add_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
-	current_state.set_flag('c', (bool)((*a + *b) & 0b100000000));
 	if ((*a & 0b01000000 && *b & 0b01000000) || (*a & 0b00100000 && *b & 0b00100000)) {
 		current_state.set_flag('v', true);
 	} else {
 		current_state.set_flag('v', false);
 	}
-	*b = (*a + *b) & 0x00FF;
+	*b = *a + *b;
+	if (current_state.get_flag('c')) {
+		(*b)++;
+	}
+	current_state.set_flag('c', (bool)(*b & 0b100000000));
+	*b = *b & 0x00FF;
 
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
