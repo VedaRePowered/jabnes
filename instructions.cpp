@@ -87,8 +87,8 @@ void add_carry(state& current_state, unsigned short * a, unsigned short * b) { /
 	}
 	*b = (*a + *b) & 0x00FF;
 
-	set_z_flag(*current_state.get_reg('a'), current_state);
-	set_n_flag((*a + *b), current_state);
+	set_z_flag(*b, current_state);
+	set_n_flag(*b, current_state);
 
 }
 
