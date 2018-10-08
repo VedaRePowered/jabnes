@@ -101,7 +101,7 @@ void bitwise_or(state& current_state, unsigned short * a, unsigned short * b) { 
 }
 
 void bitwise_xor(state& current_state, unsigned short * a, unsigned short * b) { // exclusive or a and b
-	*b = (*a | *b) & !(*a & *b);
+	*b = *a^*b;
 	set_z_flag(*current_state.get_reg('a'), current_state);
 	set_n_flag(*b, current_state);
 }
