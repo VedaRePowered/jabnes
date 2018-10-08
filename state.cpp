@@ -67,6 +67,26 @@ void state::set_reg(char reg, unsigned short val) {
 	*(get_reg(reg)) = val;
 }
 
+bool state::get_flag(char flag) {
+	unsigned short flag_bit = 0;
+	switch (flag) {
+		case 'c': flag_bit = 0b00000001;
+		break;
+		case 'z': flag_bit = 0b00000010;
+		break;
+		case 'i': flag_bit = 0b00000100;
+		break;
+		case 'd': flag_bit = 0b00001000;
+		break;
+		case 'v': flag_bit = 0b01000000;
+		break;
+		case 'n': flag_bit = 0b10000000;
+		break;
+	}
+	unsigned short status_reg_tmp = *(get_reg('p'));
+	return status_reg_tmp & flag_bit;
+}
+
 void state::set_flag(char flag, bool val) {
 	unsigned short flag_bit = 0;
 	switch (flag) {
