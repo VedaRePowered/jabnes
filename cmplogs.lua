@@ -47,7 +47,9 @@ while correct_line and check_line and same do
 end
 
 print("Error At Line " .. line_number .. ":")
-print("      Same Stack Line: " .. lines_by_stack[current_stack_value] .. ",")
+if lines_by_stack[current_stack_value] then
+	print("      Same Stack Line: " .. lines_by_stack[current_stack_value] .. ",")
+end
 print("      Previous Line:   (" .. fix_len(line_number - 1, 5) .. ") " .. prev_line .. ",")
 print("      Actual Line:     (" .. fix_len(line_number, 5) .. ") " .. check_line .. ",")
 print("      Expected Line:   (" .. fix_len(line_number, 5) .. ") " .. correct_line .. ",")
