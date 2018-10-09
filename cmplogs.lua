@@ -10,8 +10,13 @@ function fix_len(num, len)
 	return str
 end
 
-correct_log = io.open(arg[1], "r")
-check_log = io.open(arg[2], "r")
+if arg[1] and arg[2] then
+	correct_log = io.open(arg[1], "r")
+	check_log = io.open(arg[2], "r")
+else
+	correct_log = io.open("nintendulator_nestest.log", "r")
+        check_log = io.open("jabnes_nestest.log", "r")
+end
 
 chars = 73
 stack_pos = 71
