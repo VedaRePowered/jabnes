@@ -475,7 +475,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				std::cout << "($";
 				hex_print(*current_state.get_memory(pc+1), 2);
 				std::cout << ",X) @ ";
-				hex_print(*current_state.get_memory(pc+1)+*current_state.get_reg('x'), 2);
+				hex_print((*current_state.get_memory(pc+1)+*current_state.get_reg('x')) & 0xFF, 2);
 				std::cout << " = ";
 				hex_print(a_address, 4);
 				std::cout << " = ";
