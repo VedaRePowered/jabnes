@@ -931,7 +931,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"DEC", // opcode
-		NULL // function
+		dec_mem // function
 	);
 	instructions[0xD6] = nes_instruction(
 		6, // time
@@ -939,7 +939,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"DEC", // opcode
-		NULL // function
+		dec_mem // function
 	);
 	instructions[0xCE] = nes_instruction(
 		6, // time
@@ -947,7 +947,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"DEC", // opcode
-		NULL // function
+		dec_mem // function
 	);
 	instructions[0xDE] = nes_instruction(
 		7, // time
@@ -955,7 +955,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"DEC", // opcode
-		NULL // function
+		dec_mem // function
 	);
 	//EOR instructions
 	instructions[0x49] = nes_instruction(
@@ -1086,7 +1086,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"INC", // opcode
-		NULL // function
+		inc_mem // function
 	);
 	instructions[0xF6] = nes_instruction(
 		6, // time
@@ -1094,7 +1094,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"INC", // opcode
-		NULL // function
+		inc_mem // function
 	);
 	instructions[0xEE] = nes_instruction(
 		6, // time
@@ -1102,7 +1102,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"INC", // opcode
-		NULL // function
+		inc_mem // function
 	);
 	instructions[0xFE] = nes_instruction(
 		7, // time
@@ -1110,7 +1110,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"INC", // opcode
-		NULL // function
+		inc_mem // function
 	);
 	//JMP instructions
 	instructions[0x4C] = nes_instruction(
@@ -1414,7 +1414,7 @@ cpu::cpu(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"DEX", // opcode
-		NULL // function
+		dec_reg // function
 	);
 	instructions[0xE8] = nes_instruction(
 		2, // time
@@ -1422,7 +1422,7 @@ cpu::cpu(void) {
 		'x', // pram 2
 		false, // page boundary slowdown
 		"INX", // opcode
-		NULL // function
+		inc_reg // function
 	);
 	instructions[0xA8] = nes_instruction(
 		2, // time
@@ -1446,7 +1446,7 @@ cpu::cpu(void) {
 		'y', // pram 2
 		false, // page boundary slowdown
 		"DEY", // opcode
-		NULL // function
+		dec_reg // function
 	);
 	instructions[0xC8] = nes_instruction(
 		2, // time
@@ -1454,7 +1454,7 @@ cpu::cpu(void) {
 		'y', // pram 2
 		false, // page boundary slowdown
 		"INY", // opcode
-		NULL // function
+		inc_reg // function
 	);
 	//ROL instructions
 	instructions[0x2A] = nes_instruction(
@@ -1816,7 +1816,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"XAA", // opcode
-		NULL // function
+		NULL // function (later)
 	);
 	instructions[0xB3] = nes_instruction( // for emulating Super Cars (U), and The MUSE music engine
 		5, // time
@@ -1824,7 +1824,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"LAX", // opcode
-		NULL // function
+		NULL // function (later)
 	);
 	instructions[0x07] = nes_instruction( // for emulating The MUSE music engine
 		5, // time
@@ -1832,7 +1832,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"SLO", // opcode
-		NULL // function
+		NULL // function (later)
 	);
 	instructions[0x8F] = nes_instruction( // for emulating The MUSE music engine
 		4, // time
@@ -1840,7 +1840,7 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"SAX", // opcode
-		NULL // function
+		NULL // function (later)
 	);
 	instructions[0xCB] = nes_instruction( // for emulating The MUSE music engine
 		2, // time
@@ -1848,6 +1848,6 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"AXS", // opcode
-		NULL // function
+		NULL // function (later)
 	);
 }
