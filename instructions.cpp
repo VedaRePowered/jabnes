@@ -395,7 +395,11 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 		unsigned int a = *current_state.get_memory(a_address);
 		switch (instruction.address_type) {
 			case MODE_NOTHING:
-				std::cout << "                            ";
+				if (inst_hex == 0x0A || inst_hex == 0x4A || inst_hex == 0x2A || inst_hex == 0x6A) {
+					std::cout << "A                           ";
+				} else {
+					std::cout << "                            ";
+				}
 				break;
 			case MODE_IMMEDIATE:
 				std::cout << "#$";

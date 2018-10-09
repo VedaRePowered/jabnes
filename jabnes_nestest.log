@@ -973,7 +973,7 @@ CEF6  EA        NOP                             A:FF X:55 Y:69 P:A5 SP:FB STACK:
 CEF7  24 01     BIT $01 = FF                    A:FF X:55 Y:69 P:A5 SP:FB STACK: 00 00 C6 0E
 CEF9  38        SEC                             A:FF X:55 Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
 CEFA  A9 01     LDA #$01                        A:FF X:55 Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
-CEFC  4A        LSR                             A:01 X:55 Y:69 P:65 SP:FB STACK: 00 00 C6 0E
+CEFC  4A        LSR A                           A:01 X:55 Y:69 P:65 SP:FB STACK: 00 00 C6 0E
 CEFD  90 1D     BCC $CF1C                       A:00 X:55 Y:69 P:67 SP:FB STACK: 00 00 C6 0E
 CEFF  D0 1B     BNE $CF1C                       A:00 X:55 Y:69 P:67 SP:FB STACK: 00 00 C6 0E
 CF01  30 19     BMI $CF1C                       A:00 X:55 Y:69 P:67 SP:FB STACK: 00 00 C6 0E
@@ -982,7 +982,7 @@ CF05  C9 00     CMP #$00                        A:00 X:55 Y:69 P:67 SP:FB STACK:
 CF07  D0 13     BNE $CF1C                       A:00 X:55 Y:69 P:67 SP:FB STACK: 00 00 C6 0E
 CF09  B8        CLV                             A:00 X:55 Y:69 P:67 SP:FB STACK: 00 00 C6 0E
 CF0A  A9 AA     LDA #$AA                        A:00 X:55 Y:69 P:27 SP:FB STACK: 00 00 C6 0E
-CF0C  4A        LSR                             A:AA X:55 Y:69 P:A5 SP:FB STACK: 00 00 C6 0E
+CF0C  4A        LSR A                           A:AA X:55 Y:69 P:A5 SP:FB STACK: 00 00 C6 0E
 CF0D  B0 0D     BCS $CF1C                       A:55 X:55 Y:69 P:24 SP:FB STACK: 00 00 C6 0E
 CF0F  F0 0B     BEQ $CF1C                       A:55 X:55 Y:69 P:24 SP:FB STACK: 00 00 C6 0E
 CF11  30 09     BMI $CF1C                       A:55 X:55 Y:69 P:24 SP:FB STACK: 00 00 C6 0E
@@ -994,7 +994,7 @@ CF20  EA        NOP                             A:55 X:55 Y:69 P:27 SP:FB STACK:
 CF21  24 01     BIT $01 = FF                    A:55 X:55 Y:69 P:27 SP:FB STACK: 00 00 C6 0E
 CF23  38        SEC                             A:55 X:55 Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
 CF24  A9 80     LDA #$80                        A:55 X:55 Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
-CF26  0A        ASL                             A:80 X:55 Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
+CF26  0A        ASL A                           A:80 X:55 Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
 CF27  90 1E     BCC $CF47                       A:100 X:55 Y:69 P:65 SP:FB STACK: 00 00 C6 0E
 CF29  D0 1C     BNE $CF47                       A:100 X:55 Y:69 P:65 SP:FB STACK: 00 00 C6 0E
 CF47  A2 4B     LDX #$4B                        A:100 X:55 Y:69 P:65 SP:FB STACK: 00 00 C6 0E
@@ -1003,7 +1003,7 @@ CF4B  EA        NOP                             A:100 X:4B Y:69 P:65 SP:FB STACK
 CF4C  24 01     BIT $01 = FF                    A:100 X:4B Y:69 P:65 SP:FB STACK: 00 00 C6 0E
 CF4E  38        SEC                             A:100 X:4B Y:69 P:E7 SP:FB STACK: 00 00 C6 0E
 CF4F  A9 01     LDA #$01                        A:100 X:4B Y:69 P:E7 SP:FB STACK: 00 00 C6 0E
-CF51  6A        ROR                             A:01 X:4B Y:69 P:65 SP:FB STACK: 00 00 C6 0E
+CF51  6A        ROR A                           A:01 X:4B Y:69 P:65 SP:FB STACK: 00 00 C6 0E
 CF52  90 1E     BCC $CF72                       A:01 X:4B Y:69 P:64 SP:FB STACK: 00 00 C6 0E
 CF72  A2 4C     LDX #$4C                        A:01 X:4B Y:69 P:64 SP:FB STACK: 00 00 C6 0E
 CF74  86 00     STX $00 = 25                    A:01 X:4C Y:69 P:64 SP:FB STACK: 00 00 C6 0E
@@ -1011,7 +1011,7 @@ CF76  EA        NOP                             A:01 X:4C Y:69 P:64 SP:FB STACK:
 CF77  24 01     BIT $01 = FF                    A:01 X:4C Y:69 P:64 SP:FB STACK: 00 00 C6 0E
 CF79  38        SEC                             A:01 X:4C Y:69 P:E4 SP:FB STACK: 00 00 C6 0E
 CF7A  A9 80     LDA #$80                        A:01 X:4C Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
-CF7C  2A        ROL                             A:80 X:4C Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
+CF7C  2A        ROL A                           A:80 X:4C Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
 CF7D  90 1E     BCC $CF9D                       A:80 X:4C Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
 CF7F  F0 1C     BEQ $CF9D                       A:80 X:4C Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
 CF81  30 1A     BMI $CF9D                       A:80 X:4C Y:69 P:E5 SP:FB STACK: 00 00 C6 0E
