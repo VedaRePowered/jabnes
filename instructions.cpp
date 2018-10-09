@@ -140,28 +140,29 @@ void bitwise_xor(state& current_state, unsigned short * a, unsigned short * b) {
 }
 
 void shift_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
-	current_state.set_flag('c', (bool)((*a + *b) & 0b10000000));
 	unsigned short tmp;
 	if (*a) {
-		*a = *a << 1;
-		tmp = *a;
+		tmp = *a << 1;
+		*a = tmp & 0x00FF;
 	} else if (*b) {
-		*b = *b << 1;
-		tmp = *b;
+		tmp = *b << 1;
+		*b = tmp & 0x00FF;
 	}
+	current_state.set_flag('c', (bool)(tmp & 0b100000000));
 	set_z_flag(*current_state.get_reg('a'), current_state);
 	set_n_flag(tmp, current_state);
 }
 
 void shift_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
-	current_state.set_flag('c', (bool)((*a + *b) & 0b00000001));
 	unsigned short tmp;
 	if (*a) {
-		*a = *a >> 1;
-		tmp = *a;
+		current_state.set_flag('c', (bool)(*a & 0b00000001));
+		tmp = *a >> 1;
+		*a = tmp & 0x00FF;
 	} else if (*b) {
-		*b = *b >> 1;
-		tmp = *b;
+		current_state.set_flag('c', (bool)(*b & 0b00000001));
+		tmp = *b >> 1;
+		*b = tmp & 0x00FF;
 	}
 	set_z_flag(*current_state.get_reg('a'), current_state);
 	set_n_flag(tmp, current_state);
