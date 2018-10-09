@@ -106,9 +106,9 @@ void subtract_carry(state& current_state, unsigned short * a, unsigned short * b
 	if (current_state.get_flag('c')) {
 		carry = 0;
 	}
-	unsigned short result = *a - *b + carry;
+	unsigned short result = *b - (*a + carry);
 	if ((*a & 0b10000000) ^ (*b & 0b10000000)) {
-		if ((*a & 0b10000000) ^ (result & 0b10000000)) {
+		if ((*b & 0b10000000) ^ (result & 0b10000000)) {
 			current_state.set_flag('v', true);
 		} else {
 			current_state.set_flag('v', false);
