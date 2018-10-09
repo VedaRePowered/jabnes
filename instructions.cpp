@@ -308,6 +308,10 @@ void push_reg(state& current_state, unsigned short * a, unsigned short * b) { //
 	push_val(current_state, *b);
 }
 
+void push_flags(state& current_state, unsigned short * a, unsigned short * b) {
+	push_val(current_state, *b | 0b00110000);
+}
+
 void pull_acc(state& current_state, unsigned short * a, unsigned short * b) { // pull b from the stack, and set z aand n flags
 	*b = pull_val(current_state);
 	set_n_flag(*b, current_state);
@@ -1713,7 +1717,7 @@ cpu::cpu(void) {
 		'p', // pram 2
 		false, // page boundary slowdown
 		"PHP", // opcode
-		push_reg // function
+		push_flags // function
 	);
 	instructions[0x28] = nes_instruction(
 		4, // time
