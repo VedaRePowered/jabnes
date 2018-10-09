@@ -74,8 +74,6 @@ void reg_to_inc_y(state& current_state, unsigned short * a, unsigned short * b) 
 
 void reg_to_sp(state& current_state, unsigned short * a, unsigned short * b) { // set stack pointer to b
 	*current_state.get_reg('s') = *b & 0x00FF;
-	set_z_flag(*current_state.get_reg('s'), current_state);
-	set_n_flag(*current_state.get_reg('s'), current_state);
 }
 
 void add_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
