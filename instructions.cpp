@@ -483,7 +483,16 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				std::cout << "    ";
 				break;
 			case MODE_INDIRECTY:
-				std::cout << "(INDIRECT),Y                ";
+				std::cout << "($";
+				hex_print(*current_state.get_memory(pc+1), 2);
+				std::cout << "),Y = ";
+				tmp = *current_state.get_memory(*current_state.get_memory(pc+1)) + (*current_state.get_memory((*current_state.get_memory(pc+1)+1)&0xFF) << 8);
+				hex_print(tmp, 4);
+				std::cout << " @ ";
+				hex_print(tmp + *current_state.get_reg('y'), 4);
+				std::cout << " = ";
+				hex_print(*current_state.get_memory(tmp + *current_state.get_reg('y')), 2);
+				std::cout << "  ";
 				break;
 			case MODE_RELATIVE:
 				std::cout << "$";
