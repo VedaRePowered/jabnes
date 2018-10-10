@@ -24,6 +24,7 @@ public:
 	nes_instruction();
 	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *));
 	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *), bool);
+	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *), bool, bool);
 
 	unsigned short cycles; // number of CPU cycles it takes to execute
 	unsigned short address_type; // type of address
@@ -31,6 +32,7 @@ public:
 	bool page_boundary_slowdown = false; // should the instruction take one more cycle if it crosses a page boundary
 	char opcode[4]; // opcode name
 	bool is_branch;
+	bool is_unofficial;
 
 	void (*execute_function)(state&, unsigned short *, unsigned short *); // function to execute with two litaral numbers
 };

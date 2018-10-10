@@ -395,7 +395,12 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 			}
 			std::cout << " ";
 		}
-		std::cout << " " << instruction.opcode << " ";
+		if (instruction.is_unofficial) {
+			std::cout << "*";
+		} else {
+			std::cout << " ";
+		}
+		std::cout << instruction.opcode << " ";
 
 		unsigned int a = *current_state.get_memory(a_address);
 		switch (instruction.address_type) {
@@ -1801,7 +1806,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"NOP", // opcode
-		NULL // function
+		NULL, // function
+		false,
+		true
 	);
 	instructions[0x80] = nes_instruction( // for emulating Beauty and the Beast (E)
 		2, // time
@@ -1809,7 +1816,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"NOP", // opcode
-		NULL // function
+		NULL, // function
+		false,
+		true
 	);
 	instructions[0xDA] = nes_instruction( // for emulating Dynowarz
 		2, // time
@@ -1817,7 +1826,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"NOP", // opcode
-		NULL // function
+		NULL, // function
+		false,
+		true
 	);
 	instructions[0xFA] = nes_instruction( // for emulating Dynowarz
 		2, // time
@@ -1825,7 +1836,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"NOP", // opcode
-		NULL // function
+		NULL, // function
+		false,
+		true
 	);
 	instructions[0x8B] = nes_instruction( // for emulating Gaau Hok Gwong Cheung (Ch)
 		2, // time
@@ -1833,7 +1846,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"XAA", // opcode
-		NULL // function (later)
+		NULL, // function (later)
+		false,
+		true
 	);
 	instructions[0xB3] = nes_instruction( // for emulating Super Cars (U), and The MUSE music engine
 		5, // time
@@ -1841,7 +1856,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		true, // page boundary slowdown
 		"LAX", // opcode
-		NULL // function (later)
+		NULL, // function (later)
+		false,
+		true
 	);
 	instructions[0x07] = nes_instruction( // for emulating The MUSE music engine
 		5, // time
@@ -1849,7 +1866,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"SLO", // opcode
-		NULL // function (later)
+		NULL, // function (later)
+		false,
+		true
 	);
 	instructions[0x8F] = nes_instruction( // for emulating The MUSE music engine
 		4, // time
@@ -1857,7 +1876,9 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"SAX", // opcode
-		NULL // function (later)
+		NULL, // function (later)
+		false,
+		true
 	);
 	instructions[0xCB] = nes_instruction( // for emulating The MUSE music engine
 		2, // time
@@ -1865,6 +1886,51 @@ cpu::cpu(void) {
 		'd', // pram 2
 		false, // page boundary slowdown
 		"AXS", // opcode
-		NULL // function (later)
+		NULL, // function (later)
+		false,
+		true
+	);
+
+	// NESTEST ONLY INSTRUCTIONS //
+	// NOP(s)
+	instructions[0x04] = nes_instruction(
+		2,
+		MODE_ZEROPAGE,
+		'd',
+		false,
+		"NOP",
+		NULL,
+		false,
+		true
+	);
+	instructions[0x44] = nes_instruction(
+		2,
+		MODE_ZEROPAGE,
+		'd',
+		false,
+		"NOP",
+		NULL,
+		false,
+		true
+	);
+	instructions[0x64] = nes_instruction(
+		2,
+		MODE_ZEROPAGE,
+		'd',
+		false,
+		"NOP",
+		NULL,
+		false,
+		true
+	);
+	instructions[0x0C] = nes_instruction(
+		2,
+		MODE_ABSOLUTE,
+		'd',
+		false,
+		"NOP",
+		NULL,
+		false,
+		true
 	);
 }

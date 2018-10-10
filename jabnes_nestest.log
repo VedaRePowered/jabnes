@@ -5001,142 +5001,141 @@ C6B2  48        PHA                             A:FF X:97 Y:4E P:A5 SP:F9 STACK:
 C6B3  A9 AA     LDA #$AA                        A:FF X:97 Y:4E P:A5 SP:F8 STACK: 00 00 C6 31 C6 AB FF
 C6B5  D0 05     BNE $C6BC                       A:AA X:97 Y:4E P:A5 SP:F8 STACK: 00 00 C6 31 C6 AB FF
 C6BC  28        PLP                             A:AA X:97 Y:4E P:A5 SP:F8 STACK: 00 00 C6 31 C6 AB FF
-C6BD  04        NOP                             A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
-C6BE  A9 44     LDA #$44                        A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
-C6C0  A9 64     LDA #$64                        A:44 X:97 Y:4E P:6D SP:F9 STACK: 00 00 C6 31 C6 AB
-C6C2  A9 EA     LDA #$EA                        A:64 X:97 Y:4E P:6D SP:F9 STACK: 00 00 C6 31 C6 AB
-C6C4  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F9 STACK: 00 00 C6 31 C6 AB
-C6C5  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F9 STACK: 00 00 C6 31 C6 AB
-C6C6  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F9 STACK: 00 00 C6 31 C6 AB
-C6C7  08        PHP                             A:EA X:97 Y:4E P:ED SP:F9 STACK: 00 00 C6 31 C6 AB
-C6C8  48        PHA                             A:EA X:97 Y:4E P:ED SP:F8 STACK: 00 00 C6 31 C6 AB FD
-C6C9  0C        NOP                             A:EA X:97 Y:4E P:ED SP:F7 STACK: 00 00 C6 31 C6 AB FD EA
-C6CA  A9 A9     LDA #$A9                        A:EA X:97 Y:4E P:ED SP:F7 STACK: 00 00 C6 31 C6 AB FD EA
-C6CC  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F7 STACK: 00 00 C6 31 C6 AB FD EA
-C6CD  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F7 STACK: 00 00 C6 31 C6 AB FD EA
-C6CE  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F7 STACK: 00 00 C6 31 C6 AB FD EA
-C6CF  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F7 STACK: 00 00 C6 31 C6 AB FD EA
-C6D0  08        PHP                             A:A9 X:97 Y:4E P:ED SP:F7 STACK: 00 00 C6 31 C6 AB FD EA
-C6D1  48        PHA                             A:A9 X:97 Y:4E P:ED SP:F6 STACK: 00 00 C6 31 C6 AB FD EA FD
-C6D2  14        NOP                             A:A9 X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6D3  A9 34     LDA #$34                        A:A9 X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6D5  A9 54     LDA #$54                        A:34 X:97 Y:4E P:6D SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6D7  A9 74     LDA #$74                        A:54 X:97 Y:4E P:6D SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6D9  A9 D4     LDA #$D4                        A:74 X:97 Y:4E P:6D SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6DB  A9 F4     LDA #$F4                        A:D4 X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6DD  A9 EA     LDA #$EA                        A:F4 X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6DF  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6E0  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6E1  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6E2  08        PHP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FD EA FD A9
-C6E3  48        PHA                             A:EA X:97 Y:4E P:ED SP:F4 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD
-C6E4  1A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6E5  3A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6E6  5A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6E7  7A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6E8  DA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6E9  FA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6EA  80 89     NOP #$89                        A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6EC  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6ED  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6EE  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6EF  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6F0  08        PHP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-C6F1  48        PHA                             A:EA X:97 Y:4E P:ED SP:F2 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD
-C6F2  1C        NOP                             A:EA X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6F3  A9 A9     LDA #$A9                        A:EA X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6F5  3C        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6F6  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6F8  5C        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6F9  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6FB  7C        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6FC  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6FE  DC        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C6FF  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C701  FC        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C702  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C704  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C705  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C706  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C707  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C708  08        PHP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C709  48        PHA                             A:A9 X:97 Y:4E P:ED SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD
-C70A  A2 05     LDX #$05                        A:A9 X:97 Y:4E P:ED SP:EF STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD A9
-C70C  68        PLA                             A:A9 X:05 Y:4E P:6D SP:EF STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD A9
-C70D  C9 55     CMP #$55                        A:A9 X:05 Y:4E P:ED SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD
-C70F  F0 0A     BEQ $C71B                       A:A9 X:05 Y:4E P:6D SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD
-C711  C9 AA     CMP #$AA                        A:A9 X:05 Y:4E P:6D SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD
-C713  F0 06     BEQ $C71B                       A:A9 X:05 Y:4E P:EC SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD
-C715  68        PLA                             A:A9 X:05 Y:4E P:EC SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FD
-C716  84 00     STY $00 = 00                    A:FD X:05 Y:4E P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C718  4C 28 C7  JMP $C728                       A:FD X:05 Y:4E P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C728  C8        INY                             A:FD X:05 Y:4E P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C729  CA        DEX                             A:FD X:05 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C72A  D0 E0     BNE $C80C                       A:FD X:04 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C80C  80 85     NOP #$85                        A:FD X:04 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C80E  01 24     ORA ($24,X) @ 28 = 0000 = 4E    A:FD X:04 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C810  01 F8     ORA ($F8,X) @ FC = 0000 = 4E    A:FF X:04 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C812  A9 00     LDA #$00                        A:FF X:04 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C814  38        SEC                             A:00 X:04 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C815  08        PHP                             A:00 X:04 Y:4F P:6F SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C816  68        PLA                             A:00 X:04 Y:4F P:6F SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA 7F
-C817  29 EF     AND #$EF                        A:7F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C819  C9 2F     CMP #$2F                        A:6F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C81B  F0 04     BEQ $C821                       A:6F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C81D  A2 13     LDX #$13                        A:6F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C81F  86 00     STX $00 = 4E                    A:6F X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C821  EA        NOP                             A:6F X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C822  A9 FF     LDA #$FF                        A:6F X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C824  48        PHA                             A:FF X:13 Y:4F P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C825  28        PLP                             A:FF X:13 Y:4F P:ED SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FF
-C826  D0 09     BNE $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C828  10 07     BPL $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C82A  50 05     BVC $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C82C  90 03     BCC $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C82E  4C 35 C8  JMP $C835                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C835  EA        NOP                             A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C836  A9 04     LDA #$04                        A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C838  48        PHA                             A:04 X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C839  28        PLP                             A:04 X:13 Y:4F P:6D SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA 04
-C83A  F0 09     BEQ $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C83C  30 07     BMI $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C83E  70 05     BVS $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C840  B0 03     BCS $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C842  4C 49 C8  JMP $C849                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C849  EA        NOP                             A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C84A  F8        SED                             A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C84B  A9 FF     LDA #$FF                        A:04 X:13 Y:4F P:2C SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C84D  85 01     STA $01 = FF                    A:FF X:13 Y:4F P:AC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C84F  24 01     BIT $01 = FF                    A:FF X:13 Y:4F P:AC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C851  18        CLC                             A:FF X:13 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C852  A9 00     LDA #$00                        A:FF X:13 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C854  48        PHA                             A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C855  A9 FF     LDA #$FF                        A:00 X:13 Y:4F P:6E SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA 00
-C857  68        PLA                             A:FF X:13 Y:4F P:EC SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA 00
-C858  D0 09     BNE $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C85A  30 07     BMI $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C85C  50 05     BVC $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C85E  B0 03     BCS $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C860  4C 67 C8  JMP $C867                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C867  EA        NOP                             A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C868  A9 00     LDA #$00                        A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C86A  85 01     STA $01 = FF                    A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C86C  24 01     BIT $01 = 00                    A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C86E  38        SEC                             A:00 X:13 Y:4F P:2E SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C86F  A9 FF     LDA #$FF                        A:00 X:13 Y:4F P:2F SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C871  48        PHA                             A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C872  A9 00     LDA #$00                        A:FF X:13 Y:4F P:AD SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FF
-C874  68        PLA                             A:00 X:13 Y:4F P:2F SP:F0 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA FF
-C875  F0 09     BEQ $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C877  10 07     BPL $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C879  70 05     BVS $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C87B  90 03     BCC $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C87D  4C 84 C8  JMP $C884                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-C884  60        RTS                             A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-FDEB  6F        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-FDEC  67        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-FDED  63        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-FDEE  63        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-FDEF  00        BRK                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-FDF0  1C        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
-FDF1  36 63     ROL $63,X @ 76 = 00             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA
+C6BD  04 A9    *NOP $A9 = 00                    A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6BF  44 A9    *NOP $A9 = 00                    A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6C1  64 A9    *NOP $A9 = 00                    A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6C3  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6C4  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6C5  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6C6  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6C7  08        PHP                             A:AA X:97 Y:4E P:EF SP:F9 STACK: 00 00 C6 31 C6 AB
+C6C8  48        PHA                             A:AA X:97 Y:4E P:EF SP:F8 STACK: 00 00 C6 31 C6 AB FF
+C6C9  0C A9 A9 *NOP $A9A9 = 00                  A:AA X:97 Y:4E P:EF SP:F7 STACK: 00 00 C6 31 C6 AB FF AA
+C6CC  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F7 STACK: 00 00 C6 31 C6 AB FF AA
+C6CD  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F7 STACK: 00 00 C6 31 C6 AB FF AA
+C6CE  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F7 STACK: 00 00 C6 31 C6 AB FF AA
+C6CF  EA        NOP                             A:AA X:97 Y:4E P:EF SP:F7 STACK: 00 00 C6 31 C6 AB FF AA
+C6D0  08        PHP                             A:AA X:97 Y:4E P:EF SP:F7 STACK: 00 00 C6 31 C6 AB FF AA
+C6D1  48        PHA                             A:AA X:97 Y:4E P:EF SP:F6 STACK: 00 00 C6 31 C6 AB FF AA FF
+C6D2  14        NOP                             A:AA X:97 Y:4E P:EF SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6D3  A9 34     LDA #$34                        A:AA X:97 Y:4E P:EF SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6D5  A9 54     LDA #$54                        A:34 X:97 Y:4E P:6D SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6D7  A9 74     LDA #$74                        A:54 X:97 Y:4E P:6D SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6D9  A9 D4     LDA #$D4                        A:74 X:97 Y:4E P:6D SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6DB  A9 F4     LDA #$F4                        A:D4 X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6DD  A9 EA     LDA #$EA                        A:F4 X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6DF  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6E0  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6E1  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6E2  08        PHP                             A:EA X:97 Y:4E P:ED SP:F5 STACK: 00 00 C6 31 C6 AB FF AA FF AA
+C6E3  48        PHA                             A:EA X:97 Y:4E P:ED SP:F4 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD
+C6E4  1A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6E5  3A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6E6  5A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6E7  7A        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6E8  DA       *NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6E9  FA       *NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6EA  80 89    *NOP #$89                        A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6EC  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6ED  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6EE  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6EF  EA        NOP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6F0  08        PHP                             A:EA X:97 Y:4E P:ED SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+C6F1  48        PHA                             A:EA X:97 Y:4E P:ED SP:F2 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD
+C6F2  1C        NOP                             A:EA X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6F3  A9 A9     LDA #$A9                        A:EA X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6F5  3C        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6F6  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6F8  5C        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6F9  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6FB  7C        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6FC  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6FE  DC        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C6FF  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C701  FC        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C702  A9 A9     LDA #$A9                        A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C704  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C705  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C706  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C707  EA        NOP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C708  08        PHP                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C709  48        PHA                             A:A9 X:97 Y:4E P:ED SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD
+C70A  A2 05     LDX #$05                        A:A9 X:97 Y:4E P:ED SP:EF STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD A9
+C70C  68        PLA                             A:A9 X:05 Y:4E P:6D SP:EF STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD A9
+C70D  C9 55     CMP #$55                        A:A9 X:05 Y:4E P:ED SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD
+C70F  F0 0A     BEQ $C71B                       A:A9 X:05 Y:4E P:6D SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD
+C711  C9 AA     CMP #$AA                        A:A9 X:05 Y:4E P:6D SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD
+C713  F0 06     BEQ $C71B                       A:A9 X:05 Y:4E P:EC SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD
+C715  68        PLA                             A:A9 X:05 Y:4E P:EC SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FD
+C716  84 00     STY $00 = 00                    A:FD X:05 Y:4E P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C718  4C 28 C7  JMP $C728                       A:FD X:05 Y:4E P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C728  C8        INY                             A:FD X:05 Y:4E P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C729  CA        DEX                             A:FD X:05 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C72A  D0 E0     BNE $C80C                       A:FD X:04 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C80C  80 85    *NOP #$85                        A:FD X:04 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C80E  01 24     ORA ($24,X) @ 28 = 0000 = 4E    A:FD X:04 Y:4F P:6C SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C810  01 F8     ORA ($F8,X) @ FC = 0000 = 4E    A:FF X:04 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C812  A9 00     LDA #$00                        A:FF X:04 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C814  38        SEC                             A:00 X:04 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C815  08        PHP                             A:00 X:04 Y:4F P:6F SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C816  68        PLA                             A:00 X:04 Y:4F P:6F SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA 7F
+C817  29 EF     AND #$EF                        A:7F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C819  C9 2F     CMP #$2F                        A:6F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C81B  F0 04     BEQ $C821                       A:6F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C81D  A2 13     LDX #$13                        A:6F X:04 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C81F  86 00     STX $00 = 4E                    A:6F X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C821  EA        NOP                             A:6F X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C822  A9 FF     LDA #$FF                        A:6F X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C824  48        PHA                             A:FF X:13 Y:4F P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C825  28        PLP                             A:FF X:13 Y:4F P:ED SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FF
+C826  D0 09     BNE $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C828  10 07     BPL $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C82A  50 05     BVC $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C82C  90 03     BCC $C831                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C82E  4C 35 C8  JMP $C835                       A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C835  EA        NOP                             A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C836  A9 04     LDA #$04                        A:FF X:13 Y:4F P:EF SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C838  48        PHA                             A:04 X:13 Y:4F P:6D SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C839  28        PLP                             A:04 X:13 Y:4F P:6D SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA 04
+C83A  F0 09     BEQ $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C83C  30 07     BMI $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C83E  70 05     BVS $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C840  B0 03     BCS $C845                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C842  4C 49 C8  JMP $C849                       A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C849  EA        NOP                             A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C84A  F8        SED                             A:04 X:13 Y:4F P:24 SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C84B  A9 FF     LDA #$FF                        A:04 X:13 Y:4F P:2C SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C84D  85 01     STA $01 = FF                    A:FF X:13 Y:4F P:AC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C84F  24 01     BIT $01 = FF                    A:FF X:13 Y:4F P:AC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C851  18        CLC                             A:FF X:13 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C852  A9 00     LDA #$00                        A:FF X:13 Y:4F P:EC SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C854  48        PHA                             A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C855  A9 FF     LDA #$FF                        A:00 X:13 Y:4F P:6E SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA 00
+C857  68        PLA                             A:FF X:13 Y:4F P:EC SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA 00
+C858  D0 09     BNE $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C85A  30 07     BMI $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C85C  50 05     BVC $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C85E  B0 03     BCS $C863                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C860  4C 67 C8  JMP $C867                       A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C867  EA        NOP                             A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C868  A9 00     LDA #$00                        A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C86A  85 01     STA $01 = FF                    A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C86C  24 01     BIT $01 = 00                    A:00 X:13 Y:4F P:6E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C86E  38        SEC                             A:00 X:13 Y:4F P:2E SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C86F  A9 FF     LDA #$FF                        A:00 X:13 Y:4F P:2F SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C871  48        PHA                             A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C872  A9 00     LDA #$00                        A:FF X:13 Y:4F P:AD SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FF
+C874  68        PLA                             A:00 X:13 Y:4F P:2F SP:F0 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA FF
+C875  F0 09     BEQ $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C877  10 07     BPL $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C879  70 05     BVS $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C87B  90 03     BCC $C880                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C87D  4C 84 C8  JMP $C884                       A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+C884  60        RTS                             A:FF X:13 Y:4F P:AD SP:F1 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA FD EA
+FDEB  6F        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+FDEC  67        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+FDED  63        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+FDEE  63        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+FDEF  00        BRK                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+FDF0  1C        NOP                             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA
+FDF1  36 63     ROL $63,X @ 76 = 00             A:FF X:13 Y:4F P:AD SP:F3 STACK: 00 00 C6 31 C6 AB FF AA FF AA FD EA

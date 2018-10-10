@@ -44,3 +44,17 @@ nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_t
 	this->execute_function = execute_function;
 	this->is_branch = is_branch;
 }
+
+nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, char pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *), bool is_branch, bool is_unofficial) {
+	this->cycles = cycles;
+	this->address_type = address_type;
+	this->pram_register = pram_register;
+	this->page_boundary_slowdown = page_boundary_slowdown;
+	this->opcode[0] = opcode[0];
+	this->opcode[1] = opcode[1];
+	this->opcode[2] = opcode[2];
+	this->opcode[3] = '\0';
+	this->execute_function = execute_function;
+	this->is_branch = is_branch;
+	this->is_unofficial = is_unofficial;
+}
