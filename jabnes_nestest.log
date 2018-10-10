@@ -3325,7 +3325,7 @@ DB71  A9 7E     LDA #$7E                        A:87 X:07 Y:00 P:65 SP:FB STACK:
 DB73  8D 00 02  STA $0200 = 7F                  A:7E X:07 Y:00 P:65 SP:FB STACK: 00 00 C6 25
 DB76  A9 DB     LDA #$DB                        A:7E X:07 Y:00 P:65 SP:FB STACK: 00 00 C6 25
 DB78  8D 01 02  STA $0201 = 00                  A:DB X:07 Y:00 P:E5 SP:FB STACK: 00 00 C6 25
-DB7B  6C 00 02  JMP ($0200) = DB7E              ($00,X) @ 07 = DB7E = A9    A:DB X:07 Y:00 P:E5 SP:FB STACK: 00 00 C6 25
+DB7B  6C 00 02  JMP ($0200) = DB7E              A:DB X:07 Y:00 P:E5 SP:FB STACK: 00 00 C6 25
 DB7E  A9 00     LDA #$00                        A:DB X:07 Y:00 P:E5 SP:FB STACK: 00 00 C6 25
 DB80  8D FF 02  STA $02FF = 00                  A:00 X:07 Y:00 P:67 SP:FB STACK: 00 00 C6 25
 DB83  A9 01     LDA #$01                        A:00 X:07 Y:00 P:67 SP:FB STACK: 00 00 C6 25
@@ -3345,7 +3345,7 @@ DBA3  8D 01 03  STA $0301 = 00                  A:AA X:07 Y:00 P:E5 SP:FB STACK:
 DBA6  A9 60     LDA #$60                        A:AA X:07 Y:00 P:E5 SP:FB STACK: 00 00 C6 25
 DBA8  8D 02 03  STA $0302 = 00                  A:60 X:07 Y:00 P:65 SP:FB STACK: 00 00 C6 25
 DBAB  20 B5 DB  JSR $DBB5                       A:60 X:07 Y:00 P:65 SP:FB STACK: 00 00 C6 25
-DBB5  6C FF 02  JMP ($02FF) = A900              ($FF,X) @ 06 = A900 = 00    A:60 X:07 Y:00 P:65 SP:F9 STACK: 00 00 C6 25 DB AD
+DBB5  6C FF 02  JMP ($02FF) = A900              A:60 X:07 Y:00 P:65 SP:F9 STACK: 00 00 C6 25 DB AD
 A900  00        BRK                             A:60 X:07 Y:00 P:65 SP:F9 STACK: 00 00 C6 25 DB AD
 A901  00        BRK                             A:60 X:07 Y:00 P:65 SP:F9 STACK: 00 00 C6 25 DB AD
 A902  00        BRK                             A:60 X:07 Y:00 P:65 SP:F9 STACK: 00 00 C6 25 DB AD

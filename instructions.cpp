@@ -471,6 +471,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				std::cout << ") = ";
 				hex_print(a_address, 4);
 				std::cout << "              ";
+				break;
 			case MODE_INDIRECTX:
 				std::cout << "($";
 				hex_print(*current_state.get_memory(pc+1), 2);
