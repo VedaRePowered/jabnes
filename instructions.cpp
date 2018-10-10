@@ -422,19 +422,19 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				std::cout << "$";
 				hex_print(*current_state.get_memory(pc+1), 2);
 				std::cout << ",X @ ";
-				hex_print(a_address, 4);
+				hex_print(a_address, 2);
 				std::cout << " = ";
 				hex_print(a, 2);
-				std::cout << "           ";
+				std::cout << "             ";
 				break;
 			case MODE_ZEROPAGEY:
 				std::cout << "$";
 				hex_print(*current_state.get_memory(pc+1), 2);
 				std::cout << ",Y @ ";
-				hex_print(a_address, 4);
+				hex_print(a_address, 2);
 				std::cout << " = ";
 				hex_print(a, 2);
-				std::cout << "           ";
+				std::cout << "             ";
 				break;
 			case MODE_ABSOLUTE:
 				std::cout << "$";
