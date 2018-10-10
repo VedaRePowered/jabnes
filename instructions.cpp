@@ -420,18 +420,18 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				break;
 			case MODE_ZEROPAGEX:
 				std::cout << "$";
-				hex_print(a_address, 2);
+				hex_print(*current_state.get_memory(pc+1), 2);
 				std::cout << ",X @ ";
-				hex_print(*current_state.get_reg('x')+a_address, 4);
+				hex_print(a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
 				std::cout << "           ";
 				break;
 			case MODE_ZEROPAGEY:
 				std::cout << "$";
-				hex_print(a_address, 2);
+				hex_print(*current_state.get_memory(pc+1), 2);
 				std::cout << ",Y @ ";
-				hex_print(*current_state.get_reg('y')+a_address, 4);
+				hex_print(a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
 				std::cout << "           ";
@@ -449,18 +449,18 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 				break;
 			case MODE_ABSOLUTEX:
 				std::cout << "$";
-				hex_print(a_address, 4);
+				hex_print(*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8), 4);
 				std::cout << ",X @ ";
-				hex_print(*current_state.get_reg('x')+a_address, 4);
+				hex_print(a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
 				std::cout << "         ";
 				break;
 			case MODE_ABSOLUTEY:
 				std::cout << "$";
-				hex_print(a_address, 4);
+				hex_print(*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8), 4);
 				std::cout << ",Y @ ";
-				hex_print(*current_state.get_reg('y')+a_address, 4);
+				hex_print(a_address, 4);
 				std::cout << " = ";
 				hex_print(a, 2);
 				std::cout << "         ";
