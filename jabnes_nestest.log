@@ -3052,32 +3052,28 @@ D93A  85 98     STA $98 = 00                    A:FF X:65 Y:00 P:A5 SP:FB STACK:
 D93C  24 98     BIT $98 = FF                    A:FF X:65 Y:00 P:A5 SP:FB STACK: 00 00 C6 1A
 D93E  A0 34     LDY #$34                        A:FF X:65 Y:00 P:E5 SP:FB STACK: 00 00 C6 1A
 D940  B1 97     LDA ($97),Y = FFFF @ 0033 = A3  A:FF X:65 Y:34 P:65 SP:FB STACK: 00 00 C6 1A
-D942  C9 A3     CMP #$A3                        A:00 X:65 Y:34 P:67 SP:FB STACK: 00 00 C6 1A
-D944  D0 02     BNE $D948                       A:00 X:65 Y:34 P:64 SP:FB STACK: 00 00 C6 1A
-D948  A9 EB     LDA #$EB                        A:00 X:65 Y:34 P:64 SP:FB STACK: 00 00 C6 1A
-D94A  85 00     STA $00 = 00                    A:EB X:65 Y:34 P:E4 SP:FB STACK: 00 00 C6 1A
-D94C  A5 00     LDA $00 = EB                    A:EB X:65 Y:34 P:E4 SP:FB STACK: 00 00 C6 1A
-D94E  48        PHA                             A:EB X:65 Y:34 P:E4 SP:FB STACK: 00 00 C6 1A
-D94F  A9 46     LDA #$46                        A:EB X:65 Y:34 P:E4 SP:FA STACK: 00 00 C6 1A EB
-D951  85 FF     STA $FF = 00                    A:46 X:65 Y:34 P:64 SP:FA STACK: 00 00 C6 1A EB
-D953  A9 01     LDA #$01                        A:46 X:65 Y:34 P:64 SP:FA STACK: 00 00 C6 1A EB
-D955  85 00     STA $00 = EB                    A:01 X:65 Y:34 P:64 SP:FA STACK: 00 00 C6 1A EB
-D957  A0 FF     LDY #$FF                        A:01 X:65 Y:34 P:64 SP:FA STACK: 00 00 C6 1A EB
-D959  B1 FF     LDA ($FF),Y = 0146 @ 0245 = 12  A:01 X:65 Y:FF P:E4 SP:FA STACK: 00 00 C6 1A EB
-D95B  C9 12     CMP #$12                        A:01 X:65 Y:FF P:64 SP:FA STACK: 00 00 C6 1A EB
-D95D  F0 04     BEQ $D963                       A:01 X:65 Y:FF P:E4 SP:FA STACK: 00 00 C6 1A EB
-D95F  68        PLA                             A:01 X:65 Y:FF P:E4 SP:FA STACK: 00 00 C6 1A EB
-D960  A9 EC     LDA #$EC                        A:EB X:65 Y:FF P:E4 SP:FB STACK: 00 00 C6 1A
-D962  48        PHA                             A:EC X:65 Y:FF P:E4 SP:FB STACK: 00 00 C6 1A
-D963  68        PLA                             A:EC X:65 Y:FF P:E4 SP:FA STACK: 00 00 C6 1A EC
-D964  85 00     STA $00 = 01                    A:EC X:65 Y:FF P:E4 SP:FB STACK: 00 00 C6 1A
-D966  A2 ED     LDX #$ED                        A:EC X:65 Y:FF P:E4 SP:FB STACK: 00 00 C6 1A
-D968  A9 00     LDA #$00                        A:EC X:ED Y:FF P:E4 SP:FB STACK: 00 00 C6 1A
-D96A  85 33     STA $33 = A3                    A:00 X:ED Y:FF P:66 SP:FB STACK: 00 00 C6 1A
-D96C  A9 04     LDA #$04                        A:00 X:ED Y:FF P:66 SP:FB STACK: 00 00 C6 1A
-D96E  85 34     STA $34 = 00                    A:04 X:ED Y:FF P:64 SP:FB STACK: 00 00 C6 1A
-D970  A0 00     LDY #$00                        A:04 X:ED Y:FF P:64 SP:FB STACK: 00 00 C6 1A
-D972  18        CLC                             A:04 X:ED Y:00 P:66 SP:FB STACK: 00 00 C6 1A
+D942  C9 A3     CMP #$A3                        A:A3 X:65 Y:34 P:E5 SP:FB STACK: 00 00 C6 1A
+D944  D0 02     BNE $D948                       A:A3 X:65 Y:34 P:67 SP:FB STACK: 00 00 C6 1A
+D946  B0 04     BCS $D94C                       A:A3 X:65 Y:34 P:67 SP:FB STACK: 00 00 C6 1A
+D94C  A5 00     LDA $00 = 00                    A:A3 X:65 Y:34 P:67 SP:FB STACK: 00 00 C6 1A
+D94E  48        PHA                             A:00 X:65 Y:34 P:67 SP:FB STACK: 00 00 C6 1A
+D94F  A9 46     LDA #$46                        A:00 X:65 Y:34 P:67 SP:FA STACK: 00 00 C6 1A 00
+D951  85 FF     STA $FF = 00                    A:46 X:65 Y:34 P:65 SP:FA STACK: 00 00 C6 1A 00
+D953  A9 01     LDA #$01                        A:46 X:65 Y:34 P:65 SP:FA STACK: 00 00 C6 1A 00
+D955  85 00     STA $00 = 00                    A:01 X:65 Y:34 P:65 SP:FA STACK: 00 00 C6 1A 00
+D957  A0 FF     LDY #$FF                        A:01 X:65 Y:34 P:65 SP:FA STACK: 00 00 C6 1A 00
+D959  B1 FF     LDA ($FF),Y = 0146 @ 0245 = 12  A:01 X:65 Y:FF P:E5 SP:FA STACK: 00 00 C6 1A 00
+D95B  C9 12     CMP #$12                        A:12 X:65 Y:FF P:65 SP:FA STACK: 00 00 C6 1A 00
+D95D  F0 04     BEQ $D963                       A:12 X:65 Y:FF P:67 SP:FA STACK: 00 00 C6 1A 00
+D963  68        PLA                             A:12 X:65 Y:FF P:67 SP:FA STACK: 00 00 C6 1A 00
+D964  85 00     STA $00 = 01                    A:00 X:65 Y:FF P:67 SP:FB STACK: 00 00 C6 1A
+D966  A2 ED     LDX #$ED                        A:00 X:65 Y:FF P:67 SP:FB STACK: 00 00 C6 1A
+D968  A9 00     LDA #$00                        A:00 X:ED Y:FF P:E5 SP:FB STACK: 00 00 C6 1A
+D96A  85 33     STA $33 = A3                    A:00 X:ED Y:FF P:67 SP:FB STACK: 00 00 C6 1A
+D96C  A9 04     LDA #$04                        A:00 X:ED Y:FF P:67 SP:FB STACK: 00 00 C6 1A
+D96E  85 34     STA $34 = 00                    A:04 X:ED Y:FF P:65 SP:FB STACK: 00 00 C6 1A
+D970  A0 00     LDY #$00                        A:04 X:ED Y:FF P:65 SP:FB STACK: 00 00 C6 1A
+D972  18        CLC                             A:04 X:ED Y:00 P:67 SP:FB STACK: 00 00 C6 1A
 D973  A9 FF     LDA #$FF                        A:04 X:ED Y:00 P:66 SP:FB STACK: 00 00 C6 1A
 D975  85 01     STA $01 = FF                    A:FF X:ED Y:00 P:E4 SP:FB STACK: 00 00 C6 1A
 D977  24 01     BIT $01 = FF                    A:FF X:ED Y:00 P:E4 SP:FB STACK: 00 00 C6 1A
@@ -3251,10 +3247,10 @@ DAD7  90 04     BCC $DADD                       A:80 X:FE Y:00 P:25 SP:FB STACK:
 DAD9  F0 02     BEQ $DADD                       A:80 X:FE Y:00 P:25 SP:FB STACK: 00 00 C6 1A
 DADB  10 02     BPL $DADF                       A:80 X:FE Y:00 P:25 SP:FB STACK: 00 00 C6 1A
 DADF  60        RTS                             A:80 X:FE Y:00 P:25 SP:FB STACK: 00 00 C6 1A
-C61B  A5 00     LDA $00 = EC                    A:80 X:FE Y:00 P:25 SP:FD STACK: 00 00
-C61D  85 10     STA $10 = 00                    A:EC X:FE Y:00 P:A5 SP:FD STACK: 00 00
-C61F  A9 00     LDA #$00                        A:EC X:FE Y:00 P:A5 SP:FD STACK: 00 00
-C621  85 00     STA $00 = EC                    A:00 X:FE Y:00 P:27 SP:FD STACK: 00 00
+C61B  A5 00     LDA $00 = 00                    A:80 X:FE Y:00 P:25 SP:FD STACK: 00 00
+C61D  85 10     STA $10 = 00                    A:00 X:FE Y:00 P:27 SP:FD STACK: 00 00
+C61F  A9 00     LDA #$00                        A:00 X:FE Y:00 P:27 SP:FD STACK: 00 00
+C621  85 00     STA $00 = 00                    A:00 X:FE Y:00 P:27 SP:FD STACK: 00 00
 C623  20 E0 DA  JSR $DAE0                       A:00 X:FE Y:00 P:27 SP:FD STACK: 00 00
 DAE0  A9 00     LDA #$00                        A:00 X:FE Y:00 P:27 SP:FB STACK: 00 00 C6 25
 DAE2  85 33     STA $33 = 00                    A:00 X:FE Y:00 P:27 SP:FB STACK: 00 00 C6 25
@@ -5788,7 +5784,9 @@ C701  FC A9 A9  JMP ($A9A9) = 0000              ($A9,X) @ 40 = 0000 = 00    A:A9
 000D  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
 000E  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
 000F  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
-0010  EC 00 00  CPX $0000 = 00                  A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
+0010  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
+0011  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
+0012  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
 0013  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
 0014  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
 0015  00        BRK                             A:A9 X:97 Y:4E P:ED SP:F1 STACK: 00 00 C6 31 C6 AB FD EA FD A9 FD EA FD EA
