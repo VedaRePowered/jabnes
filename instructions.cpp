@@ -149,8 +149,8 @@ void shift_left(state& current_state, unsigned short * a, unsigned short * b) { 
 		*b = tmp & 0x00FF;
 	}
 	current_state.set_flag('c', (bool)(tmp & 0b100000000));
-	set_z_flag(*current_state.get_reg('a'), current_state);
-	set_n_flag(tmp, current_state);
+	set_z_flag(tmp & 0x00FF, current_state);
+	set_n_flag(tmp & 0x00FF, current_state);
 }
 
 void shift_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
@@ -164,8 +164,8 @@ void shift_right(state& current_state, unsigned short * a, unsigned short * b) {
 		tmp = *b >> 1;
 		*b = tmp & 0x00FF;
 	}
-	set_z_flag(*current_state.get_reg('a'), current_state);
-	set_n_flag(tmp, current_state);
+	set_z_flag(tmp & 0x00FF, current_state);
+	set_n_flag(tmp & 0x00FF, current_state);
 }
 
 void roll_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
