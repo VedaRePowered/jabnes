@@ -1137,7 +1137,7 @@ cpu::cpu(void) {
 		"JMP", // opcode
 		jump // function
 	);
-	instructions[0xFC] = nes_instruction(
+	instructions[0x6C] = nes_instruction(
 		5, // time
 		MODE_INDIRECT, // mode
 		'd', // pram 2
