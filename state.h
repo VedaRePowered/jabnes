@@ -32,6 +32,7 @@ private:
 	unsigned short oam_spr_n[0x0040];
 	unsigned short oam_spr_a[0x0040];
 	unsigned short * cpu_memory_map[0x10000];
+	unsigned short * ppu_memory_map[0x10000];
 };
 
 

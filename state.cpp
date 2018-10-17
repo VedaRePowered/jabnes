@@ -29,6 +29,25 @@ state::state() {
 		this->cpu_memory_map[i] = &(cart_mem[i-0x4020]);
 	}
 
+	// build an array for mapping nes ppu memory
+	for (int i=0x0000; i <= 0x1FFF; i++) {
+		this->ppu_memory_map[i] = &(pattern_table[0][i]);
+		this->ppu_memory_map[i+0x1000] = &(pattern_table[1][i]);
+	}
+	for (int i=0x0000; i <= 0x03FF; i++) {
+		for (int j=0; j<4; j++) {
+			this->ppu_memory_map[0x2400+i+j*0x0400] = &(name_table[j][i]);
+		}
+	}
+	for (int i=0x3000; i <= 0x3EFF; i++) {
+		this->ppu_memory_map[i] = this->ppu_memory_map[i-0x1000];
+	}
+	for (int i=0x00; i <= 0x20; i++) {
+		for (int o=0; o < 6; o+= 0x20) {
+			this->ppu_memory_map[0x3F00+i+o] = &(palette_ram[i]);
+		}
+	}
+
 	this->reg_a = 0;
 	this->reg_x = 0;
 	this->reg_y = 0;
