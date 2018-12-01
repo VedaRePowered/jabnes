@@ -12,7 +12,15 @@ public:
 	void set_flag(char flag, bool val);
 	unsigned short * get_memory(unsigned short loc);
 	void set_memory(unsigned short loc, unsigned short val);
+
+	unsigned short get_ppu_memory(unsigned short loc);
+	void set_ppu_memory(unsigned short loc, unsigned short val);
+
 	bool load_rom(char const * location);
+
+	unsigned short get_cycle();
+	void reset_cycle();
+	void inc_cycle(unsigned short amount);
 private:
 	unsigned short reg_a;
 	unsigned short reg_x;
@@ -33,6 +41,8 @@ private:
 	unsigned short oam_spr_a[0x0040];
 	unsigned short * cpu_memory_map[0x10000];
 	unsigned short * ppu_memory_map[0x10000];
+
+	unsigned short cpu_cycle;
 };
 
 

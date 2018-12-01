@@ -149,6 +149,14 @@ void state::set_memory(unsigned short loc, unsigned short val) {
 	}
 }
 
+unsigned short state::get_ppu_memory(unsigned short loc) {
+	return *(ppu_memory_map[loc]);
+}
+
+void state::set_ppu_memory(unsigned short loc, unsigned short val) {
+	*(ppu_memory_map[loc]) = val;
+}
+
 bool state::load_rom(char const * location) {
 	std::ifstream rom;
 	rom.open(location, std::ios::binary);
@@ -206,4 +214,16 @@ bool state::load_rom(char const * location) {
 	rom.close();
 
 	return true;
+}
+
+unsigned short state::get_cycle() {
+	return this->cpu_cycle;
+}
+
+void state::reset_cycle() {
+	this->cpu_cycle = 0;
+}
+
+void state::inc_cycle(unsigned short amount) {
+	this->cpu_cycle += amount;
 }
