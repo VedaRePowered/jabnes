@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cairomm/context.h>
 #include <glibmm/main.h>
+#include <math.h>
 
 #include "loop.h"
 #include "ppu.h"
@@ -59,35 +60,47 @@ bool JabnesCanvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
 
 	// cr->scale(width/256.0, height/240.0);
 
+	double xScale = width/256;
+	double yScale = height/240;
+	double fScale = xScale < yScale ? xScale : yScale;
+
+	int xDefaultScale = floor(xScale);
+	if (width < 256) {
+		xDefaultScale = 1;
+	}
+	int xExtraScale = width % 256;
+	int xSmallestRepeat = 256 * xDefaultScale;
+
+	int yDefaultScale = floor(yScale);
+	if (height < 240) {
+		yDefaultScale = 1;
+	}
+	int yExtraScale = height % 240;
+	int ySmallestRepeat = 240 * yDefaultScale;
+
 	nes_ppu.set_buffer_pixel(4, 4, 51);
+	int yOffsetBuildup = 0;
 	for (int y = 0; y < 240; y++) {
+		int xOffsetBuildup = 0;
 		for (int x = 0; x < 256; x++) {
 			unsigned short p = nes_ppu.get_buffer_pixel(x, y);
 			colour c = this->palette[p];
-			int g = (c.r + c.g + c.b) / 3;
-			if (y%4 == 0 & x%2 == 0) {
-				/*if (g < 64) {
-					std::cout << " ";
-				} else if (g < 128) {
-					std::cout << ":";
-				} else if (g < 192) {
-					std::cout << "?";
-				} else {
-					std::cout << "@";
-				}*/
-				//std::cout << (char)(p+32);
-			}
-			/*if (p != 0) {
-				std::cout << "r" << c.r << "g" << c.g << "b" << c.b << "@x" << x << "y" << y << std::endl;
-			}*/
+
 			cr->save();
 			cr->set_source_rgb(c.r/256.0, c.g/256.0, c.b/256.0);
-			cr->rectangle(x*3, y*3, 3, 3);
+			int xLocalScale = xDefaultScale;
+			int yLocalScale = yDefaultScale;
+			if (x % xSmallestRepeat < xExtraScale) {
+				xLocalScale += 1;
+				xOffsetBuildup += 1;
+			}
+			if (y % ySmallestRepeat < yExtraScale) {
+				yLocalScale += 1;
+				yOffsetBuildup += 1;
+			}
+			cr->rectangle(x*xDefaultScale+xOffsetBuildup, y*yDefaultScale+yOffsetBuildup, xLocalScale, yLocalScale);
 			cr->fill();
 			cr->restore();
-		}
-		if (y%4 == 0) {
-			//std::cout << std::endl;
 		}
 	}
 
