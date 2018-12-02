@@ -58,47 +58,41 @@ bool JabnesCanvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();
 
-	// cr->scale(width/256.0, height/240.0);
-
-	double xScale = width/256;
-	double yScale = height/240;
+	double xScale = width/256.0;
+	double yScale = height/240.0;
 	double fScale = xScale < yScale ? xScale : yScale;
+	int viewportSize = xScale < yScale ? width : height;
+	int scale = (int)floor(fScale);
+	double extraPixelRate = 1.0/(fScale - scale);
 
-	int xDefaultScale = floor(xScale);
-	if (width < 256) {
-		xDefaultScale = 1;
-	}
-	int xExtraScale = width % 256;
-	int xSmallestRepeat = 256 * xDefaultScale;
-
-	int yDefaultScale = floor(yScale);
-	if (height < 240) {
-		yDefaultScale = 1;
-	}
-	int yExtraScale = height % 240;
-	int ySmallestRepeat = 240 * yDefaultScale;
+	int xOffset = (width - viewportSize)/2 - 1;
+	int yOffset = (height - viewportSize)/100000 - 1;
 
 	nes_ppu.set_buffer_pixel(4, 4, 51);
-	int yOffsetBuildup = 0;
+	int yPixelOffset = 0;
 	for (int y = 0; y < 240; y++) {
-		int xOffsetBuildup = 0;
+		int xPixelOffset = 0;
+
+		int localYScale = scale+1;
+		if (floor(fmod(y, extraPixelRate)) == 0) {
+			localYScale++;
+			yPixelOffset++;
+		}
+
 		for (int x = 0; x < 256; x++) {
 			unsigned short p = nes_ppu.get_buffer_pixel(x, y);
 			colour c = this->palette[p];
 
+			int localXScale = scale+1;
+			if (floor(fmod(x, extraPixelRate)) == 0) {
+				localXScale++;
+				xPixelOffset++;
+			}
+
 			cr->save();
 			cr->set_source_rgb(c.r/256.0, c.g/256.0, c.b/256.0);
-			int xLocalScale = xDefaultScale;
-			int yLocalScale = yDefaultScale;
-			if (x % xSmallestRepeat < xExtraScale) {
-				xLocalScale += 1;
-				xOffsetBuildup += 1;
-			}
-			if (y % ySmallestRepeat < yExtraScale) {
-				yLocalScale += 1;
-				yOffsetBuildup += 1;
-			}
-			cr->rectangle(x*xDefaultScale+xOffsetBuildup, y*yDefaultScale+yOffsetBuildup, xLocalScale, yLocalScale);
+
+			cr->rectangle(x*scale+xPixelOffset+xOffset, y*scale+yPixelOffset+yOffset, localXScale, localYScale);
 			cr->fill();
 			cr->restore();
 		}
