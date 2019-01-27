@@ -2,8 +2,13 @@
 #define STATE_H
 
 #include <cstddef>
+#include <queue>
 
-class state{
+class state;
+
+#include "ppu.h"
+
+class state {
 public:
 	state();
 	unsigned short * get_reg(char reg);
@@ -43,6 +48,9 @@ private:
 	unsigned short * ppu_memory_map[0x10000];
 
 	unsigned short cpu_cycle;
+
+public:
+	std::queue<ppu_change_element> ppu_queue;
 };
 
 

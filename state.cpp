@@ -148,10 +148,24 @@ unsigned short * state::get_memory(unsigned short loc) {
 
 void state::set_memory(unsigned short loc, unsigned short val) {
 	val = val & 0x00FF;
-	if(loc == 0x4017) {
+	if (loc == 0x4017) {
 	} else if (loc == 0x4018) {
 	} else {
 		*(get_memory(loc)) = val;
+	}
+	if (loc >= 0x2000 && loc < 0x4000) {
+		ppu_change_element tmp = {
+			*get_memory(0x2000),
+			*get_memory(0x2001),
+			*get_memory(0x2003),
+			*get_memory(0x2004),
+			*get_memory(0x2006),
+			*get_memory(0x2007),
+			*get_memory(0x2005),
+			(char)(1<<((loc-0x2000)%8)),
+			cpu_cycle
+		};
+		ppu_queue.push(tmp);
 	}
 }
 

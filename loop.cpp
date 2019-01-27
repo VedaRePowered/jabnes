@@ -38,11 +38,10 @@ JabnesCanvas::~JabnesCanvas() {
 bool JabnesCanvas::on_timeout() {
 
 	current_state.reset_cycle();
-	std::queue<ppu_change_element> draw_queue;
 	while (current_state.get_cycle() < 33248) {
 		nes_cpu.execute_instruction(current_state, false);
 	}
-	nes_ppu.draw_queue(current_state, draw_queue);
+	nes_ppu.draw_queue(current_state, current_state.ppu_queue);
 
 	// force cairo to redraw the entire canvas.
 	auto win = get_window();
