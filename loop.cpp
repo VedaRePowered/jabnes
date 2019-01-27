@@ -9,19 +9,19 @@
 #include "ppu.h"
 
 JabnesCanvas::JabnesCanvas() {
-	std::cout << "+------------------+ JABNES p0.0.1:" << std::endl;
+	std::cout << "+------------------+ JABNES p0.0.2:" << std::endl;
 	std::cout << "| J  A  B  N  E  S | - Creator: BEN1JEN" << std::endl;
 	std::cout << "| u  n  a  i  m  o | - Licence: GPL 3.0" << std::endl;
 	std::cout << "| s  o  s  n  u  f | - Ganra: Emulator" << std::endl;
 	std::cout << "| t  t  i  t  l  t | - - System: NES" << std::endl;
 	std::cout << "|    h  c  e  a  w | - - Supported ROMs: none" << std::endl;
-	std::cout << "|    e     n  t  a | - - Emulated: CPU (kinda)" << std::endl;
+	std::cout << "|    e     n  t  a | - - Emulated: CPU (no unofficial opcodes)" << std::endl;
 	std::cout << "|    r     d  i  r | - Has Base Features: No" << std::endl;
 	std::cout << "|          o  o  e | - Build Type: pre-alpha" << std::endl;
 	std::cout << "|             n    | - Platforms: Linux" << std::endl;
 	std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
 	std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
-	current_state.load_rom("nestest.nes");
+	current_state.load_rom("SMB1.nes");
 	nes_ppu.load_pal(this->palette, "nes.pal", false);
 	for (int y = 0; y < 240; y++) {
 		for (int x = 0; x < 256; x++) {

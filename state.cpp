@@ -7,6 +7,9 @@ unsigned short reg_dummy;
 int last_joy_1_read = -1;
 int last_joy_2_read = -1;
 
+unsigned short const_zero = 0;
+unsigned short const_one = 1;
+
 state::state() {
 	// build an array for mapping nes cpu memory
 	for (int i=0x0000; i <= 0x07FF; i++) {
@@ -132,10 +135,12 @@ void state::set_flag(char flag, bool val) {
 }
 
 unsigned short * state::get_memory(unsigned short loc) {
+	const_zero = 0;
+	const_one = 1;
 	if(loc == 0x4017) {
-		return (unsigned short)0;
+		return &const_zero;
 	} else if (loc == 0x4018) {
-		return (unsigned short)0;
+		return &const_zero;
 	} else {
 		return cpu_memory_map[loc];
 	}
