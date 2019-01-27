@@ -378,11 +378,11 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 									inst_size = (unsigned short)3;
 									break;
 		case MODE_INDIRECT:	tmp = *current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8);
-									a_address = (tmp&0xFF==0xFF) ? (*current_state.get_memory(tmp) + (*current_state.get_memory(tmp&0xFF00)<<8)):(*current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8));
+									a_address = ((tmp&0xFF) == 0xFF) ? (*current_state.get_memory(tmp) + (*current_state.get_memory(tmp&0xFF00)<<8)):(*current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1)<<8));
 									inst_size = (unsigned short)3;
 									break;
 		case MODE_INDIRECTX:	tmp = (*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF;
-									a_address = *current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1 & 0x00FF)<<8);
+									a_address = *current_state.get_memory(tmp) + (*current_state.get_memory((tmp+1) & 0x00FF)<<8);
 									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
 									inst_size = (unsigned short)2;
 									break;
