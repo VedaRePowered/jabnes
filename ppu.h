@@ -3,6 +3,7 @@
 
 #include <queue>
 
+struct ppu_change_element;
 #include "state.h"
 
 struct colour {
