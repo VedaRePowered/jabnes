@@ -136,7 +136,7 @@ unsigned short * ppu::get_buffer() {
 	return this->buffer;
 }
 
-void ppu::load_pal(colour * pal, const char * fname) {
+void ppu::load_pal(colour * pal, const char * fname, bool debug) {
 	std::ifstream palette_file;
 	palette_file.open(fname);
 	for (int i = 0; i < 64; i++) {
@@ -146,8 +146,10 @@ void ppu::load_pal(colour * pal, const char * fname) {
 		pal[i].r = c[0];
 		pal[i].g = c[1];
 		pal[i].b = c[2];
-		std::cout << "pallet@" << i << ": ";
-		std::cout << "r=" << pal[i].r << ", g=" << pal[i].g << ", b=" << pal[i].b;
-		std::cout << std::endl;
+		if (debug) {
+			std::cout << "pallet@" << i << ": ";
+			std::cout << "r=" << pal[i].r << ", g=" << pal[i].g << ", b=" << pal[i].b;
+			std::cout << std::endl;
+		}
 	}
 }

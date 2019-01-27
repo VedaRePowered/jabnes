@@ -32,7 +32,7 @@ public:
 	unsigned short get_buffer_pixel(unsigned short x, unsigned short y);
 	void draw_queue(state& current_state, std::queue<ppu_change_element> draw_queue);
 	unsigned short * get_buffer(void);
-	void load_pal(colour *, const char *);
+	void load_pal(colour *, const char *, bool);
 private:
 	unsigned short buffer[61440];
 };

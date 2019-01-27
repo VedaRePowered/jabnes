@@ -22,17 +22,17 @@ JabnesCanvas::JabnesCanvas() {
 	std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
 	std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
 	current_state.load_rom("nestest.nes");
-	nes_ppu.load_pal(this->palette, "nes.pal");
+	nes_ppu.load_pal(this->palette, "nes.pal", false);
 	for (int y = 0; y < 240; y++) {
 		for (int x = 0; x < 256; x++) {
-			// nes_ppu.set_buffer_pixel(x, y, 0);
+			nes_ppu.set_buffer_pixel(x, y, 0);
 		}
 	}
 	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 16 );
 }
 
 JabnesCanvas::~JabnesCanvas() {
-	std::cout << "stoping..." << std::endl;
+	std::cout << "Stoping emulation..." << std::endl;
 }
 
 bool JabnesCanvas::on_timeout() {
@@ -40,7 +40,7 @@ bool JabnesCanvas::on_timeout() {
 	current_state.reset_cycle();
 	std::queue<ppu_change_element> draw_queue;
 	while (current_state.get_cycle() < 33248) {
-		nes_cpu.execute_instruction(current_state, true);
+		nes_cpu.execute_instruction(current_state, false);
 	}
 	nes_ppu.draw_queue(current_state, draw_queue);
 
@@ -71,7 +71,6 @@ bool JabnesCanvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
 	int xOffset = (width - viewportSize)/2 - 1;
 	int yOffset = (height - viewportSize)/100000 - 1;
 
-	nes_ppu.set_buffer_pixel(4, 4, 51);
 	int yPixelOffset = 0;
 	for (int y = 0; y < 240; y++) {
 		int xPixelOffset = 0;
