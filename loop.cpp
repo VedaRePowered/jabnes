@@ -3,6 +3,8 @@
 #include <glibmm/main.h>
 #include <math.h>
 
+#include <queue>
+
 #include "loop.h"
 #include "ppu.h"
 
@@ -26,7 +28,7 @@ JabnesCanvas::JabnesCanvas() {
 			// nes_ppu.set_buffer_pixel(x, y, 0);
 		}
 	}
-	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 1000 );
+	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 16 );
 }
 
 JabnesCanvas::~JabnesCanvas() {
@@ -35,13 +37,14 @@ JabnesCanvas::~JabnesCanvas() {
 
 bool JabnesCanvas::on_timeout() {
 
-	// current_state.reset_cycle();
-	// while (current_state.get_cycle() < 33248) {
-		// nes_cpu.execute_instruction(current_state, false);
-	// }
-	// nes_ppu.draw_from_queue();
+	current_state.reset_cycle();
+	std::queue<ppu_change_element> draw_queue;
+	while (current_state.get_cycle() < 33248) {
+		nes_cpu.execute_instruction(current_state, true);
+	}
+	nes_ppu.draw_queue(current_state, draw_queue);
 
-	// force our program to redraw the entire canvas.
+	// force cairo to redraw the entire canvas.
 	auto win = get_window();
 	if (win)
 	{

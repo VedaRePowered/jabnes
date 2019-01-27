@@ -141,10 +141,10 @@ void bitwise_xor(state& current_state, unsigned short * a, unsigned short * b) {
 
 void shift_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
 	unsigned short tmp;
-	if (*a) {
+	if (a) {
 		tmp = *a << 1;
 		*a = tmp & 0x00FF;
-	} else if (*b) {
+	} else if (b) {
 		tmp = *b << 1;
 		*b = tmp & 0x00FF;
 	}
@@ -155,11 +155,11 @@ void shift_left(state& current_state, unsigned short * a, unsigned short * b) { 
 
 void shift_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
 	unsigned short tmp;
-	if (*a) {
+	if (a) {
 		current_state.set_flag('c', (bool)(*a & 0b00000001));
 		tmp = *a >> 1;
 		*a = tmp & 0x00FF;
-	} else if (*b) {
+	} else if (b) {
 		current_state.set_flag('c', (bool)(*b & 0b00000001));
 		tmp = *b >> 1;
 		*b = tmp & 0x00FF;
@@ -170,9 +170,9 @@ void shift_right(state& current_state, unsigned short * a, unsigned short * b) {
 
 void roll_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
 	unsigned short * tmp;
-	if (*a) {
+	if (a) {
 		tmp = a;
-	} else if (*b) {
+	} else if (b) {
 		tmp = b;
 	}
 	bool tmpc = current_state.get_flag('c');
@@ -186,11 +186,11 @@ void roll_left(state& current_state, unsigned short * a, unsigned short * b) { /
 	*tmp = *tmp & 0x00FF;
 }
 
-void roll_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+void roll_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b right one bit
 	unsigned short * tmp;
-	if (*a) {
+	if (a) {
 		tmp = a;
-	} else if (*b) {
+	} else if (b) {
 		tmp = b;
 	}
 	bool tmpc = current_state.get_flag('c');
@@ -334,17 +334,20 @@ void return_interupt(state& current_state, unsigned short * a, unsigned short * 
 }
 
 void cpu::execute_instruction(state& current_state, bool debug_mode) {
+	// std::cout << "ins_start" << std::endl;
 	unsigned short pc = *current_state.get_reg('c');
 	unsigned short inst_hex = *current_state.get_memory(pc);
 	nes_instruction instruction = instructions[inst_hex];
 	unsigned short a_address;
 	unsigned short * b;
 	unsigned short tmp;
+	// std::cout << "ins_fetch" << std::endl;
 	if (debug_mode) {
 		hex_print(pc, 4);
 		std::cout << "  ";
 	}
 	unsigned short inst_size;
+	bool page_boundary_crossed = false;
 	switch (instruction.address_type) {
 		case MODE_NOTHING:	a_address = 0;
 									inst_size = (unsigned short)1;
@@ -364,10 +367,14 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 		case MODE_ABSOLUTE:	a_address = *current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8);
 									inst_size = (unsigned short)3;
 									break;
-		case MODE_ABSOLUTEX:	a_address = (*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('x');
+		case MODE_ABSOLUTEX:	tmp = (*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8));
+									a_address = tmp + *current_state.get_reg('x');
+									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
 									inst_size = (unsigned short)3;
 									break;
-		case MODE_ABSOLUTEY:	a_address = (*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8)) + *current_state.get_reg('y');
+		case MODE_ABSOLUTEY:	tmp = (*current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8));
+									a_address = tmp + *current_state.get_reg('y');
+									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
 									inst_size = (unsigned short)3;
 									break;
 		case MODE_INDIRECT:	tmp = *current_state.get_memory(pc+1) + (*current_state.get_memory(pc+2)<<8);
@@ -376,16 +383,21 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 									break;
 		case MODE_INDIRECTX:	tmp = (*current_state.get_memory(pc+1) + *current_state.get_reg('x')) & 0xFF;
 									a_address = *current_state.get_memory(tmp) + (*current_state.get_memory(tmp+1 & 0x00FF)<<8);
+									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
 									inst_size = (unsigned short)2;
 									break;
 		case MODE_INDIRECTY:	tmp = *current_state.get_memory(*current_state.get_memory(pc+1)) + (*current_state.get_memory((*current_state.get_memory(pc+1)+1)&0xFF) << 8);
 									a_address = tmp + *current_state.get_reg('y');
+									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
 									inst_size = (unsigned short)2;
 									break;
-		case MODE_RELATIVE:	a_address = *current_state.get_reg('c')+*current_state.get_memory(pc+1)+2; // offset for this instruction (since 0 goes to the next instruction)
+		case MODE_RELATIVE:	tmp = *current_state.get_reg('c')+2; // offset for this instruction (since 0 goes to the next instruction)
+									a_address = tmp + *current_state.get_memory(pc+1);
+									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
 									inst_size = (unsigned short)2;
 									break;
 	}
+	// std::cout << "ins_addr" << std::endl;
 	if (debug_mode) {
 		for (int i = 0; i < 3; i++) {
 			if (i < inst_size) {
@@ -517,6 +529,9 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 		std::cout << " SP:";
 		hex_print(*current_state.get_reg('s'), 2);
 
+		std::cout << " CYCLES: ";
+		std::cout << current_state.get_cycle();
+
 		std::cout << " STACK:";
 		for (int i = 0xFF; i > *current_state.get_reg('s'); i--) {
 			std::cout << " ";
@@ -525,6 +540,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 
 		std::cout << std::endl;
 	}
+	// std::cout << "ins_debug" << std::endl;
 	pc += inst_size;
 	current_state.set_reg('c', pc);
 	if (instruction.pram_register != 'd') {
@@ -532,6 +548,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 	} else {
 		b = NULL;
 	}
+	// std::cout << "ins_pc" << std::endl;
 	if (instruction.execute_function) {
 		if (instruction.is_branch) {
 			tmp = 0;
@@ -552,12 +569,27 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 			}
 
 			instruction.execute_function(current_state, &a_address, &tmp);
+			if (tmp & 0x100) {
+				current_state.inc_cycle(1);
+			} else {
+				page_boundary_crossed = false;
+			}
+			// std::cout << "ins_branch" << std::endl;
 		} else if (instruction.opcode[0] == 'J') {
+			// std::cout << "ins_jump" << std::endl;
 			instruction.execute_function(current_state, &a_address, b);
+		} else if (instruction.address_type == MODE_NOTHING) {
+			// std::cout << "ins_mode_a" << std::endl;
+			instruction.execute_function(current_state, NULL, b);
 		} else {
+			// std::cout << "ins_other" << std::endl;
 			instruction.execute_function(current_state, current_state.get_memory(a_address), b);
 		}
 	}
+	// std::cout << "ins_exec" << std::endl;
+
+	current_state.inc_cycle(instruction.cycles + ((instruction.page_boundary_slowdown & page_boundary_crossed) ? 1 : 0));
+	// std::cout << "ins_cycle\nins_end" << std::endl;
 }
 
 cpu::cpu(void) {
@@ -1799,7 +1831,17 @@ cpu::cpu(void) {
 		"STY", // opcode
 		store // function
 	);
-	//unofficial instructions
+	// official nop
+	instructions[0xEA] = nes_instruction(
+		2, // time
+		MODE_NOTHING, // mode
+		'd', // pram 2
+		false, // page boundary slowdown
+		"NOP", // opcode
+		&dummy // function
+	);
+
+	// unofficial instructions
 	instructions[0x89] = nes_instruction( // for emulating Puzznic, Stealth Fighter, Infiltrator, and F-117A
 		2, // time
 		MODE_IMMEDIATE, // mode

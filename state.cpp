@@ -1,3 +1,4 @@
+#include <iostream>
 #include <fstream>
 
 #include "state.h"
@@ -15,7 +16,7 @@ state::state() {
 		this->cpu_memory_map[i+0x0800*3] = &(ram[i]);
 	}
 	for (int i=0; i <= 7; i++) {
-		for (int o=0; o < 1024; o+= 8) {
+		for (int o=0; o < 1024*8; o+= 8) {
 			this->cpu_memory_map[0x2000+i+o] = &(ppu_regs[i]);
 		}
 	}

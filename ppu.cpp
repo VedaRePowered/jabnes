@@ -136,7 +136,7 @@ unsigned short * ppu::get_buffer() {
 	return this->buffer;
 }
 
-void ppu::load_pal(colour * pal, char * fname) {
+void ppu::load_pal(colour * pal, const char * fname) {
 	std::ifstream palette_file;
 	palette_file.open(fname);
 	for (int i = 0; i < 64; i++) {

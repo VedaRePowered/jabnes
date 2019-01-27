@@ -18,6 +18,8 @@ const unsigned short MODE_INDIRECTX = 9;
 const unsigned short MODE_INDIRECTY = 10;
 const unsigned short MODE_RELATIVE = 11;
 
+void dummy(state&, unsigned short * a, unsigned short * b);
+
 // define instruction class
 class nes_instruction {
 public:

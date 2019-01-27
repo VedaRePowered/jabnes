@@ -2,7 +2,7 @@
 
 #include "nes_instruction.h"
 
-void dummy(state&, unsigned short * a, unsigned short * b) {
+void dummy(state& current_state, unsigned short * a, unsigned short * b) {
 	// Do nothing
 	// and that you are
 }
@@ -18,6 +18,7 @@ nes_instruction::nes_instruction() {
 	this->opcode[3] = '\0';
 	this->execute_function = &dummy;
 	this->is_branch = false;
+	this->is_unofficial = true;
 }
 
 nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, char pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *)) {
@@ -31,6 +32,7 @@ nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_t
 	this->opcode[3] = '\0';
 	this->execute_function = execute_function;
 	this->is_branch = false;
+	this->is_unofficial = false;
 }
 nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, char pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *), bool is_branch) {
 	this->cycles = cycles;
@@ -43,6 +45,7 @@ nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_t
 	this->opcode[3] = '\0';
 	this->execute_function = execute_function;
 	this->is_branch = is_branch;
+	this->is_unofficial = false;
 }
 
 nes_instruction::nes_instruction(unsigned short cycles, unsigned short address_type, char pram_register, bool page_boundary_slowdown, std::string opcode, void (*execute_function)(state&, unsigned short *, unsigned short *), bool is_branch, bool is_unofficial) {
