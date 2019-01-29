@@ -37,7 +37,7 @@ NOTE: this project does not have base features (thus the p before the version.)
 * * [Changing the ROM](#loaded-rom)
 * * [Changing the colour pallet](#colour-pallet)
 ### Footer
-* [Licence (GPL3.0)](/blob/master/LICENCE.txt GPL3.0)
+* [Licence (GPL3.0)](/blob/master/LICENCE.txt)
 * [Disclaimer](#disclaimer)
 
 ## Details:
@@ -84,7 +84,7 @@ To run there are no command line args, and the program begins emulation of the R
 4. Look for this line: `current_state.load_rom("default_rom.nes");` where default_rom.nes is whatever I currently have it set to
 5. Then Change default_rom.nes to your ROM file (NOTE: your ROM has to be in the same directory as the jabnes executible, or you have to use a relative path, but it does not need to be present at build time.)
 
-The rom file is expected to be a [standard ines ROM file](https://wiki.nesdev.com/w/index.php/INES iNES format).
+The rom file is expected to be a [standard ines ROM file](https://wiki.nesdev.com/w/index.php/INES).
 Currently no mappers (chips on the ROM board) are supported.
 
 #### Colour pallet:
