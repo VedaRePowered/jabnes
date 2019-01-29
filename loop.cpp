@@ -22,13 +22,20 @@ JabnesCanvas::JabnesCanvas() {
 	std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
 	std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
 	current_state.load_rom("SMB1.nes");
-	nes_ppu.load_pal(this->palette, "nes.pal", false);
+	nes_ppu.load_pal(this->palette, "generated.pal", true);
 	for (int y = 0; y < 240; y++) {
 		for (int x = 0; x < 256; x++) {
-			nes_ppu.set_buffer_pixel(x, y, 0);
+			nes_ppu.set_buffer_pixel(x, y, 31);
 		}
 	}
-	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 16 );
+
+	for (int i=0x0000; i <= 0x03FF; i++) {
+		for (int j=0; j<4; j++) {
+			current_state.set_ppu_memory(0x2400+i+j*0x0400, 3);
+		}
+	}
+
+	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 20 );
 }
 
 JabnesCanvas::~JabnesCanvas() {
@@ -37,11 +44,38 @@ JabnesCanvas::~JabnesCanvas() {
 
 bool JabnesCanvas::on_timeout() {
 
+	ppu_change_element tmp = {
+		*current_state.get_memory(0x2000),
+		*current_state.get_memory(0x2001),
+		*current_state.get_memory(0x2003),
+		*current_state.get_memory(0x2004),
+		*current_state.get_memory(0x2006),
+		*current_state.get_memory(0x2007),
+		*current_state.get_memory(0x2005),
+		0,
+		0
+	};
+	current_state.ppu_queue.push(tmp);
+
 	current_state.reset_cycle();
 	while (current_state.get_cycle() < 33248) {
 		nes_cpu.execute_instruction(current_state, false);
 	}
-	nes_ppu.draw_queue(current_state, current_state.ppu_queue);
+
+	ppu_change_element tmp2 = {
+		*current_state.get_memory(0x2000),
+		*current_state.get_memory(0x2001),
+		*current_state.get_memory(0x2003),
+		*current_state.get_memory(0x2004),
+		*current_state.get_memory(0x2006),
+		*current_state.get_memory(0x2007),
+		*current_state.get_memory(0x2005),
+		0,
+		33247
+	};
+	current_state.ppu_queue.push(tmp2);
+
+	nes_ppu.draw_from_queue(current_state, current_state.ppu_queue);
 
 	// force cairo to redraw the entire canvas.
 	auto win = get_window();

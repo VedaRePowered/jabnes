@@ -47,9 +47,12 @@ state::state() {
 		this->ppu_memory_map[i] = this->ppu_memory_map[i-0x1000];
 	}
 	for (int i=0x00; i <= 0x20; i++) {
-		for (int o=0; o < 6; o+= 0x20) {
+		for (int o=0; o < 7*0x20; o += 0x20) {
 			this->ppu_memory_map[0x3F00+i+o] = &(palette_ram[i]);
 		}
+	}
+	for (unsigned i = 0x4000; i < 0x10000; i++) {
+		this->ppu_memory_map[i] = &reg_dummy;
 	}
 
 	this->reg_a = 0;
@@ -154,26 +157,43 @@ void state::set_memory(unsigned short loc, unsigned short val) {
 		*(get_memory(loc)) = val;
 	}
 	if (loc >= 0x2000 && loc < 0x4000) {
-		ppu_change_element tmp = {
-			*get_memory(0x2000),
-			*get_memory(0x2001),
-			*get_memory(0x2003),
-			*get_memory(0x2004),
-			*get_memory(0x2006),
-			*get_memory(0x2007),
-			*get_memory(0x2005),
-			(char)(1<<((loc-0x2000)%8)),
-			cpu_cycle
-		};
-		ppu_queue.push(tmp);
+		char changed = 0;
+		switch (loc&7) {
+			case 0:	changed = 'c';
+						break;
+			case 1:	changed = 'm';
+						break;
+			case 5:	changed = 's';
+						break;
+			case 6:	changed = 'p' ^ 'a'; // ppu address
+						break;
+			case 7:	changed = 'p' ^ 'd'; // ppu data
+						break;
+		}
+		if (changed != 0) {
+			ppu_change_element tmp = {
+				*get_memory(0x2000),
+				*get_memory(0x2001),
+				*get_memory(0x2003),
+				*get_memory(0x2004),
+				*get_memory(0x2006),
+				*get_memory(0x2007),
+				*get_memory(0x2005),
+				changed,
+				cpu_cycle
+			};
+			ppu_queue.push(tmp);
+		}
 	}
 }
 
 unsigned short state::get_ppu_memory(unsigned short loc) {
+	// std::cout << "PPU_READ:  " << loc << std::endl;
 	return *(ppu_memory_map[loc]);
 }
 
 void state::set_ppu_memory(unsigned short loc, unsigned short val) {
+	// std::cout << "PPU_WRITE: " << loc << std::endl;
 	*(ppu_memory_map[loc]) = val;
 }
 
