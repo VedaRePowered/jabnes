@@ -42,7 +42,7 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 
 	unsigned change_pixel = 0;
 	unsigned last_change_pixel = 0;
-	std::cout << "ppuFrame queue size: " << draw_queue.size() << std::endl;
+	// std::cout << "ppuFrame queue size: " << draw_queue.size() << std::endl;
 	while (draw_queue.size() > 0) {
 		ppu_change_element tmp = draw_queue.front();
 

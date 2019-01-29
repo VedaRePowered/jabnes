@@ -37,8 +37,8 @@ NOTE: this project does not have base features (thus the p before the version.)
 * * [Changing the ROM](#loaded-rom)
 * * [Changing the colour pallet](#colour-pallet)
 ### Footer
-* [Licence](/LICENCE.txt)
-* [disclaimer](#disclaimer)
+* [Licence (GPL3.0)](/blob/master/LICENCE.txt GPL3.0)
+* [Disclaimer](#disclaimer)
 
 ## Details:
 This is an NES emulator written by BEN1JEN with the help of 101100, strictly for the purpose of having the experience of writing one. As a result the project does not have any goal of doing something another emulator hasn't already done, but I do still want to make this somewhat usable. In the future I may add a goal, I'm currently considering adding a giant set of tools built in, making it ideal for homebrew development (which is why I'm using gtkmm/cairo.) However currently I still need to make it render anything useful at all.
