@@ -48,9 +48,10 @@ If you do feel like making a pull request, I'll definitely look into it as soon 
 Enjoy :)
 
 ## Github, Gitlab and bitbucket:
-I'm planning on having a mirror of this on Github (and the same applies for Bitbucket), but origin/my primary server will still be on my Gitlab instance. hosted at [gitlab.101100.ca](https://gitlab.101100.ca/ben1jen).
+I'm have a mirror of this on Github (and I’m planning on doing the same on Bitbucket), but origin/my primary server will still be on my Gitlab instance. hosted at [gitlab.101100.ca](https://gitlab.101100.ca/ben1jen).
 If I do put a mirror up anywhere else it'll be here in this list:
 * [Local Gitlab](https://gitlab.101100.ca/ben1jen/jabnes)
+* [Github.com](https://github.com/BEN1JEN/jabnes)
 
 ## Building:
 
