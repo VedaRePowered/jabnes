@@ -13,7 +13,7 @@ struct position {
 
 ppu::ppu() {}
 
-position get_pos_of_ppu_clock(unsigned short ppu_clock) {
+position get_pos_of_ppu_clock(unsigned ppu_clock) {
 	position pos;
 	pos.x = ppu_clock % 341;
 	pos.y = ppu_clock / 341 - 21;
@@ -27,22 +27,23 @@ void ppu::set_buffer_pixel(unsigned short x, unsigned short y, unsigned short co
 	y = y & 0xFF;
 	this->buffer[x + (y*256)] = colour;
 }
+
 unsigned short ppu::get_buffer_pixel(unsigned short x, unsigned short y) {
 	x = x & 0xFF;
 	y = y & 0xFF;
 	return this->buffer[x + (y*256)] & 0x3F;
 }
+
 void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& draw_queue) {
-	unsigned short ppu_control;
-	unsigned short ppu_mask;
-	unsigned short ppu_scroll_x;
-	unsigned short ppu_scroll_y;
-	unsigned short ppu_address;
-	bool scroll_vert;
+	unsigned short ppu_control = 0;
+	unsigned short ppu_mask = 0;
+	unsigned short ppu_scroll_x = 0;
+	unsigned short ppu_scroll_y = 0;
+	unsigned short ppu_address = 0;
+	bool scroll_vert = false;
 
 	unsigned change_pixel = 0;
 	unsigned last_change_pixel = 0;
-	// std::cout << "ppuFrame queue size: " << draw_queue.size() << std::endl;
 	while (draw_queue.size() > 0) {
 		ppu_change_element tmp = draw_queue.front();
 
@@ -59,6 +60,7 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 				unsigned short nametable_y = pixel.y>>3; // divide by 8
 				nametable_x += ppu_scroll_x>>3;
 				nametable_y += ppu_scroll_y>>3;
+				// std::cout << "scroll x:" << ppu_scroll_x << ", y:" << ppu_scroll_y << std::endl;
 				if (ppu_control & 0b00000001) {
 					nametable_x += 256>>3;
 				}
@@ -77,7 +79,7 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 
 				unsigned short palette_x = nametable_x>>2;
 				unsigned short palette_y = nametable_y>>2;
-				unsigned short palette = current_state.get_ppu_memory(palette_x + (palette_y>>3) + nametable_address + 0x03C0);
+				unsigned short palette = current_state.get_ppu_memory(palette_x + (palette_y<<3) + nametable_address + 0x03C0);
 				if (!(nametable_x>>1 & 0b00000001)) {
 					palette = palette >> 2;
 				}
@@ -87,25 +89,29 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 				palette = palette & 0b00000011;
 
 				nametable_address += nametable_x;
-				nametable_address += nametable_y<<8; // mulltiply by 256
+				nametable_address += nametable_y<<5; // mulltiply by 32 (max x value)
 
-				// std::cout << "nametable_address " << nametable_address << std::endl;
 				unsigned short tile = current_state.get_ppu_memory(nametable_address);
 				unsigned short palette_colour_high_byte;
 				unsigned short palette_colour_low_byte;
 				if (!(ppu_control & 0b00010000)) { // pattern table select (0x0000 or 0x1000)
-					palette_colour_high_byte = current_state.get_ppu_memory(tile>>4);
-					palette_colour_low_byte = current_state.get_ppu_memory((tile>>4)+8);
+					palette_colour_high_byte = current_state.get_ppu_memory((tile<<4)+(pixel.y-ppu_scroll_y));
+					palette_colour_low_byte = current_state.get_ppu_memory((tile<<4)+(pixel.y-ppu_scroll_y)+8);
 				} else {
-					palette_colour_high_byte = current_state.get_ppu_memory((tile>>4)+0x1000);
-					palette_colour_low_byte = current_state.get_ppu_memory((tile>>4)+0x1000+8);
+					palette_colour_high_byte = current_state.get_ppu_memory((tile<<4)+(pixel.y-ppu_scroll_y)+0x1000);
+					palette_colour_low_byte = current_state.get_ppu_memory((tile<<4)+(pixel.y-ppu_scroll_y)+0x1000+8);
 				}
+
+				// std::cout << "palette: " << std::hex << palette << std::endl;
+				// std::cout << "tile:" << std::hex << tile << ", palColHigh:" << std::hex << palette_colour_high_byte << ", palColLow:" << std::hex << palette_colour_low_byte << std::endl;
 
 				unsigned short palette_colours[4];
 				palette_colours[0] = current_state.get_ppu_memory(0x3F00);
-				palette_colours[1] = current_state.get_ppu_memory(0x3F01+(palette<<2));
-				palette_colours[2] = current_state.get_ppu_memory(0x3F02+(palette<<4));
-				palette_colours[3] = current_state.get_ppu_memory(0x3F03+(palette<<6));
+				palette_colours[1] = current_state.get_ppu_memory(0x3F01+(palette*3));
+				palette_colours[2] = current_state.get_ppu_memory(0x3F02+(palette*3));
+				palette_colours[3] = current_state.get_ppu_memory(0x3F03+(palette*3));
+
+				// std::cout << "palette_colours: " << std::hex << palette_colours[0] << ", " << std::hex << palette_colours[1] << ", " << std::hex << palette_colours[2] << ", " << std::hex << palette_colours[3] << std::endl;
 
 				for (int i = 0; i < 8; i++) {
 					unsigned short palette_colour_bits = (palette_colour_low_byte>>(7-i))&0b00000001;
@@ -139,10 +145,14 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 			case 'p' ^ 'd':
 				current_state.set_ppu_memory(ppu_address, tmp.ppu_data);
 				break;
+			default: // Update all
+				ppu_control = tmp.ppu_control;
+				ppu_mask = tmp.ppu_mask;
+				ppu_address = tmp.ppu_address;
+				current_state.set_ppu_memory(ppu_address, tmp.ppu_data);
 		}
 	}
 }
-
 
 unsigned short * ppu::get_buffer() {
 	return this->buffer;

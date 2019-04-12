@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include <cairomm/context.h>
 #include <glibmm/main.h>
@@ -9,7 +10,7 @@
 #include "ppu.h"
 
 JabnesCanvas::JabnesCanvas() {
-	std::cout << "+------------------+ JABNES p0.0.2:" << std::endl;
+	std::cout << "+------------------+ JABNES p0.0.3:" << std::endl;
 	std::cout << "| J  A  B  N  E  S | - Creator: BEN1JEN" << std::endl;
 	std::cout << "| u  n  a  i  m  o | - Licence: GPL 3.0" << std::endl;
 	std::cout << "| s  o  s  n  u  f | - Ganra: Emulator" << std::endl;
@@ -31,11 +32,20 @@ JabnesCanvas::JabnesCanvas() {
 
 	for (int i=0x0000; i <= 0x03FF; i++) {
 		for (int j=0; j<4; j++) {
-			current_state.set_ppu_memory(0x2400+i+j*0x0400, 3);
+			current_state.set_ppu_memory(0x2000+i+j*0x0400, 3);
 		}
 	}
 
-	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 20 );
+	for (int i=0x0000; i <= 0x0FFF; i++) {
+		current_state.set_ppu_memory(i+0x0000, std::rand()&0xFF);
+		current_state.set_ppu_memory(i+0x1000, std::rand()&0xFF);
+	}
+
+	for (int i=0x3F00; i <= 0x3F0F; i++) {
+		current_state.set_ppu_memory(i, std::rand()&0x3F);
+	}
+
+	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 1500 );
 }
 
 JabnesCanvas::~JabnesCanvas() {
@@ -58,7 +68,7 @@ bool JabnesCanvas::on_timeout() {
 	current_state.ppu_queue.push(tmp);
 
 	current_state.reset_cycle();
-	while (current_state.get_cycle() < 33248) {
+	while (current_state.get_cycle() < 29780) {
 		nes_cpu.execute_instruction(current_state, false);
 	}
 
@@ -71,7 +81,7 @@ bool JabnesCanvas::on_timeout() {
 		*current_state.get_memory(0x2007),
 		*current_state.get_memory(0x2005),
 		0,
-		33247
+		29780
 	};
 	current_state.ppu_queue.push(tmp2);
 

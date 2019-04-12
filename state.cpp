@@ -40,7 +40,7 @@ state::state() {
 	}
 	for (int i=0x0000; i <= 0x03FF; i++) {
 		for (int j=0; j<4; j++) {
-			this->ppu_memory_map[0x2400+i+j*0x0400] = &(name_table[j][i]);
+			this->ppu_memory_map[0x2000+i+j*0x0400] = &(name_table[j][i]);
 		}
 	}
 	for (int i=0x3000; i <= 0x3EFF; i++) {
@@ -193,7 +193,7 @@ unsigned short state::get_ppu_memory(unsigned short loc) {
 }
 
 void state::set_ppu_memory(unsigned short loc, unsigned short val) {
-	// std::cout << "PPU_WRITE: " << loc << std::endl;
+	// std::cout << "PPU_WRITE: " << std::hex << loc << std::endl;
 	*(ppu_memory_map[loc]) = val;
 }
 
