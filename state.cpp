@@ -193,7 +193,7 @@ unsigned short state::get_ppu_memory(unsigned short loc) {
 }
 
 void state::set_ppu_memory(unsigned short loc, unsigned short val) {
-	// std::cout << "PPU_WRITE: " << std::hex << loc << std::endl;
+	// std::cout << "PPU_WRITE: " << std::hex << val << "@" << std::hex << loc << std::endl;
 	*(ppu_memory_map[loc]) = val;
 }
 
@@ -221,6 +221,11 @@ bool state::load_rom(char const * location) {
 
 	unsigned short prg_banks = header[4];
 	unsigned short chr_banks = header[5];
+	unsigned short mapper = ( (header[6] >> 4) & 0x0F ) | ( (header[7]) & 0xF0 );
+
+	if (mapper != 0) {
+		return false;
+	}
 
 	bool rom_trainer_exists = header[6] & 0b00000100;
 	int rom_trainer_length = rom_trainer_exists ? 0x200:0;
@@ -234,6 +239,9 @@ bool state::load_rom(char const * location) {
 	if (prg_banks > 2) {
 		return false;
 	}
+	if (chr_banks > 1) {
+		return false;
+	}
 
 	rom.seekg(rom_trainer_length, std::ios::cur);
 
@@ -242,18 +250,35 @@ bool state::load_rom(char const * location) {
 		rom.read(prg_data, 0x4000);
 		if (i == 0) {
 			for (int b=0; b<0x4000; b++) {
-				cart_mem[0x3FE0 + b + 0x4000] = prg_data[b] & 0x00FF;
+				cart_mem[0x3FE0 + b] = prg_data[b] & 0x00FF;
 			}
 		} else if (i == 1) {
 			for (int b=0; b<0x4000; b++) {
-				cart_mem[0x3FE0 + b] = prg_data[b] & 0x00FF;
+				cart_mem[0x3FE0 + 0x4000 + b] = prg_data[b] & 0x00FF;
 			}
 		}
+	}
+	char chr_data[0x4000];
+	rom.read(chr_data, 0x2000);
+	for (int b=0; b<0x2000; b++) {
+		pattern_table[0][b] = chr_data[b] & 0x00FF;
 	}
 
 	rom.close();
 
 	return true;
+}
+
+void state::cpu_nmi() { // little endian jump vectors
+	this->set_reg('c', *(this->get_memory(0xFFFA)) + (*(this->get_memory(0xFFFB)) << 8));
+}
+
+void state::cpu_reset() {
+	this->set_reg('c', *(this->get_memory(0xFFFC)) + (*(this->get_memory(0xFFFD)) << 8));
+}
+
+void state::cpu_irq() {
+	this->set_reg('c', *(this->get_memory(0xFFFE)) + (*(this->get_memory(0xFFFF)) << 8));
 }
 
 unsigned short state::get_cycle() {

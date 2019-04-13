@@ -23,6 +23,10 @@ public:
 
 	bool load_rom(char const * location);
 
+	void cpu_nmi();
+	void cpu_reset();
+	void cpu_irq();
+
 	unsigned short get_cycle();
 	void reset_cycle();
 	void inc_cycle(unsigned short amount);

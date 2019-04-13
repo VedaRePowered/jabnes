@@ -22,8 +22,47 @@ JabnesCanvas::JabnesCanvas() {
 	std::cout << "|             n    | - Platforms: Linux" << std::endl;
 	std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
 	std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
+	current_state.cpu_reset();
+
 	current_state.load_rom("SMB1.nes");
 	nes_ppu.load_pal(this->palette, "generated.pal", false);
+
+	for (int i = 0; i < 16; i++) {
+		current_state.set_ppu_memory(i, 0xFF);
+	}
+
+	for (int y = 0; y < 128; y++) {
+		for (int x = 0; x < 128; x++) {
+			unsigned short colour = (current_state.get_ppu_memory((y&7) + (x>>3<<4) + (y>>3<<8)) >> (x&7)) & 0x01;
+			colour |= (current_state.get_ppu_memory((y&7) + (1<<3) + (x>>3<<4) + (y>>3<<8)) >> (x&7) << 1) & 0x02;
+			switch (colour) {
+				case 0:
+					std::cout << " ";
+					break;
+				case 1:
+					std::cout << "|";
+					break;
+				case 2:
+					std::cout << "&";
+					break;
+				case 3:
+					std::cout << "#";
+					break;
+				default:
+					std::cout << "?";
+					break;
+			}
+		}
+		std::cout << std::endl;
+	}
+
+	current_state.set_ppu_memory(0x3F00, 0);
+	for (int i=0; i <= 3; i++) {
+		current_state.set_ppu_memory(0x3F01+i, 2<<(i*2));
+		current_state.set_ppu_memory(0x3F04+i, 2<<(i*2));
+		current_state.set_ppu_memory(0x3F07+i, 2<<(i*2));
+	}
+
 	for (int y = 0; y < 240; y++) {
 		for (int x = 0; x < 256; x++) {
 			nes_ppu.set_buffer_pixel(x, y, 31);
@@ -32,17 +71,8 @@ JabnesCanvas::JabnesCanvas() {
 
 	for (int i=0x0000; i <= 0x03FF; i++) {
 		for (int j=0; j<4; j++) {
-			current_state.set_ppu_memory(0x2000+i+j*0x0400, 3);
+			current_state.set_ppu_memory(0x2000+i+j*0x0400, 0);
 		}
-	}
-
-	for (int i=0x0000; i <= 0x0FFF; i++) {
-		current_state.set_ppu_memory(i+0x0000, std::rand()&0xFF);
-		current_state.set_ppu_memory(i+0x1000, std::rand()&0xFF);
-	}
-
-	for (int i=0x3F00; i <= 0x3F0F; i++) {
-		current_state.set_ppu_memory(i, std::rand()&0x3F);
 	}
 
 	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 1500 );
@@ -68,9 +98,10 @@ bool JabnesCanvas::on_timeout() {
 	current_state.ppu_queue.push(tmp);
 
 	current_state.reset_cycle();
-	while (current_state.get_cycle() < 29780) {
-		nes_cpu.execute_instruction(current_state, false);
-	}
+	current_state.cpu_nmi();
+	// while (current_state.get_cycle() < 29780) {
+	// 	nes_cpu.execute_instruction(current_state, false);
+	// }
 
 	ppu_change_element tmp2 = {
 		*current_state.get_memory(0x2000),
