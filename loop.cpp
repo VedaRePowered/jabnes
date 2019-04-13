@@ -27,14 +27,19 @@ JabnesCanvas::JabnesCanvas() {
 	current_state.load_rom("SMB1.nes");
 	nes_ppu.load_pal(this->palette, "generated.pal", false);
 
-	for (int i = 0; i < 16; i++) {
-		current_state.set_ppu_memory(i, 0xFF);
+	// for (int i = 0; i < 8; i++) { // checker pattern
+	// 	current_state.set_ppu_memory(i, (i&1) == 1 ? 0x55 : 0xAA);
+	// 	current_state.set_ppu_memory(i+8, 0x55);
+	// }
+	for (int i = 0; i < 8; i++) { // checker pattern
+		current_state.set_ppu_memory(i, i <= 3 ? 0xF0 : 0x0F);
+		current_state.set_ppu_memory(i+8, i <= 3 ? 0xF0 : 0x0F);
 	}
 
 	for (int y = 0; y < 128; y++) {
 		for (int x = 0; x < 128; x++) {
-			unsigned short colour = (current_state.get_ppu_memory((y&7) + (x>>3<<4) + (y>>3<<8)) >> (x&7)) & 0x01;
-			colour |= (current_state.get_ppu_memory((y&7) + (1<<3) + (x>>3<<4) + (y>>3<<8)) >> (x&7) << 1) & 0x02;
+			unsigned short colour = (current_state.get_ppu_memory((y&7) + (x>>3<<4) + (y>>3<<8)) >> (7-(x&7))) & 0x01;
+			colour |= (current_state.get_ppu_memory((y&7) + (1<<3) + (x>>3<<4) + (y>>3<<8)) >> (7-(x&7)) << 1) & 0x02;
 			switch (colour) {
 				case 0:
 					std::cout << " ";
