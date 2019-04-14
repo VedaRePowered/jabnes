@@ -140,7 +140,7 @@ void state::set_flag(char flag, bool val) {
 unsigned short * state::get_memory(unsigned short loc) {
 	const_zero = 0;
 	const_one = 1;
-	if(loc == 0x4017) {
+	if (loc == 0x4017) {
 		return &const_zero;
 	} else if (loc == 0x4018) {
 		return &const_zero;
@@ -150,6 +150,7 @@ unsigned short * state::get_memory(unsigned short loc) {
 }
 
 void state::set_memory(unsigned short loc, unsigned short val) {
+	std::cout << "WRITE @ " << std::hex << loc << " : " << std::hex << val << "\n";
 	val = val & 0x00FF;
 	if (loc == 0x4017) {
 	} else if (loc == 0x4018) {
@@ -165,9 +166,10 @@ void state::set_memory(unsigned short loc, unsigned short val) {
 						break;
 			case 5:	changed = 's';
 						break;
-			case 6:	changed = 'p' ^ 'a'; // ppu address
+			case 6:	changed = 'A'; // ppu address
 						break;
-			case 7:	changed = 'p' ^ 'd'; // ppu data
+			case 7:	changed = 'D'; // ppu data
+						std::cout << "PPU_EXT_WRITE: " << val << "\n";
 						break;
 		}
 		if (changed != 0) {

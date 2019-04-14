@@ -139,11 +139,12 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 				}
 				scroll_vert = !scroll_vert;
 				break;
-			case 'p' ^ 'a':
+			case 'A':
 				ppu_address = tmp.ppu_address;
 				break;
-			case 'p' ^ 'd':
+			case 'D':
 				current_state.set_ppu_memory(ppu_address, tmp.ppu_data);
+				std::cout << "PPU_EXT_WRITE @ " << ppu_address << " : " << tmp.ppu_data << "\n";
 				break;
 			default: // Update all
 				ppu_control = tmp.ppu_control;

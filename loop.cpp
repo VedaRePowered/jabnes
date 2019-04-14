@@ -10,19 +10,18 @@
 #include "ppu.h"
 
 JabnesCanvas::JabnesCanvas() {
-	std::cout << "+------------------+ JABNES p0.0.3:" << std::endl;
-	std::cout << "| J  A  B  N  E  S | - Creator: BEN1JEN" << std::endl;
-	std::cout << "| u  n  a  i  m  o | - Licence: GPL 3.0" << std::endl;
-	std::cout << "| s  o  s  n  u  f | - Ganra: Emulator" << std::endl;
-	std::cout << "| t  t  i  t  l  t | - - System: NES" << std::endl;
-	std::cout << "|    h  c  e  a  w | - - Supported ROMs: none" << std::endl;
-	std::cout << "|    e     n  t  a | - - Emulated: CPU (no unofficial opcodes)" << std::endl;
-	std::cout << "|    r     d  i  r | - Has Base Features: No" << std::endl;
-	std::cout << "|          o  o  e | - Build Type: pre-alpha" << std::endl;
-	std::cout << "|             n    | - Platforms: Linux" << std::endl;
-	std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
-	std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
-	current_state.cpu_reset();
+	// std::cout << "+------------------+ JABNES p0.0.3:" << std::endl;
+	// std::cout << "| J  A  B  N  E  S | - Creator: BEN1JEN" << std::endl;
+	// std::cout << "| u  n  a  i  m  o | - Licence: GPL 3.0" << std::endl;
+	// std::cout << "| s  o  s  n  u  f | - Ganra: Emulator" << std::endl;
+	// std::cout << "| t  t  i  t  l  t | - - System: NES" << std::endl;
+	// std::cout << "|    h  c  e  a  w | - - Supported ROMs: none" << std::endl;
+	// std::cout << "|    e     n  t  a | - - Emulated: CPU (no unofficial opcodes)" << std::endl;
+	// std::cout << "|    r     d  i  r | - Has Base Features: No" << std::endl;
+	// std::cout << "|          o  o  e | - Build Type: pre-alpha" << std::endl;
+	// std::cout << "|             n    | - Platforms: Linux" << std::endl;
+	// std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
+	// std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
 
 	current_state.load_rom("SMB1.nes");
 	nes_ppu.load_pal(this->palette, "generated.pal", false);
@@ -33,23 +32,23 @@ JabnesCanvas::JabnesCanvas() {
 			colour |= (current_state.get_ppu_memory((y&7) + (1<<3) + (x>>3<<4) + (y>>3<<8)) >> (7-(x&7)) << 1) & 0x02;
 			switch (colour) {
 				case 0:
-					std::cout << " ";
+					// std::cout << " ";
 					break;
 				case 1:
-					std::cout << "|";
+					// std::cout << "|";
 					break;
 				case 2:
-					std::cout << "&";
+					// std::cout << "&";
 					break;
 				case 3:
-					std::cout << "#";
+					// std::cout << "#";
 					break;
 				default:
-					std::cout << "?";
+					// std::cout << "?";
 					break;
 			}
 		}
-		std::cout << std::endl;
+		// std::cout << std::endl;
 	}
 
 	current_state.set_ppu_memory(0x3F00, 0);
@@ -70,12 +69,13 @@ JabnesCanvas::JabnesCanvas() {
 			current_state.set_ppu_memory(0x2000+i+j*0x0400, std::rand() & 0x7F);
 		}
 	}
+	current_state.cpu_reset();
 
-	Glib::signal_timeout().connect( sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 1500 );
+	Glib::signal_timeout().connect(sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 5000);
 }
 
 JabnesCanvas::~JabnesCanvas() {
-	std::cout << "Stoping emulation..." << std::endl;
+	// std::cout << "Stoping emulation..." << std::endl;
 }
 
 bool JabnesCanvas::on_timeout() {
@@ -94,9 +94,9 @@ bool JabnesCanvas::on_timeout() {
 	current_state.ppu_queue.push(tmp);
 
 	current_state.reset_cycle();
-	current_state.cpu_nmi();
+	// std::cout << "frame pc: " << std::hex << *(current_state.get_reg('c')) << "\n";
 	while (current_state.get_cycle() < 29780) {
-		nes_cpu.execute_instruction(current_state, false);
+		nes_cpu.execute_instruction(current_state, true);
 	}
 
 	ppu_change_element tmp2 = {
@@ -112,7 +112,12 @@ bool JabnesCanvas::on_timeout() {
 	};
 	current_state.ppu_queue.push(tmp2);
 
+	if (*(current_state.get_memory(0x2000)) & 0x80) {
+		// std::cout << "NMI\n";
+		current_state.cpu_nmi();
+	}
 	nes_ppu.draw_from_queue(current_state, current_state.ppu_queue);
+	// std::cout << "frame over" << std::endl;
 
 	// force cairo to redraw the entire canvas.
 	auto win = get_window();
@@ -123,7 +128,6 @@ bool JabnesCanvas::on_timeout() {
 	}
 
 	return true;
-
 }
 
 bool JabnesCanvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {

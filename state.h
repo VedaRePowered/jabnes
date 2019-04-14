@@ -39,7 +39,7 @@ private:
 	unsigned short reg_pc;
 	unsigned short ram[0x0800];
 	unsigned short apu_regs[0x0016];
-	unsigned short ppu_regs[0x0008];
+	unsigned short ppu_regs[0x0008] = {0xFF, 0x1E, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00};
 	unsigned short cart_mem[0xBFE0];
 	unsigned short pattern_table[2][0x1000];
 	unsigned short name_table[4][0x0400];
