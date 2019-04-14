@@ -27,15 +27,6 @@ JabnesCanvas::JabnesCanvas() {
 	current_state.load_rom("SMB1.nes");
 	nes_ppu.load_pal(this->palette, "generated.pal", false);
 
-	// for (int i = 0; i < 8; i++) { // checker pattern
-	// 	current_state.set_ppu_memory(i, (i&1) == 1 ? 0x55 : 0xAA);
-	// 	current_state.set_ppu_memory(i+8, 0x55);
-	// }
-	for (int i = 0; i < 8; i++) { // checker pattern
-		current_state.set_ppu_memory(i, i <= 3 ? 0xF0 : 0x0F);
-		current_state.set_ppu_memory(i+8, i <= 3 ? 0xF0 : 0x0F);
-	}
-
 	for (int y = 0; y < 128; y++) {
 		for (int x = 0; x < 128; x++) {
 			unsigned short colour = (current_state.get_ppu_memory((y&7) + (x>>3<<4) + (y>>3<<8)) >> (7-(x&7))) & 0x01;
@@ -70,13 +61,13 @@ JabnesCanvas::JabnesCanvas() {
 
 	for (int y = 0; y < 240; y++) {
 		for (int x = 0; x < 256; x++) {
-			nes_ppu.set_buffer_pixel(x, y, 31);
+			nes_ppu.set_buffer_pixel(x, y, 0);
 		}
 	}
 
 	for (int i=0x0000; i <= 0x03FF; i++) {
 		for (int j=0; j<4; j++) {
-			current_state.set_ppu_memory(0x2000+i+j*0x0400, 0);
+			current_state.set_ppu_memory(0x2000+i+j*0x0400, std::rand() & 0x7F);
 		}
 	}
 
@@ -104,9 +95,9 @@ bool JabnesCanvas::on_timeout() {
 
 	current_state.reset_cycle();
 	current_state.cpu_nmi();
-	// while (current_state.get_cycle() < 29780) {
-	// 	nes_cpu.execute_instruction(current_state, false);
-	// }
+	while (current_state.get_cycle() < 29780) {
+		nes_cpu.execute_instruction(current_state, false);
+	}
 
 	ppu_change_element tmp2 = {
 		*current_state.get_memory(0x2000),

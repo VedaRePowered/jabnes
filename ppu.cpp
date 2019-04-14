@@ -55,17 +55,15 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 		// draw from last_change_pixel to change_pixel before setting the new registers
 		for (unsigned ppu_clock = last_change_pixel; ppu_clock < change_pixel; ppu_clock+=8) {
 			position pixel = get_pos_of_ppu_clock(ppu_clock);
-			while ((pixel.x&7) != 0) {
+			while ((pixel.x&7) != 0) { // Adjust pixel back at end of line, as it is not a multiple of eight
 				ppu_clock -= 1;
 				pixel = get_pos_of_ppu_clock(ppu_clock);
 			}
 			if (pixel.colliding) {
-				// std::cout << "pixel x:" << pixel.x << ", y:" << pixel.y << std::endl;
 				unsigned short nametable_x = pixel.x>>3; // divide by 8
 				unsigned short nametable_y = pixel.y>>3; // divide by 8
 				nametable_x += ppu_scroll_x>>3;
 				nametable_y += ppu_scroll_y>>3;
-				// std::cout << "scroll x:" << ppu_scroll_x << ", y:" << ppu_scroll_y << std::endl;
 				if (ppu_control & 0b00000001) {
 					nametable_x += 256>>3;
 				}
@@ -98,8 +96,6 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 
 				unsigned short tile = current_state.get_ppu_memory(nametable_address);
 
-				// std::cout << "Nametable Address: 0x" << std::hex << nametable_address << ", Data: 0x" << std::hex << tile << std::endl;
-
 				unsigned short palette_colour_high_byte;
 				unsigned short palette_colour_low_byte;
 				if (!(ppu_control & 0b00010000)) { // pattern table select (0x0000 or 0x1000)
@@ -110,26 +106,16 @@ void ppu::draw_from_queue(state& current_state, std::queue<ppu_change_element>& 
 					palette_colour_low_byte = current_state.get_ppu_memory((tile<<4)+(pixel.y&7)-ppu_scroll_y+0x1000+8);
 				}
 
-				std::bitset<8> pattern_low(palette_colour_low_byte);
-				std::bitset<8> pattern_high(palette_colour_high_byte);
-				std::cout << "pattern: 0b" << pattern_low << ", 0b" << pattern_high << std::endl;
-
-				// std::cout << "palette: " << std::hex << palette << std::endl;
-				std::cout << "tile:" << std::hex << tile << ", palColHigh:" << std::hex << palette_colour_high_byte << ", palColLow:" << std::hex << palette_colour_low_byte << std::endl;
-
 				unsigned short palette_colours[4];
 				palette_colours[0] = current_state.get_ppu_memory(0x3F00);
 				palette_colours[1] = current_state.get_ppu_memory(0x3F01+(palette*3));
 				palette_colours[2] = current_state.get_ppu_memory(0x3F02+(palette*3));
 				palette_colours[3] = current_state.get_ppu_memory(0x3F03+(palette*3));
 
-				// std::cout << "palette_colours: " << std::hex << palette_colours[0] << ", " << std::hex << palette_colours[1] << ", " << std::hex << palette_colours[2] << ", " << std::hex << palette_colours[3] << std::endl;
-				std::cout << "pixel x: " << pixel.x << ", y: " << pixel.y << std::endl;
 
 				for (int i = 0; i < 8; i++) {
 					unsigned short palette_colour_bits = (palette_colour_low_byte >> (7-i)) & 0b01;
 					palette_colour_bits |= (palette_colour_high_byte >> (7-i) << 1) & 0b10;
-					std::cout << "colour: " << std::hex << palette_colour_bits << std::endl;
 					unsigned short colour = palette_colours[palette_colour_bits];
 					if (ppu_mask & 0b00000001) { // grayscale
 						colour = colour & 0x30;
