@@ -394,7 +394,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 		case MODE_RELATIVE:	tmp = *current_state.get_reg('c')+2; // offset for this instruction (since 0 goes to the next instruction)
 									short offset = *current_state.get_memory(pc+1);
 									if (offset & 0x80) {
-										offset = 100 - offset;
+										offset = offset - 0x100;
 									}
 									a_address = tmp + offset;
 									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
