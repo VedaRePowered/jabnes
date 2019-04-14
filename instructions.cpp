@@ -392,7 +392,11 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 									inst_size = (unsigned short)2;
 									break;
 		case MODE_RELATIVE:	tmp = *current_state.get_reg('c')+2; // offset for this instruction (since 0 goes to the next instruction)
-									a_address = tmp + *current_state.get_memory(pc+1);
+									short offset = *current_state.get_memory(pc+1);
+									if (offset & 0x80) {
+										offset = 100 - offset;
+									}
+									a_address = tmp + offset;
 									page_boundary_crossed = (tmp & 0xFF00) != (a_address & 0xFF00);
 									inst_size = (unsigned short)2;
 									break;

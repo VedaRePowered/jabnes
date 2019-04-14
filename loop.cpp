@@ -23,7 +23,7 @@ JabnesCanvas::JabnesCanvas() {
 	// std::cout << "+------------------+ - Git Repo: https://gitlab.101100.ca/ben1jen/jabnes" << std::endl;
 	// std::cout << "\033[53mLog Output:                                                             \033[0m" << std::endl;
 
-	current_state.load_rom("SMB1.nes");
+	current_state.load_rom("nestest.nes");
 	nes_ppu.load_pal(this->palette, "generated.pal", false);
 
 	for (int y = 0; y < 128; y++) {
