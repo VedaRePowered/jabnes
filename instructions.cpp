@@ -51,7 +51,7 @@ void load(state& current_state, unsigned short * a, unsigned short * b) { // loa
 }
 
 void store(state& current_state, unsigned short * a, unsigned short * b) { // store register to memory
-	*a = *b & 0x00FF;
+	*a = *b & 0x00FF; // TODO: use set_memory
 }
 
 void reg_to_acc(state& current_state, unsigned short * a, unsigned short * b) { // set accumulator to b
@@ -143,7 +143,7 @@ void shift_left(state& current_state, unsigned short * a, unsigned short * b) { 
 	unsigned short tmp;
 	if (a) {
 		tmp = *a << 1;
-		*a = tmp & 0x00FF;
+		*a = tmp & 0x00FF; // TODO: use set_memory
 	} else if (b) {
 		tmp = *b << 1;
 		*b = tmp & 0x00FF;
@@ -158,7 +158,7 @@ void shift_right(state& current_state, unsigned short * a, unsigned short * b) {
 	if (a) {
 		current_state.set_flag('c', (bool)(*a & 0b00000001));
 		tmp = *a >> 1;
-		*a = tmp & 0x00FF;
+		*a = tmp & 0x00FF; // TODO: use set_memory
 	} else if (b) {
 		current_state.set_flag('c', (bool)(*b & 0b00000001));
 		tmp = *b >> 1;
@@ -171,7 +171,7 @@ void shift_right(state& current_state, unsigned short * a, unsigned short * b) {
 void roll_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
 	unsigned short * tmp;
 	if (a) {
-		tmp = a;
+		tmp = a; // TODO: use set_memory
 	} else if (b) {
 		tmp = b;
 	}
@@ -189,7 +189,7 @@ void roll_left(state& current_state, unsigned short * a, unsigned short * b) { /
 void roll_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b right one bit
 	unsigned short * tmp;
 	if (a) {
-		tmp = a;
+		tmp = a; // TODO: use set_memory
 	} else if (b) {
 		tmp = b;
 	}
@@ -271,7 +271,7 @@ void jump(state& current_state, unsigned short * a, unsigned short * b) { // jum
 }
 
 void inc_mem(state& current_state, unsigned short * a, unsigned short * b) { // increment a
-	*a = (*a + 1) & 0x00FF;
+	*a = (*a + 1) & 0x00FF; // TODO: use set_memory
 	set_z_flag(*a, current_state);
 	set_n_flag(*a, current_state);
 }
@@ -283,7 +283,7 @@ void inc_reg(state& current_state, unsigned short * a, unsigned short * b) { // 
 }
 
 void dec_mem(state& current_state, unsigned short * a, unsigned short * b) { // decrement a
-	*a = (*a - 1) & 0x00FF;
+	*a = (*a - 1) & 0x00FF; // TODO: use set_memory
 	set_z_flag(*a, current_state);
 	set_n_flag(*a, current_state);
 }
