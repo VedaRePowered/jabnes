@@ -44,39 +44,41 @@ void set_n_flag(unsigned short val, state& current_state) {
 	current_state.set_flag('n', (bool)(val & 0b10000000));
 }
 
-void load(state& current_state, unsigned short * a, unsigned short * b) { // load memory to register
+void load(state& current_state, unsigned short a_address, unsigned short * b) { // load memory to register
+	unsigned short * a = current_state.get_memory(a_address);
 	*b = *a & 0x00FF;
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
 }
 
-void store(state& current_state, unsigned short * a, unsigned short * b) { // store register to memory
-	*a = *b & 0x00FF; // TODO: use set_memory
+void store(state& current_state, unsigned short a_address, unsigned short * b) { // store register to memory
+	current_state.set_memory(a_address, *b & 0x00FF);
 }
 
-void reg_to_acc(state& current_state, unsigned short * a, unsigned short * b) { // set accumulator to b
+void reg_to_acc(state& current_state, unsigned short a_address, unsigned short * b) { // set accumulator to b
 	*current_state.get_reg('a') = *b & 0x00FF;
 	set_z_flag(*current_state.get_reg('a'), current_state);
 	set_n_flag(*current_state.get_reg('a'), current_state);
 }
 
-void reg_to_inc_x(state& current_state, unsigned short * a, unsigned short * b) { // set x incrementor to b
+void reg_to_inc_x(state& current_state, unsigned short a_address, unsigned short * b) { // set x incrementor to b
 	*current_state.get_reg('x') = *b & 0x00FF;
 	set_z_flag(*current_state.get_reg('x'), current_state);
 	set_n_flag(*current_state.get_reg('x'), current_state);
 }
 
-void reg_to_inc_y(state& current_state, unsigned short * a, unsigned short * b) { // set y incrementor to b
+void reg_to_inc_y(state& current_state, unsigned short a_address, unsigned short * b) { // set y incrementor to b
 	*current_state.get_reg('y') = *b & 0x00FF;
 	set_z_flag(*current_state.get_reg('y'), current_state);
 	set_n_flag(*current_state.get_reg('y'), current_state);
 }
 
-void reg_to_sp(state& current_state, unsigned short * a, unsigned short * b) { // set stack pointer to b
+void reg_to_sp(state& current_state, unsigned short a_address, unsigned short * b) { // set stack pointer to b
 	*current_state.get_reg('s') = *b & 0x00FF;
 }
 
-void add_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
+void add_carry(state& current_state, unsigned short a_address, unsigned short * b) { // add a and b (8-bit) with carry flag
+	unsigned short * a = current_state.get_memory(a_address);
 	unsigned short carry = 0;
 	if (current_state.get_flag('c')) {
 		carry = 1;
@@ -96,10 +98,10 @@ void add_carry(state& current_state, unsigned short * a, unsigned short * b) { /
 
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
-
 }
 
-void subtract_carry(state& current_state, unsigned short * a, unsigned short * b) { // add a and b (8-bit) with carry flag
+void subtract_carry(state& current_state, unsigned short a_address, unsigned short * b) { // add a and b (8-bit) with carry flag
+	unsigned short * a = current_state.get_memory(a_address);
 	unsigned short carry = 1;
 	if (current_state.get_flag('c')) {
 		carry = 0;
@@ -121,29 +123,33 @@ void subtract_carry(state& current_state, unsigned short * a, unsigned short * b
 	set_n_flag(*b, current_state);
 }
 
-void bitwise_and(state& current_state, unsigned short * a, unsigned short * b) { // and a and b
+void bitwise_and(state& current_state, unsigned short a_address, unsigned short * b) { // and a and b
+	unsigned short * a = current_state.get_memory(a_address);
 	*b = *a & *b;
 	set_z_flag(*current_state.get_reg('a'), current_state);
 	set_n_flag(*b, current_state);
 }
 
-void bitwise_or(state& current_state, unsigned short * a, unsigned short * b) { // or a and b
+void bitwise_or(state& current_state, unsigned short a_address, unsigned short * b) { // or a and b
+	unsigned short * a = current_state.get_memory(a_address);
 	*b = *a | *b;
 	set_z_flag(*current_state.get_reg('a'), current_state);
 	set_n_flag(*b, current_state);
 }
 
-void bitwise_xor(state& current_state, unsigned short * a, unsigned short * b) { // exclusive or a and b
+void bitwise_xor(state& current_state, unsigned short a_address, unsigned short * b) { // exclusive or a and b
+	unsigned short * a = current_state.get_memory(a_address);
 	*b = *a^*b;
 	set_z_flag(*current_state.get_reg('a'), current_state);
 	set_n_flag(*b, current_state);
 }
 
-void shift_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+void shift_left(state& current_state, unsigned short a_address, unsigned short * b) { // shift a or b left one bit
+	unsigned short * a = current_state.get_memory(a_address);
 	unsigned short tmp;
 	if (a) {
 		tmp = *a << 1;
-		*a = tmp & 0x00FF; // TODO: use set_memory
+		current_state.set_memory(a_address, tmp & 0x00FF);
 	} else if (b) {
 		tmp = *b << 1;
 		*b = tmp & 0x00FF;
@@ -153,12 +159,13 @@ void shift_left(state& current_state, unsigned short * a, unsigned short * b) { 
 	set_n_flag(tmp & 0x00FF, current_state);
 }
 
-void shift_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+void shift_right(state& current_state, unsigned short a_address, unsigned short * b) { // shift a or b left one bit
+	unsigned short * a = current_state.get_memory(a_address);
 	unsigned short tmp;
 	if (a) {
 		current_state.set_flag('c', (bool)(*a & 0b00000001));
 		tmp = *a >> 1;
-		*a = tmp & 0x00FF; // TODO: use set_memory
+		current_state.set_memory(a_address, tmp & 0x00FF);
 	} else if (b) {
 		current_state.set_flag('c', (bool)(*b & 0b00000001));
 		tmp = *b >> 1;
@@ -168,7 +175,8 @@ void shift_right(state& current_state, unsigned short * a, unsigned short * b) {
 	set_n_flag(tmp & 0x00FF, current_state);
 }
 
-void roll_left(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b left one bit
+void roll_left(state& current_state, unsigned short a_address, unsigned short * b) { // shift a or b left one bit
+	unsigned short * a = current_state.get_memory(a_address);
 	unsigned short * tmp;
 	if (a) {
 		tmp = a; // TODO: use set_memory
@@ -186,7 +194,8 @@ void roll_left(state& current_state, unsigned short * a, unsigned short * b) { /
 	*tmp = *tmp & 0x00FF;
 }
 
-void roll_right(state& current_state, unsigned short * a, unsigned short * b) { // shift a or b right one bit
+void roll_right(state& current_state, unsigned short a_address, unsigned short * b) { // shift a or b right one bit
+	unsigned short * a = current_state.get_memory(a_address);
 	unsigned short * tmp;
 	if (a) {
 		tmp = a; // TODO: use set_memory
@@ -204,28 +213,30 @@ void roll_right(state& current_state, unsigned short * a, unsigned short * b) { 
 	*tmp = *tmp & 0x00FF;
 }
 
-void test_bits(state& current_state, unsigned short * a, unsigned short * b) { // test bits in memory based on the accumulator
+void test_bits(state& current_state, unsigned short a_address, unsigned short * b) { // test bits in memory based on the accumulator
+	unsigned short * a = current_state.get_memory(a_address);
 	unsigned short tmp = *a & *b;
 	current_state.set_flag('z', tmp == 0);
 	current_state.set_flag('v', (bool)(*a & 0b01000000));
 	current_state.set_flag('n', (bool)(*a & 0b10000000));
 }
 
-void branch(state& current_state, unsigned short * a, unsigned short * b) { // jump if the bit in b is set in the p register
+void branch(state& current_state, unsigned short a_address, unsigned short * b) { // jump if the bit in b is set in the p register
 	if (*(current_state.get_reg('p')) & *b) {
-		current_state.set_reg('c', *a); // jump
+		current_state.set_reg('c', a_address); // jump
 		*b = *b | 0b100000000; // set this bit to notify the execute_instruction function that we took a branch
 	}
 }
 
-void branch_not(state& current_state, unsigned short * a, unsigned short * b) { // jump if the bit in b is not set in the p register
+void branch_not(state& current_state, unsigned short a_address, unsigned short * b) { // jump if the bit in b is not set in the p register
 	if (!(*(current_state.get_reg('p')) & *b)) {
-		current_state.set_reg('c', *a); // jump
+		current_state.set_reg('c', a_address); // jump
 		*b = *b | 0b100000000; // set this bit to notify the execute_instruction function that we took a branch
 	}
 }
 
-void compare(state& current_state, unsigned short * a, unsigned short * b) { // compare a to b
+void compare(state& current_state, unsigned short a_address, unsigned short * b) { // compare a to b
+	unsigned short * a = current_state.get_memory(a_address);
 	current_state.set_flag('c', false);
 	current_state.set_flag('z', false);
 	if ((*b & 0x00FF) >= (*a & 0x00FF)) {
@@ -238,94 +249,96 @@ void compare(state& current_state, unsigned short * a, unsigned short * b) { // 
 	current_state.set_flag('n', (bool)((*b-*a) & 0b10000000));
 }
 
-void CLC(state& current_state, unsigned short * a, unsigned short * b) { //
+void CLC(state& current_state, unsigned short a_address, unsigned short * b) { //
 	current_state.set_flag('c', false);
 }
 
-void CLD(state& current_state, unsigned short * a, unsigned short * b) { //
+void CLD(state& current_state, unsigned short a_address, unsigned short * b) { //
 	current_state.set_flag('d', false);
 }
 
-void CLI(state& current_state, unsigned short * a, unsigned short * b) { //
+void CLI(state& current_state, unsigned short a_address, unsigned short * b) { //
 	current_state.set_flag('i', false);
 }
 
-void CLV(state& current_state, unsigned short * a, unsigned short * b) { //
+void CLV(state& current_state, unsigned short a_address, unsigned short * b) { //
 	current_state.set_flag('v', false);
 }
 
-void SEC(state& current_state, unsigned short * a, unsigned short * b) { //
+void SEC(state& current_state, unsigned short a_address, unsigned short * b) { //
 	current_state.set_flag('c', true);
 }
 
-void SED(state& current_state, unsigned short * a, unsigned short * b) { //
+void SED(state& current_state, unsigned short a_address, unsigned short * b) { //
 	current_state.set_flag('d', true);
 }
 
-void SEI(state& current_state, unsigned short * a, unsigned short * b) { //
+void SEI(state& current_state, unsigned short a_address, unsigned short * b) { //
 	current_state.set_flag('i', true);
 }
 
-void jump(state& current_state, unsigned short * a, unsigned short * b) { // jump to a unconditionally
-	current_state.set_reg('c', *a);
+void jump(state& current_state, unsigned short a_address, unsigned short * b) { // jump to a unconditionally
+	current_state.set_reg('c', a_address);
 }
 
-void inc_mem(state& current_state, unsigned short * a, unsigned short * b) { // increment a
-	*a = (*a + 1) & 0x00FF; // TODO: use set_memory
+void inc_mem(state& current_state, unsigned short a_address, unsigned short * b) { // increment a
+	unsigned short * a = current_state.get_memory(a_address);
+	current_state.set_memory(a_address, (*a + 1) & 0x00FF);
 	set_z_flag(*a, current_state);
 	set_n_flag(*a, current_state);
 }
 
-void inc_reg(state& current_state, unsigned short * a, unsigned short * b) { // increment b
+void inc_reg(state& current_state, unsigned short a_address, unsigned short * b) { // increment b
 	*b = (*b + 1) & 0x00FF;
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
 }
 
-void dec_mem(state& current_state, unsigned short * a, unsigned short * b) { // decrement a
-	*a = (*a - 1) & 0x00FF; // TODO: use set_memory
+void dec_mem(state& current_state, unsigned short a_address, unsigned short * b) { // decrement a
+	unsigned short * a = current_state.get_memory(a_address);
+	current_state.set_memory(a_address, (*a - 1) & 0x00FF);
 	set_z_flag(*a, current_state);
 	set_n_flag(*a, current_state);
 }
 
-void dec_reg(state& current_state, unsigned short * a, unsigned short * b) { // decrement b
+void dec_reg(state& current_state, unsigned short a_address, unsigned short * b) { // decrement b
 	*b = (*b - 1) & 0x00FF;
 	set_z_flag(*b, current_state);
 	set_n_flag(*b, current_state);
 }
 
-void jump_subrutine(state& current_state, unsigned short * a, unsigned short * b) { // jump to a subroutine, pushing pc onto stack
+void jump_subrutine(state& current_state, unsigned short a_address, unsigned short * b) { // jump to a subroutine, pushing pc onto stack
 	push_val(current_state, (*current_state.get_reg('c')-1)>>8 & 0x00FF);
 	push_val(current_state, (*current_state.get_reg('c')-1) & 0x00FF);
-	current_state.set_reg('c', *a);
+	current_state.set_reg('c', a_address);
 }
 
-void return_subrutine(state& current_state, unsigned short * a, unsigned short * b) { // jump from a subroutine, pull pc from the stack
+void return_subrutine(state& current_state, unsigned short a_address, unsigned short * b) { // jump from a subroutine, pull pc from the stack
 	unsigned short tmp;
 	tmp = pull_val(current_state)&0x00FF;
 	tmp = tmp | ((pull_val(current_state)&0x00FF)<<8);
 	current_state.set_reg('c', tmp+1);
 }
 
-void push_reg(state& current_state, unsigned short * a, unsigned short * b) { // push b onto the stack
+void push_reg(state& current_state, unsigned short a_address, unsigned short * b) { // push b onto the stack
 	push_val(current_state, *b);
 }
 
-void push_flags(state& current_state, unsigned short * a, unsigned short * b) {
+void push_flags(state& current_state, unsigned short a_address, unsigned short * b) {
 	push_val(current_state, *b | 0b00110000);
 }
 
-void pull_acc(state& current_state, unsigned short * a, unsigned short * b) { // pull b from the stack, and set z aand n flags
+void pull_acc(state& current_state, unsigned short a_address, unsigned short * b) { // pull b from the stack, and set z aand n flags
 	*b = pull_val(current_state);
 	set_n_flag(*b, current_state);
 	set_z_flag(*b, current_state);
 }
 
-void pull_flags(state& current_state, unsigned short * a, unsigned short * b) { // pull b from the stack
+void pull_flags(state& current_state, unsigned short a_address, unsigned short * b) { // pull b from the stack
 	current_state.set_reg('p', pull_val(current_state));
 }
 
-void return_interupt(state& current_state, unsigned short * a, unsigned short * b) { // return from an interupt proccesing subroutine
+void return_interupt(state& current_state, unsigned short a_address, unsigned short * b) { // return from an interupt proccesing subroutine
 	current_state.set_reg('p', pull_val(current_state));
 	unsigned short tmp;
 	tmp = pull_val(current_state)&0x00FF;
@@ -575,7 +588,7 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 					tmp = 0b10000000;
 			}
 
-			instruction.execute_function(current_state, &a_address, &tmp);
+			instruction.execute_function(current_state, a_address, &tmp);
 			if (tmp & 0x100) {
 				current_state.inc_cycle(1);
 			} else {
@@ -584,13 +597,13 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 			// std::cout << "ins_branch" << std::endl;
 		} else if (instruction.opcode[0] == 'J') {
 			// std::cout << "ins_jump" << std::endl;
-			instruction.execute_function(current_state, &a_address, b);
+			instruction.execute_function(current_state, a_address, b);
 		} else if (instruction.address_type == MODE_NOTHING) {
 			// std::cout << "ins_mode_a" << std::endl;
-			instruction.execute_function(current_state, NULL, b);
+			instruction.execute_function(current_state, 0, b);
 		} else {
 			// std::cout << "ins_other" << std::endl;
-			instruction.execute_function(current_state, current_state.get_memory(a_address), b);
+			instruction.execute_function(current_state, a_address, b);
 		}
 	}
 	// std::cout << "ins_exec" << std::endl;

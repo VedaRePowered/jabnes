@@ -18,15 +18,15 @@ const unsigned short MODE_INDIRECTX = 9;
 const unsigned short MODE_INDIRECTY = 10;
 const unsigned short MODE_RELATIVE = 11;
 
-void dummy(state&, unsigned short * a, unsigned short * b);
+void dummy(state&, unsigned short a, unsigned short * b);
 
 // define instruction class
 class nes_instruction {
 public:
 	nes_instruction();
-	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *));
-	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *), bool);
-	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short *, unsigned short *), bool, bool);
+	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short, unsigned short *));
+	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short, unsigned short *), bool);
+	nes_instruction(unsigned short, unsigned short, char, bool, std::string, void (*execute_function)(state&, unsigned short, unsigned short *), bool, bool);
 
 	unsigned short cycles; // number of CPU cycles it takes to execute
 	unsigned short address_type; // type of address
@@ -36,7 +36,7 @@ public:
 	bool is_branch;
 	bool is_unofficial;
 
-	void (*execute_function)(state&, unsigned short *, unsigned short *); // function to execute with two litaral numbers
+	void (*execute_function)(state&, unsigned short, unsigned short *); // function to execute with two litaral numbers
 };
 
 #endif
