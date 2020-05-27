@@ -28,6 +28,7 @@ public:
 	void cpu_irq();
 
 	unsigned short get_cycle();
+	unsigned short get_ppu_buf();
 	void reset_cycle();
 	void inc_cycle(unsigned short amount);
 private:

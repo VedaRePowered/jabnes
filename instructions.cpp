@@ -552,6 +552,9 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 		std::cout << " CYCLES: ";
 		std::cout << current_state.get_cycle();
 
+		std::cout << " PPU_BUF: ";
+		std::cout << current_state.get_ppu_buf();
+
 		std::cout << " STACK:";
 		for (int i = 0xFF; i > *current_state.get_reg('s'); i--) {
 			std::cout << " ";

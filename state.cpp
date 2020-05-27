@@ -139,10 +139,10 @@ void state::set_flag(char flag, bool val) {
 
 unsigned short state::get_ppu_state() {
 	if (cpu_cycle < 27391 || ppu_state_read) {
-		return 0x10;
+		return 0x00;
 	} else {
 		ppu_state_read = true;
-		return 0x90;
+		return 0x80;
 	}
 }
 
@@ -303,6 +303,10 @@ void state::cpu_irq() {
 
 unsigned short state::get_cycle() {
 	return this->cpu_cycle;
+}
+
+unsigned short state::get_ppu_buf() {
+	return this->ppu_buf;
 }
 
 void state::reset_cycle() {
