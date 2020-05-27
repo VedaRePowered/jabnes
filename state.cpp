@@ -137,6 +137,15 @@ void state::set_flag(char flag, bool val) {
 	set_reg('p', status_reg_tmp);
 }
 
+unsigned short state::get_ppu_state() {
+	if (cpu_cycle < 27391 || ppu_state_read) {
+		return 0x10;
+	} else {
+		ppu_state_read = true;
+		return 0x90;
+	}
+}
+
 unsigned short * state::get_memory(unsigned short loc) {
 	const_zero = 0;
 	const_one = 1;
@@ -144,6 +153,14 @@ unsigned short * state::get_memory(unsigned short loc) {
 		return &const_zero;
 	} else if (loc == 0x4018) {
 		return &const_zero;
+	} else if (loc >= 0x2000 && loc < 0x4000) {
+		switch (loc&7) {
+			case 2:
+				ppu_regs[2] = get_ppu_state() | (ppu_buf & 0x1f);
+				return &ppu_regs[2];
+			default:
+				return &ppu_buf;
+		}
 	} else {
 		return cpu_memory_map[loc];
 	}
@@ -184,6 +201,7 @@ void state::set_memory(unsigned short loc, unsigned short val) {
 				changed,
 				cpu_cycle
 			};
+			ppu_buf = val;
 			ppu_queue.push(tmp);
 		}
 	}
@@ -289,6 +307,7 @@ unsigned short state::get_cycle() {
 
 void state::reset_cycle() {
 	this->cpu_cycle = 0;
+	this->ppu_state_read = false;
 }
 
 void state::inc_cycle(unsigned short amount) {

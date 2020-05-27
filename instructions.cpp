@@ -418,7 +418,10 @@ void cpu::execute_instruction(state& current_state, bool debug_mode) {
 		}
 		std::cout << instruction.opcode << " ";
 
-		unsigned int a = *current_state.get_memory(a_address);
+		unsigned int a = 0xFF;
+		if (!(a_address >= 0x2000 && a_address < 0x4020)) { // reading may result in side-affects
+			a = *current_state.get_memory(a_address);
+		}
 		switch (instruction.address_type) {
 			case MODE_NOTHING:
 				if (inst_hex == 0x0A || inst_hex == 0x4A || inst_hex == 0x2A || inst_hex == 0x6A) {

@@ -42,6 +42,14 @@ while correct_line and check_line and same do
 	prev_line = check_line
 	correct_line = correct_log:read("*line")
 	check_line = check_log:read("*line")
+	if not correct_line then
+		print("Reached end of correct file.")
+		os.exit()
+	end
+	if not check_line then
+		print("Reached end of testing file.")
+		os.exit()
+	end
 	same = string.sub(correct_line, 1, chars) == string.sub(check_line, 1, chars)
 	current_stack_value = string.sub(check_line, stack_pos, stack_pos+2)
 end

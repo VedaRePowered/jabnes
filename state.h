@@ -31,6 +31,8 @@ public:
 	void reset_cycle();
 	void inc_cycle(unsigned short amount);
 private:
+	unsigned short get_ppu_state();
+
 	unsigned short reg_a;
 	unsigned short reg_x;
 	unsigned short reg_y;
@@ -40,6 +42,7 @@ private:
 	unsigned short ram[0x0800];
 	unsigned short apu_regs[0x0016];
 	unsigned short ppu_regs[0x0008] = {0xFF, 0x1E, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00};
+	unsigned short ppu_buf;
 	unsigned short cart_mem[0xBFE0];
 	unsigned short pattern_table[2][0x1000];
 	unsigned short name_table[4][0x0400];
@@ -50,6 +53,7 @@ private:
 	unsigned short oam_spr_a[0x0040];
 	unsigned short * cpu_memory_map[0x10000];
 	unsigned short * ppu_memory_map[0x10000];
+	bool ppu_state_read;
 
 	unsigned short cpu_cycle;
 

@@ -10,13 +10,13 @@
 #include "ppu.h"
 
 JabnesCanvas::JabnesCanvas() {
-	// std::cout << "+------------------+ JABNES p0.0.3:" << std::endl;
+	// std::cout << "+------------------+ JABNES p0.0.4:" << std::endl;
 	// std::cout << "| J  A  B  N  E  S | - Creator: BEN1JEN" << std::endl;
 	// std::cout << "| u  n  a  i  m  o | - Licence: GPL 3.0" << std::endl;
 	// std::cout << "| s  o  s  n  u  f | - Ganra: Emulator" << std::endl;
 	// std::cout << "| t  t  i  t  l  t | - - System: NES" << std::endl;
 	// std::cout << "|    h  c  e  a  w | - - Supported ROMs: none" << std::endl;
-	// std::cout << "|    e     n  t  a | - - Emulated: CPU (no unofficial opcodes)" << std::endl;
+	// std::cout << "|    e     n  t  a | - - Emulated: CPU (no unofficial opcodes), PPU (wip)" << std::endl;
 	// std::cout << "|    r     d  i  r | - Has Base Features: No" << std::endl;
 	// std::cout << "|          o  o  e | - Build Type: pre-alpha" << std::endl;
 	// std::cout << "|             n    | - Platforms: Linux" << std::endl;
@@ -35,10 +35,10 @@ JabnesCanvas::JabnesCanvas() {
 					// std::cout << " ";
 					break;
 				case 1:
-					// std::cout << "|";
+					// std::cout << ".";
 					break;
 				case 2:
-					// std::cout << "&";
+					// std::cout << "=";
 					break;
 				case 3:
 					// std::cout << "#";
@@ -71,7 +71,7 @@ JabnesCanvas::JabnesCanvas() {
 	}
 	current_state.cpu_reset();
 
-	Glib::signal_timeout().connect(sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 5000);
+	Glib::signal_timeout().connect(sigc::mem_fun(*this, &JabnesCanvas::on_timeout), 1000);
 }
 
 JabnesCanvas::~JabnesCanvas() {
